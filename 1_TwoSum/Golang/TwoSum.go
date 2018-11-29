@@ -1,7 +1,8 @@
-package main
+package TwoSum
 
 import "fmt"
 
+// TwoSum
 func TwoSum(nums []int, target int) []int {
 	dict := make(map[int]int)
 	var result []int
