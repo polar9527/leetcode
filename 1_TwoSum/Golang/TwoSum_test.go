@@ -3,11 +3,18 @@ package twosum
 import "testing"
 
 func TestTwoSum(t *testing.T) {
-	nums := []int{2, 7, 11, 15}
-	target := 9
-	result := TwoSum(nums, target)
-	if !IntSliceEqualBCE([]int{0, 1}, result) {
-		t.Error("TestTwoSum([]int{2, 7, 11, 15}, 9) == false")
+	var tests = []struct {
+		nums   []int
+		target int
+		result []int
+	}{
+		{[]int{2, 7, 11, 15}, 9, []int{0, 1}},
+	}
+	for _, test := range tests {
+		result := TwoSum(test.nums, test.target)
+		if !IntSliceEqualBCE(test.result, result) {
+			t.Errorf("nums = %v, target = %d, result = %v", test.nums, test.target, test.result)
+		}
 	}
 }
 
@@ -28,4 +35,18 @@ func IntSliceEqualBCE(a, b []int) bool {
 	}
 
 	return true
+}
+
+func BenchmarkTwoSum(b *testing.B) {
+	var tests = []struct {
+		nums   []int
+		target int
+		result []int
+	}{
+		{[]int{2, 7, 11, 15}, 9, []int{0, 1}},
+	}
+
+	for i := 0; i < b.N; i++ {
+		TwoSum(tests[0].nums, tests[0].target)
+	}
 }
