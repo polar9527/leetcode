@@ -1,8 +1,8 @@
-package TwoSum
+package twosum
 
 import "fmt"
 
-// TwoSum
+// TwoSum solution of leetcode No.1 problem
 func TwoSum(nums []int, target int) []int {
 	dict := make(map[int]int)
 	var result []int
