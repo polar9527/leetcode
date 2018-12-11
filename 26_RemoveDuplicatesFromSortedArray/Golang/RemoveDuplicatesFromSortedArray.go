@@ -1,7 +1,7 @@
 package app
 
-// AppM my solution
-func AppM(nums []int) int {
+// M my solution
+func M(nums []int) int {
 
 	lenght := len(nums)
 	if lenght == 0 || lenght == 1 {
@@ -19,8 +19,8 @@ func AppM(nums []int) int {
 	return slower
 }
 
-//AppO1 a faster solution? Not sure
-func AppO1(nums []int) int {
+//O1 a faster solution? Not sure
+func O1(nums []int) int {
 	if len(nums) == 0 {
 		return 0
 	}
@@ -37,8 +37,8 @@ func AppO1(nums []int) int {
 	return uniqueNum
 }
 
-//AppO2 a faster solution? Not
-func AppO2(nums []int) int {
+//O2 a faster solution? Not
+func O2(nums []int) int {
 	pmap := make(map[int]int)
 	for _, v := range nums {
 		if _, ok := pmap[v]; !ok {
