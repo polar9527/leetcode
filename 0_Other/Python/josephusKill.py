@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 """
 约瑟夫环问题起源于一个犹太故事。约瑟夫环问题的大意如下
@@ -24,19 +24,22 @@ F(i)=F(i-1)+M
 
 F(i)=(F(i-1)+M)%i
 """
-def josephus1(n ,k):
-    link = list(range(1 , n +1))
-    ind =0
-    for loop_i in range( n -1):
-        ind = (ind + k)% len(link)
-        ind -= 1
-        print('Kill:' ,link[ind])
-        del link[ind]
-        if ind ==-1: # the last element of link
-            ind =0
-    print('survice :' ,link[0])
 
-def josephus2(n ,k):
+
+def josephus1(n, k):
+    link = list(range(1, n + 1))
+    ind = 0
+    for loop_i in range(n - 1):
+        ind = (ind + k) % len(link)
+        ind -= 1
+        print('Kill:', link[ind])
+        del link[ind]
+        if ind == -1:  # the last element of link
+            ind = 0
+    print('survice :', link[0])
+
+
+def josephus2(n, k):
     s = 0
     for i in range(1, n):
         s = (s + k) % i
@@ -44,12 +47,13 @@ def josephus2(n ,k):
     index = s + 1
     return index
 
-def josephus3(n ,k):
+
+def josephus3(n, k):
 
     if n > 1:
-        ret =  (josephus3(n - 1, k) + k) % n
+        ret = (josephus3(n - 1, k) + k) % n
     else:
-        ret =  0
+        ret = 0
 
     index = ret + 1
     return index
@@ -60,6 +64,6 @@ if __name__ == '__main__':
     # josephus(100000 ,300)
     # print('- ' *30)
     # josephus(10 ,5)
-    print('- ' *30)
-    ret = josephus3(41 ,3)
+    print('- ' * 30)
+    ret = josephus3(41, 3)
     print(ret)
