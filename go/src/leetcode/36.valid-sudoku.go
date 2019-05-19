@@ -46,18 +46,18 @@ func isValidSudoku(board [][]byte) bool {
 	return true
 }
 
-func main() {
+// func main() {
 
-	s := [][]byte{
-		[]byte("53..7...."),
-		[]byte("6..195..."),
-		[]byte(".98....6."),
-		[]byte("8...6...3"),
-		[]byte("4..8.3..1"),
-		[]byte("7...2...6"),
-		[]byte(".6....28."),
-		[]byte("...419..5"),
-		[]byte("....8..79"),
-	}
-	print(isValidSudoku(s))
-}
+// 	s := [][]byte{
+// 		[]byte("53..7...."),
+// 		[]byte("6..195..."),
+// 		[]byte(".98....6."),
+// 		[]byte("8...6...3"),
+// 		[]byte("4..8.3..1"),
+// 		[]byte("7...2...6"),
+// 		[]byte(".6....28."),
+// 		[]byte("...419..5"),
+// 		[]byte("....8..79"),
+// 	}
+// 	print(isValidSudoku(s))
+// }

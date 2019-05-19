@@ -45,9 +45,9 @@ func plusOne(digits []int) []int {
 	digits[lenght-1] = (digits[lenght-1] + 1) % 10
 
 	for i := lenght - 2; i >= 0; i-- {
-		carry_next := (digits[i] + carry) / 10
+		carryNext := (digits[i] + carry) / 10
 		digits[i] = (digits[i] + carry) % 10
-		carry = carry_next
+		carry = carryNext
 
 	}
 	ret := digits

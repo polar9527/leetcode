@@ -6,9 +6,9 @@
 
 package main
 
-import (
-	"fmt"
-)
+// import (
+// 	"fmt"
+// )
 
 func rotate(matrix [][]int) {
 	n := len(matrix)
@@ -25,16 +25,16 @@ func rotate(matrix [][]int) {
 	}
 }
 
-func main() {
-	m := [][]int{
-		[]int{5, 1, 9, 11},
-		[]int{2, 4, 8, 10},
-		[]int{13, 3, 6, 7},
-		[]int{15, 14, 12, 16},
-	}
+// func main() {
+// 	m := [][]int{
+// 		[]int{5, 1, 9, 11},
+// 		[]int{2, 4, 8, 10},
+// 		[]int{13, 3, 6, 7},
+// 		[]int{15, 14, 12, 16},
+// 	}
 
-	rotate(m)
-	for i := 0; i < len(m); i++ {
-		fmt.Println(m[i])
-	}
-}
+// 	rotate(m)
+// 	for i := 0; i < len(m); i++ {
+// 		fmt.Println(m[i])
+// 	}
+// }
