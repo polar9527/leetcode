@@ -1,3 +1,4 @@
+# encoding: utf-8
 def binarySearch(arr, l, r, x):
 
     while l < r:
