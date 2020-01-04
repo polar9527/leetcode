@@ -18,12 +18,11 @@ func lengthOfLongestSubstring(s string) int {
 
 	for i, c := range s {
 		if _, ok := charMap[c]; !ok || charMap[c] < start {
-			charMap[c] = i
 			window = int(math.Max(float64(i-start+1), float64(window)))
 		} else {
 			start = charMap[c] + 1
-			charMap[c] = i
 		}
+		charMap[c] = i
 	}
 	return window
 }
