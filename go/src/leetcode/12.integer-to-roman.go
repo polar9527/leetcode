@@ -84,6 +84,7 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -93,11 +94,11 @@ func intToRoman(num int) string {
 	}
 	t := []string{"I", "V", "X", "L", "C", "D", "M"}
 
-	curr := num % 10
-	num /= 10
 	idx := 0
 	ret := ""
-	for ; num > 0; num /= 10 {
+	for num > 0 {
+		curr := num % 10
+		num /= 10
 		if curr <= 3 {
 			ret += strings.Repeat(t[idx], curr)
 		} else if curr == 4 {
@@ -112,13 +113,16 @@ func intToRoman(num int) string {
 		}
 		idx += 2
 	}
-
-	return ret
+	result := make([]rune, len(ret))
+	for i, r := range ret {
+		result[len(ret)-1-i] = r
+	}
+	return string(result)
 }
 
 // @lc code=end
-// func main(){
-// 	n := 1994
-// 	ret := intToRoman(n)
-// 	fmt.Println(ret)
-// }
+func main() {
+	n := 1994
+	ret := intToRoman(n)
+	fmt.Println(ret)
+}

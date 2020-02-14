@@ -106,5 +106,4 @@ ENV/
 # vscode
 .vscode
 
-CMakeLists.txt
 cmake-build-debug
