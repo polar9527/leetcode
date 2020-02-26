@@ -10,13 +10,21 @@ class CMyString {
 friend std::ostream & operator<<(std::ostream &os, const CMyString &str);
 public:
     explicit CMyString(char *pData = nullptr){
-        if (pData == nullptr)
-            return ;
-        m_pData = new char[strlen(pData) + 1];
-        strcpy(m_pData, pData);
+        if(pData == nullptr)
+        {
+            m_pData = new char[1];
+            m_pData[0] = '\0';
+        }
+        else
+        {
+            int length = strlen(pData);
+            m_pData = new char[length + 1];
+            strcpy(m_pData, pData);
+        }
     };
     CMyString(const CMyString &str){
-        m_pData = new char[strlen(str.m_pData) + 1];
+        int length = strlen(str.m_pData);
+        m_pData = new char[length + 1];
         strcpy(m_pData, str.m_pData);
     };
     CMyString &operator=(CMyString &str);
