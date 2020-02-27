@@ -8,8 +8,8 @@ set(CMAKE_BUILD_TYPE Debug)
 
 add_executable(leetcode.12 12.integer-to-roman.cpp)
 add_executable(leetcode.15 15.3Sum.cpp)
-add_executable(offer_2 offer_2.cpp)
+add_executable(offer_1 offer_1.cpp)
 
-target_include_directories(offer_2 PUBLIC
+target_include_directories(offer_1 PUBLIC
         "${PROJECT_BINARY_DIR}"
         )
