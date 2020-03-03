@@ -15,6 +15,7 @@ func shellSort(array []int) {
 		for k := 0; k < gap; k++ {
 			// j = Index Of Each Gap
 			for j := 1; j*gap+k < l; j++ {
+				// insertion sort
 				for n := j; n > 0; n-- {
 					pre := (n-1)*gap + k
 					next := n*gap + k
