@@ -25,7 +25,7 @@ func maxHeap(start int, end int, c []int) {
 		if child > end {
 			break
 		}
-		if child+1 < end && c[child] < c[child+1] {
+		if child+1 <= end && c[child] < c[child+1] {
 			child++
 		}
 		if c[root] < c[child] {
