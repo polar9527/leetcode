@@ -5,7 +5,7 @@ func heapSort(c []int) []int {
 	n := len(c)
 
 	// init heap
-	for start := n / 2; start > 0; start-- {
+	for start := n / 2; start >= 0; start-- {
 		maxHeap(start, n-1, c)
 	}
 
