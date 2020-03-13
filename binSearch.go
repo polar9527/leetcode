@@ -44,8 +44,9 @@ func main() {
 	testcase = append(testcase, Tuple{[]int{111}, 14})
 	testcase = append(testcase, Tuple{[]int{}, 14})
 
-	testBinSearch(binSearchExactlyHalfClose, testcase)
-	testBinSearch(binSearchExactlyFullClose, testcase)
+	// testBinSearch(binSearchExactlyHalfClose, testcase)
+	// testBinSearch(binSearchExactlyFullClose, testcase)
+	testBinSearch(binSearchLowBound, testcase)
 
 }
 
@@ -61,7 +62,7 @@ func testBinSearch(f BinSearch, testcase []Tuple) {
 		if ret == -1 {
 			fmt.Println("Not found")
 		} else {
-			fmt.Println(ret)
+			fmt.Println("Found index: ", ret)
 		}
 	}
 	fmt.Println()
@@ -143,4 +144,38 @@ func binSearchExactlyFullClose(arr []int, target int) int {
 		}
 	}
 	return -1
+}
+
+// [l, r]
+// 全闭
+// 在一个有序的数组arr中，寻找大于等于target的元素的第一个索引，如果存在返回相应索引，如果不存在返回-1
+// 极端情况的临界， 即 l==r, 进入循环
+// 此时 mid == l == r
+// 如果arr[mid] <= target，那么这时可以肯定 mid == l == r 左侧的所有元素全部小于target，arr[mid]此时就是第一个大于等于target的元素
+// 如果arr[mid] > target, 那么这时可以肯定 mid == l == r 左侧的所有元素全部小于target，右侧的所有元素全部大于target，而arr[mid]此时就是第一个大于target的元素
+
+func binSearchLowBound(arr []int, target int) int {
+	if len(arr) == 1 {
+		if target <= arr[0] {
+			return 0
+		} else {
+			return -1
+		}
+	}
+	l, r := 0, len(arr)-1
+
+	var mid = -1
+	for l <= r {
+		mid = (l + r) / 2
+		// 当arr[mid] == target的时候，此时[mid, r]中的元素一定大于等于target，但是arr[mid]可能不是第一个等于target的元素,还需要继续在[l, mid-1]中寻找
+		// 当arr[mid] > target的时候，此时[mid, r] 中的元素一定大于target，但是arr[mid]可能不是第一个大于等于target的元素,还需要继续在[l, mid-1]中寻找
+		if target <= arr[mid] {
+			r = mid - 1
+			// 当arr[mid] < target的时候, [l, mid]中的元素全部小于target，不满足条件，
+			// 此时大于等于target的元素只存在与[mid+1, r]区间中，
+		} else {
+			l = mid + 1
+		}
+	}
+	return mid
 }
