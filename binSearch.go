@@ -42,11 +42,13 @@ func main() {
 	var testcase []Tuple
 	testcase = append(testcase, Tuple{[]int{1, 3, 6, 13, 14, 14, 14, 14, 56, 86, 99, 111}, 14})
 	testcase = append(testcase, Tuple{[]int{111}, 14})
+	testcase = append(testcase, Tuple{[]int{11}, 14})
 	testcase = append(testcase, Tuple{[]int{}, 14})
 
 	// testBinSearch(binSearchExactlyHalfClose, testcase)
 	// testBinSearch(binSearchExactlyFullClose, testcase)
-	testBinSearch(binSearchLowBound, testcase)
+	// testBinSearch(binSearchLowerBound, testcase)
+	testBinSearch(binSearchUpperBound, testcase)
 
 }
 
@@ -154,7 +156,7 @@ func binSearchExactlyFullClose(arr []int, target int) int {
 // 如果arr[mid] <= target，那么这时可以肯定 mid == l == r 左侧的所有元素全部小于target，arr[mid]此时就是第一个大于等于target的元素
 // 如果arr[mid] > target, 那么这时可以肯定 mid == l == r 左侧的所有元素全部小于target，右侧的所有元素全部大于target，而arr[mid]此时就是第一个大于target的元素
 
-func binSearchLowBound(arr []int, target int) int {
+func binSearchLowerBound(arr []int, target int) int {
 	if len(arr) == 1 {
 		if target <= arr[0] {
 			return 0
@@ -175,6 +177,29 @@ func binSearchLowBound(arr []int, target int) int {
 			// 此时大于等于target的元素只存在与[mid+1, r]区间中，
 		} else {
 			l = mid + 1
+		}
+	}
+	return mid
+}
+
+func binSearchUpperBound(arr []int, target int) int {
+	if len(arr) == 1 {
+		if target >= arr[0] {
+			return 0
+		} else {
+			return -1
+		}
+	}
+	l, r := 0, len(arr)-1
+
+	var mid = -1
+	for l <= r {
+		mid = (l + r) / 2
+		if target >= arr[mid] {
+			l = mid + 1
+		} else {
+			r = mid - 1
+
 		}
 	}
 	return mid
