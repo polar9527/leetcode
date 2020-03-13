@@ -204,7 +204,6 @@ func binSearchUpperBound(arr []int, target int) int {
 			// r右侧包括r都大于target，l左侧都小于target，所以arr[l]是第一个大于target的
 		} else {
 			r = mid - 1
-
 		}
 	}
 	return l
