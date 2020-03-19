@@ -1,4 +1,4 @@
-package offer_2
+package __Singleton
 
 type singletonLazyAndWrong struct{}
 
