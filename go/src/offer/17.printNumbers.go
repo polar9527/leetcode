@@ -72,8 +72,43 @@ func getNumber(numberBytes []byte) int {
 	return sum
 }
 
+func printNumbersR(n int) []int {
+	numbers := make([]int, 0)
+	numberBytes := make([]byte, n)
+
+	for i := range numberBytes {
+		numberBytes[i] = '0'
+	}
+
+	if n <= 0 {
+		return numbers
+	}
+
+	for i := 0; i < 10; i++ {
+		numberBytes[0] = byte(i) + '0'
+		printNumbersRecursive(numberBytes, n, 1, &numbers)
+	}
+
+	return numbers[1:]
+}
+
+func printNumbersRecursive(numberBytes []byte, length, index int, numbers *[]int) {
+	if index == length {
+		number := getNumber(numberBytes)
+		*numbers = append(*numbers, number)
+		return
+	}
+
+	for i := 0; i < 10; i++ {
+		numberBytes[index] = byte(i) + '0'
+		printNumbersRecursive(numberBytes, length, index+1, numbers)
+	}
+}
+
 func main() {
 	arr := printNumbers(2)
 	fmt.Println(arr)
+	arrR := printNumbersR(2)
+	fmt.Println(arrR)
 
 }
