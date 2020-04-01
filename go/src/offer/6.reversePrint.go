@@ -12,16 +12,6 @@ import (
  * }
  */
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-type List struct {
-	head *ListNode
-	tail *ListNode
-}
-
 func (l *List) addNode(val int) {
 	newNode := &ListNode{val, nil}
 	if l.head == nil {
