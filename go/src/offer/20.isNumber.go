@@ -55,8 +55,8 @@ func isUnsigned(s string, index *int) bool {
 	return *index > start
 }
 
-func main() {
-	s := "124"
-	isNumber(s)
-
-}
+// func main() {
+// 	s := "124"
+// 	isNumber(s)
+//
+// }
