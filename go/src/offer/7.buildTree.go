@@ -9,12 +9,6 @@ package main
  * }
  */
 
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
-
 func main() {
 	pre := []int{3, 9, 20, 15, 7}
 	in := []int{9, 3, 15, 20, 7}

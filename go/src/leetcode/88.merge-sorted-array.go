@@ -3,7 +3,7 @@
  *
  * [88] Merge Sorted Array
  */
-// package main
+package main
 
 func merge(nums1 []int, m int, nums2 []int, n int) {
 
