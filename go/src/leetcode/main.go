@@ -16,6 +16,12 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+type Node struct {
+	Val    int
+	Next   *Node
+	Random *Node
+}
+
 func main() {
 	// 36.valid-sudoku
 	// 	s := [][]byte{
