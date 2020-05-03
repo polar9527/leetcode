@@ -38,6 +38,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 // @lc code=start
@@ -63,6 +65,45 @@ func helper(index int, prefix string, digits string, t []string, ret *[]string) 
 		helper(index+1, prefix+s, digits, t, ret)
 	}
 
+}
+
+func letterCombinations0503(digits string) []string {
+	if len(digits) == 0 {
+		return []string{}
+	}
+
+	dict := []string{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}
+	var nums = make([]int, 0)
+	for _, digit := range digits {
+		num, err := strconv.Atoi(string(digit))
+		if err != nil {
+			return []string{}
+		}
+		if num == 1 {
+			return []string{}
+		}
+		nums = append(nums, num)
+	}
+	ret := make([]string, 0)
+	depth := len(nums)
+	path := make([]string, 0)
+	core(0, depth, nums, dict, path, &ret)
+	return ret
+}
+
+func core(start, depth int, nums []int, dict, path []string, ret *[]string) {
+	if start == depth {
+		var result = make([]string, depth)
+		copy(result, path)
+		*ret = append(*ret, strings.Join(result, ""))
+		return
+	}
+
+	for _, c := range dict[nums[start]] {
+		path = append(path, string(c))
+		core(start+1, depth, nums, dict, path, ret)
+		path = path[:len(path)-1]
+	}
 }
 
 // @lc code=end
