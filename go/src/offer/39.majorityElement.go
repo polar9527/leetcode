@@ -61,6 +61,33 @@ func bit(nums []int) int {
 	return cur
 }
 
+func quickSelect(nums []int) int {
+	if len(nums) == 0 {
+		return -1
+	}
+
+	lo := 0
+	hi := len(nums) - 1
+	n := len(nums)
+	var pivot int
+	for lo <= hi {
+		pivot = partition(nums, lo, hi)
+		// p == n/2 find return
+		if pivot == n/2 {
+			return nums[pivot]
+		}
+		// p > p/2, cut
+		if pivot > n/2 {
+			hi = pivot - 1
+		}
+		// p < n/2, cut
+		if pivot < n/2 {
+			lo = pivot + 1
+		}
+	}
+	return pivot
+}
+
 func partition(nums []int, lo, hi int) int {
 	// select nums[rIndex] as pivot value
 	// exchange it to head
