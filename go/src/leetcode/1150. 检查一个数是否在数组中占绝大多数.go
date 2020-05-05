@@ -26,11 +26,14 @@ func isMajorityElement(nums []int, target int) bool {
 		}
 	}
 	if lo < len(nums) {
+		// nums 中存在大于或等于target的数字
 		// [lo:] 都大于或者等于target
 		if nums[lo] == target {
+			// nums 中存在target
 			// first target index == lo
 			if (lo + len(nums)/2) <= (len(nums) - 1) {
 				if nums[lo+len(nums)/2] == target {
+					// nums have n/2 + 1 targets
 					return true
 				}
 			} else {
@@ -39,6 +42,6 @@ func isMajorityElement(nums []int, target int) bool {
 			}
 		}
 	}
-	// target not exist
+	// nums 的数字都小于 target
 	return false
 }
