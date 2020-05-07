@@ -74,7 +74,7 @@ func quickSelect(nums []int) int {
 		pivot = partition(nums, lo, hi)
 		// p == n/2 find return
 		if pivot == n/2 {
-			return nums[pivot]
+			break
 		}
 		// p > p/2, cut
 		if pivot > n/2 {
@@ -85,7 +85,7 @@ func quickSelect(nums []int) int {
 			lo = pivot + 1
 		}
 	}
-	return pivot
+	return nums[pivot]
 }
 
 func partition(nums []int, lo, hi int) int {
