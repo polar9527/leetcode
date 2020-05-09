@@ -41,6 +41,7 @@
  *
  *
  */
+package main
 
 // @lc code=start
 type MinStack struct {
