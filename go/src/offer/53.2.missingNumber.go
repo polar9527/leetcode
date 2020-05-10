@@ -1,5 +1,6 @@
 package main
 
+// 找到第一个nums[i] > i, 然后返回i
 func missingNumber(nums []int) int {
 	l := len(nums)
 	if l == 0 {
