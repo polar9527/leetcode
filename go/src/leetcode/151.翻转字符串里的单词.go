@@ -54,6 +54,7 @@
  * 请选用 C 语言的用户尝试使用 O(1) 额外空间复杂度的原地解法。
  *
  */
+
 package main
 
 import (
@@ -62,18 +63,13 @@ import (
 
 // @lc code=start
 func reverseWords(s string) string {
-	if len(s) == 0 {
-		return ""
-	}
-	strList := strings.Split(s, " ")
-	if len(strList) == 1 {
-		return strList[0]
-	}
+	var reverseSeg []string
+	seg := strings.Fields(s)
 
-	for start, end := 0, len(strList)-1; start <= end; {
-		strList[start], strList[end] = strList[end], strList[start]
+	for i := len(seg) - 1; i >= 0; i-- {
+		reverseSeg = append(reverseSeg, seg[i])
 	}
-	return strings.Join(strList, " ")
+	return strings.Join(reverseSeg, " ")
 }
 
 // @lc code=end
