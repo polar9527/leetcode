@@ -55,19 +55,44 @@ type ListNode struct {
 }
 
 func reverseKGroup(head *ListNode, k int) *ListNode {
-	cur := head
-	for i := 1; i < k && cur != nil; i++ {
-		cur = cur.Next
-	}
-	if cur == nil {
-		return head
-	}
-	next := cur.Next
-	cur.Next = nil
-	cur = reverseList(head)
-	head.Next = reverseKGroup(next, k)
+	var pre, next, res *ListNode
+	left, right := head, head
 
-	return cur
+	for right != nil {
+		for i := 1; i < k && right != nil; i++ {
+			right = right.Next
+		}
+		if right == nil {
+			break
+		}
+		next = right.Next
+		right.Next = nil
+		right = reverseList(left)
+		left.Next = next
+		if pre == nil {
+			res = right
+		} else {
+			pre.Next = right
+		}
+		pre = left
+		left, right = next, next
+	}
+	return res
+
+	// recursive
+	// cur := head
+	// for i := 1; i < k && cur != nil; i++ {
+	// 	cur = cur.Next
+	// }
+	// if cur == nil {
+	// 	return head
+	// }
+	// next := cur.Next
+	// cur.Next = nil
+	// cur = reverseList(head)
+	// head.Next = reverseKGroup(next, k)
+	//
+	// return cur
 }
 
 func reverseList(head *ListNode) *ListNode {
