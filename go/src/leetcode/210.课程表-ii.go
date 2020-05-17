@@ -56,54 +56,89 @@
 package main
 
 // @lc code=start
-type state int
-
-const (
-	undiscovered state = iota
-	discovered
-	visited
-)
-
+// BFS
 func findOrder(numCourses int, prerequisites [][]int) []int {
 	edges := make([][]int, numCourses)
-	visitedNodes := make([]state, numCourses)
+	indegs := make([]int, numCourses)
 	var result []int
-	var dfs func(cur int) bool
-	dfs = func(cur int) bool {
-		visitedNodes[cur] = discovered
-		for _, neighbor := range edges[cur] {
-			if visitedNodes[neighbor] == undiscovered {
-				if !dfs(neighbor) {
-					return false
-				}
-			} else if visitedNodes[neighbor] == discovered {
-				// 	not DAG
-				return false
-			}
-		}
-		visitedNodes[cur] = visited
-		result = append(result, cur)
-		return true
-	}
-
-	// establish all edges
 	for _, info := range prerequisites {
-		// [1,0] :   info[1]-->info[0],  0-->1
 		edges[info[1]] = append(edges[info[1]], info[0])
+		indegs[info[0]]++
 	}
-
+	dqueue := make([]int, 0)
 	for i := 0; i < numCourses; i++ {
-		if visitedNodes[i] == undiscovered {
-			// not DAG
-			if !dfs(i) {
-				return []int{}
-			}
+		if indegs[i] == 0 {
+			dqueue = append(dqueue, i)
 		}
 	}
-	for i := 0; i < len(result)/2; i++ {
-		result[i], result[numCourses-i-1] = result[numCourses-i-1], result[i]
+
+	for len(dqueue) != 0 {
+		cur := dqueue[0]
+		dqueue = dqueue[1:]
+		for _, neighbor := range edges[cur] {
+			indegs[neighbor]--
+			if indegs[neighbor] == 0 {
+				dqueue = append(dqueue, neighbor)
+			}
+		}
+		result = append(result, cur)
+	}
+
+	if len(result) != numCourses {
+		return []int{}
 	}
 	return result
 }
+
+// DFS
+// type state int
+//
+// const (
+// 	undiscovered state = iota
+// 	discovered
+// 	visited
+// )
+
+// func findOrder(numCourses int, prerequisites [][]int) []int {
+// 	edges := make([][]int, numCourses)
+// 	visitedNodes := make([]state, numCourses)
+// 	var result []int
+// 	var dfs func(cur int) bool
+// 	dfs = func(cur int) bool {
+// 		visitedNodes[cur] = discovered
+// 		for _, neighbor := range edges[cur] {
+// 			if visitedNodes[neighbor] == undiscovered {
+// 				if !dfs(neighbor) {
+// 					return false
+// 				}
+// 			} else if visitedNodes[neighbor] == discovered {
+// 				// 	not DAG
+// 				return false
+// 			}
+// 		}
+// 		visitedNodes[cur] = visited
+// 		result = append(result, cur)
+// 		return true
+// 	}
+//
+// 	// establish all edges
+// 	for _, info := range prerequisites {
+// 		// [1,0] :   info[1]-->info[0],  0-->1
+// 		edges[info[1]] = append(edges[info[1]], info[0])
+// 	}
+//
+// 	for i := 0; i < numCourses; i++ {
+// 		if visitedNodes[i] == undiscovered {
+// 			// not DAG
+// 			if !dfs(i) {
+// 				return []int{}
+// 			}
+// 		}
+// 	}
+// 	for i := 0; i < len(result)/2; i++ {
+// 		result[i], result[numCourses-i-1] = result[numCourses-i-1], result[i]
+// 	}
+// 	return result
+// }
 
 // @lc code=end
