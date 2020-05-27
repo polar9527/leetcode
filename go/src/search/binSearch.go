@@ -206,5 +206,7 @@ func binSearchUpperBound(arr []int, target int) int {
 			r = mid - 1
 		}
 	}
+	// r 是最后一个 target 的位置
+	// return r
 	return l
 }
