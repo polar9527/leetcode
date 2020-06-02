@@ -1,9 +1,14 @@
 package main
 
 func sumNums(n int) int {
-	if n == 1 {
-		return 1
+	ans := 0
+
+	var sum func(int) bool
+	sum = func(n int) bool {
+		ans += n
+		return n > 0 && sum(n-1)
 	}
 
-	return n + sumNums(n-1)
+	sum(n)
+	return ans
 }
