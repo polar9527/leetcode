@@ -46,12 +46,99 @@
 package main
 
 // @lc code=start
-func numIslands(grid [][]byte) int {
+// func numIslands(grid [][]byte) int {
+//
+// }
 
+type disjoinSet struct {
+	parent []int
+	rank   []int
+	count  int
+}
+
+func ConstructDisjoinSet(grid [][]byte) *disjoinSet {
+	m := len(grid)
+	n := len(grid[0])
+	set := new(disjoinSet)
+	set.count = 0
+	set.parent = make([]int, m*n)
+	set.rank = make([]int, m*n)
+	for i := 0; i < m*n; i++ {
+		set.parent[i] = -1
+	}
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if grid[i][j] == '1' {
+				set.parent[i*n+j] = i*n + j
+				set.count += 1
+			}
+		}
+	}
+
+	return set
+}
+
+func (d *disjoinSet) find(x int) int {
+	if d.parent[x] != x {
+		d.parent[x] = d.find(d.parent[x])
+	}
+	return d.parent[x]
+}
+
+func (d *disjoinSet) union(x, y int) {
+	rootx := d.find(x)
+	rooty := d.find(y)
+	if rootx != rooty {
+		if d.rank[rootx] < d.rank[rooty] {
+			rootx, rooty = rooty, rootx
+		}
+		d.parent[rooty] = rootx
+		if d.rank[rootx] == d.rank[rooty] {
+			d.rank[rootx] += 1
+		}
+		d.count -= 1
+	}
+}
+
+func (d *disjoinSet) Count() int {
+	return d.count
 }
 
 func numIslandsDisjoinSet(grid [][]byte) int {
+	var count int
+	row := len(grid)
+	if row == 0 {
+		return count
+	}
+	col := len(grid[0])
+	if col == 0 {
+		return count
+	}
+	type pair struct {
+		r int
+		c int
+	}
 
+	dSet := ConstructDisjoinSet(grid)
+	for r := 0; r < row; r++ {
+		for c := 0; c < col; c++ {
+			if grid[r][c] == '1' {
+				grid[r][c] = '0'
+				list := []*pair{
+					&pair{r - 1, c},
+					&pair{r + 1, c},
+					&pair{r, c - 1},
+					&pair{r, c + 1},
+				}
+				for _, p := range list {
+					if p.r >= 0 && p.r < row && p.c >= 0 && p.c < col && grid[p.r][p.c] == '1' {
+						dSet.union(r*col+c, p.r*col+p.c)
+					}
+				}
+			}
+		}
+	}
+	return dSet.Count()
 }
 
 func numIslandsBFS(grid [][]byte) int {
@@ -61,8 +148,7 @@ func numIslandsBFS(grid [][]byte) int {
 	if row == 0 {
 		return count
 	}
-	var col int
-	col = len(grid[0])
+	col := len(grid[0])
 	if col == 0 {
 		return count
 	}
@@ -171,5 +257,5 @@ func main() {
 	// 	{'0','1','0'},
 	// 	{'1','0','1'},
 	// }
-	numIslands(g)
+	numIslandsDisjoinSet(g)
 }
