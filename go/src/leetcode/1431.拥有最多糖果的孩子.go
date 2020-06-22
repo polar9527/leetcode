@@ -72,11 +72,4 @@ func kidsWithCandies(candies []int, extraCandies int) []bool {
 	return ret
 }
 
-func max(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
-
 // @lc code=end

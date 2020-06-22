@@ -22,6 +22,20 @@ type Node struct {
 	Random *Node
 }
 
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
+
+func max(x, y int) int {
+	if x < y {
+		return y
+	}
+	return x
+}
+
 func main() {
 	// 36.valid-sudoku
 	// 	s := [][]byte{

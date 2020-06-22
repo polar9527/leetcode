@@ -101,13 +101,6 @@ func mincostTickets(days []int, costs []int) int {
 	return dp(0)
 }
 
-func min(x, y int) int {
-	if x < y {
-		return x
-	}
-	return y
-}
-
 // @lc code=end
 func main() {
 	days := []int{1, 4, 6, 7, 8, 20}

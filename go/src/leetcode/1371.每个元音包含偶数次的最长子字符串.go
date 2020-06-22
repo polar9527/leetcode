@@ -133,14 +133,6 @@ func findTheLongestSubstring(s string) (ret int) {
 // 	return maxLenght
 // }
 //
-func max(x, y int) int {
-	if x < y {
-		return y
-	} else {
-		return x
-	}
-}
-
 // @lc code=end
 
 func main() {

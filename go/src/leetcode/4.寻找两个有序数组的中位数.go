@@ -90,18 +90,4 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 	return float64(mediam1)
 }
 
-func max(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
-
-func min(x, y int) int {
-	if x < y {
-		return x
-	}
-	return y
-}
-
 // @lc code=end

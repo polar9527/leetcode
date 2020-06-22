@@ -55,11 +55,4 @@ func rob(nums []int) int {
 	return second
 }
 
-func max(x, y int) int {
-	if x < y {
-		return y
-	}
-	return x
-}
-
 // @lc code=end

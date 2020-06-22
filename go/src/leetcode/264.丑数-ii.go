@@ -47,7 +47,7 @@ func nthUglyNumber(n int) int {
 
 	nextUglyIndex := 1
 	for nextUglyIndex < n {
-		min := min(2*uglyNumbers[minuglyNumbers2Index], 3*uglyNumbers[minuglyNumbers3Index], 5*uglyNumbers[minuglyNumbers5Index])
+		min := min3(2*uglyNumbers[minuglyNumbers2Index], 3*uglyNumbers[minuglyNumbers3Index], 5*uglyNumbers[minuglyNumbers5Index])
 		uglyNumbers = append(uglyNumbers, min)
 		for 2*uglyNumbers[minuglyNumbers2Index] <= min {
 			minuglyNumbers2Index++
@@ -63,7 +63,7 @@ func nthUglyNumber(n int) int {
 	return uglyNumbers[nextUglyIndex-1]
 }
 
-func min(a, b, c int) int {
+func min3(a, b, c int) int {
 	if a < b {
 		if a < c {
 			return a

@@ -68,13 +68,6 @@ func pushUp(l, r Status) Status {
 	}
 }
 
-func max(x, y int) int {
-	if x < y {
-		return y
-	}
-	return x
-}
-
 // func maxSubArray(nums []int) int {
 // 	l := len(nums)
 // 	if l == 0 {

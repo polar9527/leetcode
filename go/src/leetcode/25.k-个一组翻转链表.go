@@ -49,10 +49,6 @@ package main
  *     Next *ListNode
  * }
  */
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
 
 func reverseKGroup(head *ListNode, k int) *ListNode {
 	var pre, next, res *ListNode

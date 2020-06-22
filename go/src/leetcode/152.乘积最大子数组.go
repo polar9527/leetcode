@@ -54,22 +54,6 @@ func maxProduct(nums []int) int {
 	return ret
 }
 
-func max(x, y int) int {
-	if x < y {
-		return y
-	} else {
-		return x
-	}
-}
-
-func min(x, y int) int {
-	if x > y {
-		return y
-	} else {
-		return x
-	}
-}
-
 // @lc code=end
 
 func main() {

@@ -56,11 +56,4 @@ func maxProfit(prices []int) int {
 	return p
 }
 
-func max(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
-
 // @lc code=end
