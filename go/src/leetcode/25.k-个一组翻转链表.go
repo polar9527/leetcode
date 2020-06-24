@@ -91,21 +91,6 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	// return cur
 }
 
-func reverseList(head *ListNode) *ListNode {
-	if head == nil || head.Next == nil {
-		return head
-	}
-
-	left, right := head, head.Next
-	for right != nil {
-		next := right.Next
-		right.Next = left
-		left = right
-		right = next
-	}
-	return left
-}
-
 // @lc code=end
 
 func main() {
