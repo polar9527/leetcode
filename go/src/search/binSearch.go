@@ -58,7 +58,7 @@ func testBinSearch(f BinSearch, testcase []Tuple) {
 	fName := GetFunctionName(f, '.')
 	fmt.Println("Function ====> ", fName)
 	for i, t := range testcase {
-		fmt.Println("testcaes ==> ", i)
+		fmt.Println("testcase ==> ", i)
 		fmt.Print("array ==> ", t.array, "\t", "target ==> ", t.target)
 		fmt.Println()
 		ret := f(t.array, t.target)
