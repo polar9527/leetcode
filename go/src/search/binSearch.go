@@ -42,14 +42,16 @@ func main() {
 	var testcase []Tuple
 	// testcase = append(testcase, Tuple{[]int{1, 3, 6, 13, 14, 14, 14, 14, 56, 86, 99, 111}, 14})
 	// testcase = append(testcase, Tuple{[]int{1, 3, 6, 12, 13, 13, 13, 13, 13, 56, 86, 99, 111}, 14})
-	testcase = append(testcase, Tuple{[]int{111}, 14})
-	testcase = append(testcase, Tuple{[]int{11}, 14})
+	// testcase = append(testcase, Tuple{[]int{111}, 14})
+	// testcase = append(testcase, Tuple{[]int{11}, 14})
 	// testcase = append(testcase, Tuple{[]int{}, 14})
+	testcase = append(testcase, Tuple{[]int{1, 2, 5, 6, 7, 8, 9}, 4})
 
 	// testBinSearch(binSearchExactlyHalfClose, testcase)
 	// testBinSearch(binSearchExactlyFullClose, testcase)
-	testBinSearch(binSearchLowerBound, testcase)
+	// testBinSearch(binSearchLowerBound, testcase)
 	// testBinSearch(binSearchUpperBound, testcase)
+	testBinSearch(bin, testcase)
 
 }
 
@@ -79,9 +81,8 @@ func binSearch(a []int, target int) int {
 	if len(a) == 1 {
 		if a[0] == target {
 			return a[0]
-		} else {
-			return -1
 		}
+		return -1
 	}
 	lo, hi, mi := 0, len(a)-1, len(a)/2
 	for ; lo < hi && a[mi] != target; mi = lo + (hi-lo)/2 {
@@ -96,6 +97,27 @@ func binSearch(a []int, target int) int {
 	} else {
 		return -1
 	}
+}
+
+func bin(a []int, t int) int {
+	l := len(a)
+	if l == 0 {
+		return -1
+	}
+
+	lo, hi := 0, l-1
+	for lo <= hi {
+		mi := lo + (hi-lo)/2
+		if a[mi] == t {
+			return mi
+		}
+		if a[mi] < t {
+			lo = mi + 1
+		} else {
+			hi = mi - 1
+		}
+	}
+	return -1
 }
 
 // [l, r)
