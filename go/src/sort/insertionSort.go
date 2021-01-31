@@ -20,3 +20,23 @@ func insertionSort(arr []int) {
 	}
 
 }
+
+func insertionSort1(arr []int) {
+	l := len(arr)
+
+	if l < 2 {
+		return
+	}
+
+	for i := 1; i < l; i++ {
+		key := arr[i]
+		// A[0, i-1] sorted
+		// A[i:] unsorted
+		j := i - 1
+		for j >= 0 && arr[j] > key {
+			arr[j+1] = arr[j]
+			j--
+		}
+		arr[j+1] = key
+	}
+}
