@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-type Partition func([]int) int
+type partition func([]int) int
 
-func quickSort(nums []int, pFunc Partition) {
+func quickSort(nums []int, pFunc partition) {
 	length := len(nums)
 	if length <= 1 {
 		return
@@ -62,6 +62,8 @@ func partitionL(nums []int) int {
 }
 
 // Aggressive switch
+// 应对全部是重复元素的最坏情况，这种情况下 partitionL 可能一直将nums 切分为 1：len(nums)-1，算法复杂度会退化为O(n2)
+// 而partitionA 可以保证 nums被对半切分，从而保证这种情况下算法复杂度仍然为O(nlogn)
 func partitionA(nums []int) int {
 	// len(nums) >= 3
 	length := len(nums)
