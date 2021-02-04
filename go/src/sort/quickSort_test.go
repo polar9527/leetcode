@@ -5,12 +5,25 @@ import (
 )
 
 func TestQuickSort(t *testing.T) {
-	var a = []int{9, 8, 6, 7, 4, 3, 2, 1}
-	quickSort(a, partitionA)
-	t.Log(a)
+	testcase := [][]int{
+		{1, 1, 1, 3, 3, 4, 3, 2, 4, 2},
+		{1},
+		{},
+		{5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+		{90, 80, 60, 70, 40, 30, 20, 10},
+	}
 
-	var l = []int{90, 80, 60, 70, 40, 30, 20, 10}
-	quickSort(l, partitionL)
-	t.Log(l)
+	t.Log("partitionLazySwitch")
+	for i, c := range testcase {
+		quickSort(c, partitionLazySwitch)
+		t.Log("testcase", i, ":")
+		t.Log(c)
+	}
+	t.Log("partitionAggressiveSwitch")
+	for i, c := range testcase {
+		quickSort(c, partitionAggressiveSwitch)
+		t.Log("testcase", i, ":")
+		t.Log(c)
+	}
 
 }
