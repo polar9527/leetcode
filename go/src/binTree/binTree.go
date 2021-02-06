@@ -1,4 +1,4 @@
-package main
+package bintree
 
 import (
 	"fmt"
@@ -23,8 +23,10 @@ func (t *Tree) Add(data int) {
 	} else {
 		queue = append(queue, t.root)
 		for len(queue) != 0 {
+			//  取出queue中的首元素
 			cur := queue[0]
-			queue = append(queue[:0], queue[0+1:]...)
+			// 删除queue中的首元素，而且是就地操作，仔细看下面的写法
+			queue = append(queue[:0], queue[1:]...)
 			// 往右树添加
 			if data > cur.Data {
 				if cur.Right == nil {
@@ -155,41 +157,4 @@ func (t *Tree) postorderTraverseRecursion(node *TreeNode) {
 		t.postorderTraverseRecursion(node.Right)
 		fmt.Print(node.Data, " ")
 	}
-}
-
-func main() {
-	tree := &Tree{}
-	tree.Add(50)
-	tree.Add(45)
-	tree.Add(40)
-	tree.Add(48)
-	tree.Add(51)
-	tree.Add(61)
-	tree.Add(71)
-
-	fmt.Println("preorderTraverse")
-	fmt.Println("Recursion")
-	tree.preorderTraverseRecursion(tree.root)
-	fmt.Println()
-	fmt.Println("Iteration")
-	tree.preorderTraverseIteration(tree.root)
-
-	fmt.Println("")
-
-	fmt.Println("inorderTraverse")
-	fmt.Println("Recursion")
-	tree.inorderTraverseRecursion(tree.root)
-	fmt.Println()
-	fmt.Println("Iteration")
-	tree.inorderTraverseIteration(tree.root)
-
-	fmt.Println("")
-
-	fmt.Println("postorderTraverse")
-	fmt.Println("Recursion")
-	tree.postorderTraverseRecursion(tree.root)
-	fmt.Println()
-	fmt.Println("Iteration")
-	tree.postorderTraverseIteration(tree.root)
-
 }
