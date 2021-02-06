@@ -7,26 +7,29 @@ package main
  *     Next *ListNode
  * }
  */
-func reverseList(head *ListNode) *ListNode {
 
+func reverseList(head *ListNode) *ListNode {
 	if head == nil {
 		return nil
 	}
 
-	node := head
-	var nextNode, preNode *ListNode
+	var node, preNode, nextNode *ListNode
+	node = head
+	nextNode = node.Next
 
 	for node != nil {
 		// reverse
-		nextNode = node.Next
 		node.Next = preNode
-		// step
+
+		// step forward
+		// step 1
 		preNode = node
+		// step 2
 		node = nextNode
+		// step 3
 		if nextNode != nil {
-			nextNode = nextNode.Next
+			nextNode = node.Next
 		}
 	}
-
 	return preNode
 }
