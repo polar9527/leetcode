@@ -83,6 +83,7 @@ func (t *Tree) preorderTraverseIteration(node *TreeNode) {
 func goAlongLeftBranch(node *TreeNode, s *[]*TreeNode) {
 	cur := node
 	for cur != nil {
+		// 将沿途的节点存入栈中，以便后续出栈后访问其右子树
 		*s = append(*s, cur)
 		cur = cur.Left
 	}
@@ -100,6 +101,7 @@ func (t *Tree) inorderTraverseIteration(node *TreeNode) {
 		cur = stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
 		visit(cur.Data)
+		// 对右子树进行 goAlongLeftBranch 操作
 		cur = cur.Right
 	}
 }
@@ -108,15 +110,19 @@ func (t *Tree) inorderTraverseIteration(node *TreeNode) {
 func gotoHLVL(s *[]*TreeNode) {
 	cur := (*s)[len(*s)-1]
 	for ; cur != nil; cur = (*s)[len(*s)-1] {
+		// 尽量向左子树深入
 		if cur.Left != nil {
+			// 将这一层的左右子节点都入栈
 			if cur.Right != nil {
 				*s = append(*s, cur.Right)
 			}
 			*s = append(*s, cur.Left)
 		} else {
+			// 实在不行，才向右深入
 			*s = append(*s, cur.Right)
 		}
 	}
+	// 去掉栈顶的nil
 	*s = (*s)[:len(*s)-1]
 }
 
