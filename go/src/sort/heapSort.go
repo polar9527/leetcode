@@ -6,11 +6,13 @@ func heapSort(c []int) []int {
 
 	// init heap
 	for start := n / 2; start >= 0; start-- {
+		// 每一个非叶子节点做一次下滤，从最低的非叶子节点开始，直到最顶层节点
 		maxHeap(start, n-1, c)
 	}
 
 	// sort
 	for end := n - 1; end > 0; end-- {
+		// 取出最大元素，缩小堆，然后重新下滤一次
 		c[0], c[end] = c[end], c[0]
 		maxHeap(0, end-1, c)
 	}
