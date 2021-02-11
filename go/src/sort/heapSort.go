@@ -22,20 +22,15 @@ func heapSort(c []int) []int {
 // percolateDown
 func maxHeap(start int, end int, c []int) {
 	root := start
-	for true {
+	for root <= end {
 		child := 2*root + 1
-		if child > end {
-			break
-		}
 		if child+1 <= end && c[child] < c[child+1] {
 			child++
 		}
-		if c[root] < c[child] {
+		if child <= end && c[root] < c[child] {
 			c[root], c[child] = c[child], c[root]
-			root = child
-		} else {
-			break
 		}
+		root = child
 	}
 	return
 }
