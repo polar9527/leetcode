@@ -57,14 +57,14 @@ func succeedNode(n *TreeNodeWithParent) *TreeNodeWithParent {
 		for cur.Left != nil {
 			cur = cur.Left
 		}
-	} else {
+	} else if n.Parent != nil {
 		cur = n
-		if cur.Parent != nil {
-			for cur.Parent.Left != cur {
-				cur = cur.Parent
-			}
-			cur = cur.Parent
+		parent := n.Parent
+		for parent != nil && parent.Left != cur {
+			cur = parent
+			parent = parent.Parent
 		}
+		cur = parent
 	}
 
 	return cur
