@@ -48,7 +48,7 @@ func reversePrint(head *ListNode) []int {
 		stack = append(stack, cur.Val)
 		cur = cur.Next
 	}
-
+	// reverse array
 	for lo, hi := 0, len(stack)-1; lo < hi; {
 		stack[lo], stack[hi] = stack[hi], stack[lo]
 		lo++

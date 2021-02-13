@@ -36,6 +36,7 @@ func replaceSpace(s string) string {
 	// newLen := originLen + spaceCounter*3
 
 	p1 := originLen - 1
+	// len("%20") - len(" ") = 2
 	for i := 0; i < spaceCounter*2; i++ {
 		s = s + "#"
 	}
