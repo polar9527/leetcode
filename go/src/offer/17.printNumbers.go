@@ -29,20 +29,27 @@ func increment(numberBytes []byte) bool {
 	carry := 0
 	for index := length - 1; index >= 0; index-- {
 
+		// 处于某个十进制位时的step动作
+		// 其中个位的step动作和其他位的step动作是有区别的
 		sum := int(numberBytes[index]-'0') + carry
 		if index == length-1 {
 			sum++
 		}
 
+		// 进位时的操作
 		if sum >= 10 {
+			// 最高位的时候，溢出
 			if index == 0 {
 				isOverFlow = true
+				// 其他位做进位处理，并将sum重置
 			} else {
 				carry = 1
 				sum -= 10
+				// 更新数字
 				numberBytes[index] = byte(sum) + '0'
 			}
 		} else {
+			// 不进位的时候，更新数字
 			numberBytes[index] = byte(sum) + '0'
 			break
 		}
@@ -55,6 +62,7 @@ func increment(numberBytes []byte) bool {
 func getNumber(numberBytes []byte) int {
 	length := len(numberBytes)
 	beginning := 0
+	// 找到最高位
 	for i := 0; i < length; i++ {
 		if numberBytes[i] != '0' {
 			beginning = i
@@ -62,6 +70,7 @@ func getNumber(numberBytes []byte) int {
 		}
 	}
 
+	// 从个位开始计算数值
 	base := 1
 	sum := 0
 	for i := length - 1; i >= beginning; i-- {
