@@ -7,6 +7,11 @@
 // @lc code=start
 func singleNumber(nums []int) int {
 
+	return singleNumber2(nums)
+}
+
+func singleNumber1(nums []int) int {
+
 	once, twice := 0, 0
 
 	for _, v := range nums {
@@ -30,6 +35,28 @@ func singleNumber(nums []int) int {
 		// #2 此时 once 和 twice 这位分别是1和0
 	}
 	return once
+}
+
+func singleNumber2(nums []int) int {
+	set := make(map[int]bool)
+	for i := range nums {
+		set[nums[i]] = true
+	}
+	s
+	sumOfSet := 0
+	for _, v := range set {
+		sumOfSet += v
+	}
+
+	sumOfNums := 0
+	for k, _ := range nums {
+		sumOfNums += k
+	}
+	return (3*sumOfSet - sumOfNums) / 2
+}
+
+func singleNumber2(nums []int) int {
+	return
 }
 
 // @lc code=end

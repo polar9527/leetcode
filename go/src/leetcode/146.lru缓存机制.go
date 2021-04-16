@@ -134,7 +134,3 @@ func (this *LRUCache) removeTail() *DLinkNode {
  * obj.Put(key,value);
  */
 // @lc code=end
-
-func main() {
-
-}
