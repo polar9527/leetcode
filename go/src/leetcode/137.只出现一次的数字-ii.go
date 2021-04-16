@@ -7,7 +7,7 @@
 // @lc code=start
 func singleNumber(nums []int) int {
 
-	return singleNumber2(nums)
+	return singleNumber3(nums)
 }
 
 func singleNumber1(nums []int) int {
@@ -55,8 +55,22 @@ func singleNumber2(nums []int) int {
 	return (3*sumOfSet - sumOfNums) / 2
 }
 
-func singleNumber2(nums []int) int {
-	return
+func singleNumber3(nums []int) int {
+	bitCounter := make(map[int]int, 64)
+	for i := range nums {
+		for iBit := 0; iBit < 64; iBit++ {
+			if (nums[i]>>iBit)&1 == 1 {
+				bitCounter[iBit]++
+			}
+		}
+	}
+	var result int
+	for k, v := range bitCounter {
+		if v%3 == 1 {
+			result |= (1 << k)
+		}
+	}
+	return result
 }
 
 // @lc code=end
