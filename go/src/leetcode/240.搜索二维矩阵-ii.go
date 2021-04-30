@@ -3,7 +3,7 @@
  *
  * [240] 搜索二维矩阵 II
  */
-package main
+package leetcode
 
 import "fmt"
 
@@ -89,13 +89,16 @@ func binSearch(a []int, target int) int {
 	}
 	lo, hi, mi := 0, len(a)-1, len(a)/2
 	for ; lo < hi && a[mi] != target; mi = lo + (hi-lo)/2 {
-		if a[mi] < target {
+
+		if a[mi] == target {
+			return mi
+		} else if a[mi] < target {
 			lo = mi + 1
-		} else if a[mi] >= target {
-			hi = mi
+		} else {
+			hi = mi - 1
 		}
 	}
-	if a[mi] >= target {
+	if a[mi] == target {
 		return mi
 	} else {
 		return -1

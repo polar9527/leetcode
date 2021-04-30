@@ -52,7 +52,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func maxSlidingWindow(nums []int, k int) []int {
