@@ -35,7 +35,7 @@
  * 输出: [1,2,2,3,5,6]
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func merge(nums1 []int, m int, nums2 []int, n int) {

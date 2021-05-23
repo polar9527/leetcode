@@ -34,7 +34,6 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 )
 
@@ -84,9 +83,3 @@ func partition(nums []int, lo, hi int) int {
 }
 
 // @lc code=end
-
-func main() {
-
-	ret := majorityElement([]int{3, 3, 4})
-	fmt.Println(ret)
-}

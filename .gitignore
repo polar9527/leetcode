@@ -107,3 +107,5 @@ ENV/
 .vscode
 
 cmake-build-debug
+
+.history
