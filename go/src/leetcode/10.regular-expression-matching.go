@@ -83,7 +83,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func isMatch(s string, p string) bool {
