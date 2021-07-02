@@ -44,7 +44,7 @@
 //  *
 //  *
 //  */
-package main
+package leetcode
 
 // @lc code=start
 type LRUCache struct {

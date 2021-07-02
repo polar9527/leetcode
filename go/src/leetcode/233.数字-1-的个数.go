@@ -22,7 +22,7 @@
  * 解释: 数字 1 出现在以下数字中: 1, 10, 11, 12, 13 。
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func countDigitOne(n int) int {

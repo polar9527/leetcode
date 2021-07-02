@@ -4,7 +4,7 @@
  * [36] Valid Sudoku
  */
 
-package main
+package leetcode
 
 func isValidSudoku(board [][]byte) bool {
 	boxs := [3][3][]byte{}

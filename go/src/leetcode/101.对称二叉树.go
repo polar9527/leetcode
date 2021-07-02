@@ -44,7 +44,7 @@
  * 你可以运用递归和迭代两种方法解决这个问题吗？
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 /**

@@ -4,7 +4,7 @@
  * [48] Rotate Image
  */
 
-package main
+package leetcode
 
 // import (
 // 	"fmt"

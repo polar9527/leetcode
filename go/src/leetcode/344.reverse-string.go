@@ -4,7 +4,7 @@
  * [344] Reverse String
  */
 
-package main
+package leetcode
 
 func reverseString(s []byte) {
 	size := len(s)

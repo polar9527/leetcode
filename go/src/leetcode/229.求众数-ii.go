@@ -28,7 +28,7 @@
  * 输出: [1,2]
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func majorityElement(nums []int) []int {

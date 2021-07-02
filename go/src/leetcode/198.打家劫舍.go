@@ -34,7 +34,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func rob(nums []int) int {

@@ -34,7 +34,7 @@
  *
  *
  */
-package main
+package leetcode
 
 import (
 	"math"

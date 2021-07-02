@@ -32,7 +32,7 @@
  *
  *
 */
-package main
+package leetcode
 
 import (
 	"fmt"

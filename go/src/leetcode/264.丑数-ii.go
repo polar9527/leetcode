@@ -31,7 +31,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func nthUglyNumber(n int) int {

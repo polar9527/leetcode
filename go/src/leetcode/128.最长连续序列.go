@@ -24,7 +24,7 @@
  * 解释: 最长连续序列是 [1, 2, 3, 4]。它的长度为 4。
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func longestConsecutive(nums []int) int {

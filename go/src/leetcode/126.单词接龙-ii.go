@@ -57,7 +57,7 @@
  * 解释: endWord "cog" 不在字典中，所以不存在符合要求的转换序列。
  *
  */
-package main
+package leetcode
 
 import (
 	"math"

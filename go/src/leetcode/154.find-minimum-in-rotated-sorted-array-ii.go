@@ -42,7 +42,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func findMin(nums []int) int {

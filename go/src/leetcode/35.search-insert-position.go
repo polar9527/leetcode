@@ -48,7 +48,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func searchInsert(nums []int, target int) int {

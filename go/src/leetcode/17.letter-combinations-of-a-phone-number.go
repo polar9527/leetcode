@@ -34,7 +34,7 @@
  * in any order you want.
  *
  */
-package main
+package leetcode
 
 import (
 	"fmt"

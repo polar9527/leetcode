@@ -56,7 +56,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func kidsWithCandies(candies []int, extraCandies int) []bool {

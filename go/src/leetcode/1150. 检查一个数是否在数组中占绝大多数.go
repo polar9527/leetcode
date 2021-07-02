@@ -1,4 +1,4 @@
-package main
+package leetcode
 
 func isMajorityElement(nums []int, target int) bool {
 	if nums == nil || len(nums) == 0 {

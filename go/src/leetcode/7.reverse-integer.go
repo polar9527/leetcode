@@ -3,7 +3,7 @@
  *
  * [7] Reverse Integer
  */
-package main
+package leetcode
 
 func reverse(x int) int {
 	// 1111 ...... 1111

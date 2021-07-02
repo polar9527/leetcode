@@ -45,7 +45,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func containsNearbyDuplicate(nums []int, k int) bool {

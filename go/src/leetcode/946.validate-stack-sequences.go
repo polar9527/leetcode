@@ -52,7 +52,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func validateStackSequences(pushed []int, popped []int) bool {

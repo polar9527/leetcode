@@ -33,7 +33,7 @@
  * 你可以在常数空间复杂度内完成这个题目吗？（ 出于对空间复杂度分析的目的，输出数组不被视为额外空间。）
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func productExceptSelf(nums []int) []int {

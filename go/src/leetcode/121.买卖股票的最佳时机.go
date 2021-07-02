@@ -37,7 +37,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func maxProfit(prices []int) int {

@@ -26,7 +26,7 @@
  * 输出: 6
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func trapTwoPoint(height []int) int {

@@ -3,7 +3,7 @@
  *
  * [240] 搜索二维矩阵 II
  */
-package main
+package leetcode
 
 import "testing"
 

@@ -50,7 +50,7 @@
  * button to reset your code definition.
  *
  */
-package main
+package leetcode
 
 import (
 	"strings"

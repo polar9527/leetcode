@@ -31,7 +31,7 @@
  * 解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。
  *
  */
-package main
+package leetcode
 
 import (
 	"fmt"

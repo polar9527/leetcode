@@ -37,7 +37,7 @@
  * 对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func strStr(haystack string, needle string) int {

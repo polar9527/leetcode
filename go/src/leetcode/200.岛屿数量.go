@@ -43,7 +43,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 // func numIslands(grid [][]byte) int {

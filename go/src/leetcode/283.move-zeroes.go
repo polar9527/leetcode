@@ -28,16 +28,16 @@
  *
  */
 
-package main
+package leetcode
 
-func moveZeroes(nums []int)  {
-    lenght := len(nums)
-    for tail, head := 0, 1; head < lenght; head++ {
-        if nums[head] != 0 && nums[tail] == 0{
+func moveZeroes(nums []int) {
+	lenght := len(nums)
+	for tail, head := 0, 1; head < lenght; head++ {
+		if nums[head] != 0 && nums[tail] == 0 {
 			nums[tail], nums[head] = nums[head], nums[tail]
 		}
 		if nums[tail] != 0 {
 			tail++
 		}
-    }
+	}
 }

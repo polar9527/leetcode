@@ -29,7 +29,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func permuteUnique(nums []int) [][]int {

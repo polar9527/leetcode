@@ -57,7 +57,7 @@
  * 0 ≤ N ≤ 30.
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func fib(n int) int {

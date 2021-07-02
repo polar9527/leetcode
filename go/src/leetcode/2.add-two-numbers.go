@@ -10,7 +10,7 @@
  *     Next *ListNode
  * }
  */
-package main
+package leetcode
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 

@@ -37,7 +37,7 @@
  * 输出: 10
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func largestRectangleArea(heights []int) int {

@@ -1,4 +1,4 @@
-package main
+package leetcode
 
 func treeToDoublyList(root *TreeNode) *TreeNode {
 	if root == nil {

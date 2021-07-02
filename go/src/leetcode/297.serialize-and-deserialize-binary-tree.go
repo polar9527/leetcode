@@ -45,7 +45,7 @@
  * serialize and deserialize algorithms should be stateless.
  *
  */
-package main
+package leetcode
 
 import (
 	"math/rand"

@@ -65,7 +65,7 @@
  * If this function is called many times, how would you optimize it?
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func hammingWeight(num uint32) int {

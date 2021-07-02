@@ -34,7 +34,7 @@
  * ⁠  15   7
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 /**

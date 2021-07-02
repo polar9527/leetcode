@@ -33,7 +33,7 @@
  * Output: [-1,-1]
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func searchRange(nums []int, target int) []int {

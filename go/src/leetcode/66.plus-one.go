@@ -37,7 +37,7 @@
  *
  */
 
-package main
+package leetcode
 
 func plusOne(digits []int) []int {
 	lenght := len(digits)

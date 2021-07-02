@@ -32,7 +32,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func combine(n int, k int) [][]int {

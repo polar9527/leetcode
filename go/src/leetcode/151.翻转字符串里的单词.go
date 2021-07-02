@@ -55,7 +55,7 @@
  *
  */
 
-package main
+package leetcode
 
 import (
 	"strings"

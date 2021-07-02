@@ -4,7 +4,7 @@
  * [8] String to Integer (atoi)
  */
 
-package main
+package leetcode
 
 func myAtoi(str string) int {
 

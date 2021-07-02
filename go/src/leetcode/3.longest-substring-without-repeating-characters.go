@@ -5,7 +5,7 @@
  */
 
 // @lc code=start
-package main
+package leetcode
 
 import (
 	"math"

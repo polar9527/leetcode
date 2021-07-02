@@ -33,7 +33,7 @@
  * 6
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func lastRemaining(n int) int {

@@ -38,7 +38,7 @@
  *
  *
  */
-package main
+package leetcode
 
 // @lc code=start
 func spiralOrder(matrix [][]int) []int {
