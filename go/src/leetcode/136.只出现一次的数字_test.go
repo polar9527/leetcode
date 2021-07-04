@@ -7,13 +7,13 @@ package leetcode
 
 import "testing"
 
-type testcase struct {
+type testcase136 struct {
 	input  []int
 	expect int
 }
 
-func TestSingleNumber(t *testing.T) {
-	testcases := []testcase{
+func TestSingleNumber136(t *testing.T) {
+	testcases := []testcase136{
 		{[]int{2, 2, 1}, 1},
 		{[]int{4, 1, 2, 1, 2}, 4},
 	}
