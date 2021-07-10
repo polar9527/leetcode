@@ -2,75 +2,102 @@
  * @lc app=leetcode.cn id=137 lang=golang
  *
  * [137] 只出现一次的数字 II
+ *
+ * https://leetcode-cn.com/problems/single-number-ii/description/
+ *
+ * algorithms
+ * Medium (71.89%)
+ * Likes:    686
+ * Dislikes: 0
+ * Total Accepted:    92K
+ * Total Submissions: 128K
+ * Testcase Example:  '[2,2,3,2]'
+ *
+ * 给你一个整数数组 nums ，除某个元素仅出现 一次 外，其余每个元素都恰出现 三次 。请你找出并返回那个只出现了一次的元素。
+ *
+ *
+ *
+ * 示例 1：
+ *
+ *
+ * 输入：nums = [2,2,3,2]
+ * 输出：3
+ *
+ *
+ * 示例 2：
+ *
+ *
+ * 输入：nums = [0,1,0,1,0,1,99]
+ * 输出：99
+ *
+ *
+ *
+ *
+ * 提示：
+ *
+ *
+ * 1
+ * -2^31
+ * nums 中，除某个元素仅出现 一次 外，其余每个元素都恰出现 三次
+ *
+ *
+ *
+ *
+ * 进阶：你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+ *
  */
 
 // @lc code=start
-func singleNumber(nums []int) int {
-
-	return singleNumber3(nums)
-}
-
+// 数学法
 func singleNumber1(nums []int) int {
 
-	once, twice := 0, 0
-
-	for _, v := range nums {
-		// #1 初始状态，once 和 twice 这时候管理的位都是0
-		// #1 once ^ v 该位置1
-		// #1 ~twice & (once ^ v)， ~twice这位置1，目的是通过 & 放过这位给到once
-		// #2 此时once这位为1， once ^ v 将这位置0
-		// #2 此时 twice 这位为0，~twice 通过 & 将这位放多，最终得到once这位为0
-		// #3 此时 once 这位置为0， once ^ v 该位置1
-		// #3 此时 twice 这位置为1，~twice 通过& 将放过给到once,即 once 这位为 1
-		once = ^twice & (once ^ v)
-		// #1 此时 twice ^ v 该位置1
-		// #1 ~once 这位置为0， 目的是通过&将这位在twice 中置0
-		// #2 此时twice这位为0，twice ^ v 将这位置1
-		// #2 此时once这位在上一步变为0，~once 通过& 将这位放过给到twice,即twice中这位为1
-		// #3 此时twice 这位为1， twice ^ v 将这位置0
-		// #3 此时once这位在上一步变为1，~once 通过& 将这位放过给到twice，即twice中这位为0
-		twice = ^once & (twice ^ v)
-		// #1 此时 once 和 twice 这位分别是1和0
-		// #2 此时 once 和 twice 这位分别是0和1
-		// #2 此时 once 和 twice 这位分别是1和0
-	}
-	return once
-}
-
-func singleNumber2(nums []int) int {
-	set := make(map[int]bool)
-	for i := range nums {
-		set[nums[i]] = true
-	}
-	s
-	sumOfSet := 0
-	for _, v := range set {
-		sumOfSet += v
-	}
-
+	set := make(map[int]struct{})
 	sumOfNums := 0
-	for k, _ := range nums {
-		sumOfNums += k
+	for _, n := range nums {
+		set[n] = struct{}{}
+		sumOfNums += n
 	}
+
+	sumOfSet := 0
+	for k, _ := range set {
+		sumOfSet += k
+	}
+
 	return (3*sumOfSet - sumOfNums) / 2
+
 }
 
-func singleNumber3(nums []int) int {
-	bitCounter := make(map[int]int, 64)
-	for i := range nums {
-		for iBit := 0; iBit < 64; iBit++ {
-			if (nums[i]>>iBit)&1 == 1 {
-				bitCounter[iBit]++
-			}
+// 统计二进制位
+func singleNumber2(nums []int) int {
+	// 把计算限定到32位
+	res := int32(0)
+	// 遍历每一个二进制位
+	for i := 0; i < 32; i++ {
+		total := int32(0)
+		for _, n := range nums {
+			// n 在 64位系统中是 int64
+			// 而且是有符号的
+			// 所以要通过强制类型转换到32位有符号整数
+			total += (int32(n) >> i) & 1
+		}
+		if (total % 3) > 0 {
+			res |= 1 << i
 		}
 	}
-	var result int
-	for k, v := range bitCounter {
-		if v%3 == 1 {
-			result |= (1 << k)
-		}
+	return int(res)
+}
+
+// 卡诺图
+func singleNumber(nums []int) int {
+
+	one, two := 0, 0
+	for _, n := range nums {
+		one = ^two & (n ^ one)
+		// 下面的one是已经转换过状态的的one了
+		// 即，不是初始输入的one
+		two = ^one & (n ^ two)
 	}
-	return result
+	return one
 }
 
 // @lc code=end
