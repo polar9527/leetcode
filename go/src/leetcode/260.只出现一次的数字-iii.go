@@ -2,48 +2,81 @@
  * @lc app=leetcode.cn id=260 lang=golang
  *
  * [260] 只出现一次的数字 III
+ *
+ * https://leetcode-cn.com/problems/single-number-iii/description/
+ *
+ * algorithms
+ * Medium (72.61%)
+ * Likes:    418
+ * Dislikes: 0
+ * Total Accepted:    47.2K
+ * Total Submissions: 65.1K
+ * Testcase Example:  '[1,2,1,3,2,5]'
+ *
+ * 给定一个整数数组 nums，其中恰好有两个元素只出现一次，其余所有元素均出现两次。 找出只出现一次的那两个元素。你可以按 任意顺序 返回答案。
+ *
+ *
+ *
+ * 进阶：你的算法应该具有线性时间复杂度。你能否仅使用常数空间复杂度来实现？
+ *
+ *
+ *
+ * 示例 1：
+ *
+ *
+ * 输入：nums = [1,2,1,3,2,5]
+ * 输出：[3,5]
+ * 解释：[5, 3] 也是有效的答案。
+ *
+ *
+ * 示例 2：
+ *
+ *
+ * 输入：nums = [-1,0]
+ * 输出：[-1,0]
+ *
+ *
+ * 示例 3：
+ *
+ *
+ * 输入：nums = [0,1]
+ * 输出：[1,0]
+ *
+ *
+ * 提示：
+ *
+ *
+ * 2
+ * -2^31
+ * 除两个只出现一次的整数外，nums 中的其他数字都出现两次
+ *
+ *
  */
-package leetcode
 
 // @lc code=start
 func singleNumber(nums []int) []int {
-	// 异或特性：
-	// C = A^B
-	// 如果 C 的二进制中某位为1， 那么在A和B中对应的位一定不同
-	var xor int
-	for i := range nums {
-		xor ^= nums[i]
+	xor := 0
+	for _, n := range nums {
+		xor ^= n
 	}
-
-	bitwise := xor
-	var indeOfBit uint
-	for bitwise != 0 {
-		if bitwise&1 != 0 {
-			break
-		}
-		bitwise >>= 1
-		indeOfBit++
+	// xor 最低的第一个1 的 bit index
+	index := 0
+	for xor&1 == 0 {
+		index++
+		xor >>= 1
 	}
-	conTrastFactor := 1 << indeOfBit
+	flag := 1 << index
 
-	var arrayL, arrayR []int
-	for i := range nums {
-		if conTrastFactor&nums[i] == 0 {
-			arrayR = append(arrayR, nums[i])
+	res := []int{0, 0}
+	for _, n := range nums {
+		if n&flag == 0 {
+			res[0] ^= n
 		} else {
-			arrayL = append(arrayL, nums[i])
+			res[1] ^= n
 		}
 	}
-
-	var result1, result2 = xor, xor
-	for i := range arrayL {
-		result1 ^= arrayL[i]
-	}
-	for i := range arrayR {
-		result2 ^= arrayR[i]
-	}
-
-	return []int{result1, result2}
+	return res
 }
 
 // @lc code=end
+
