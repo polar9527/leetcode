@@ -3,6 +3,8 @@ package offer2
 import (
 	"math"
 	"sort"
+
+	common "github.com/polar9527/leetcode/leetcode-go/internal/common"
 )
 
 func minSubArrayLen(target int, nums []int) int {
@@ -22,7 +24,7 @@ func minSubArrayLenTwoPtrWindow(target int, nums []int) int {
 	for end < n {
 		sum += nums[end]
 		for sum >= target {
-			ret = min(ret, end-start+1)
+			ret = common.Min(ret, end-start+1)
 			sum -= nums[start]
 			start++
 
