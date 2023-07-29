@@ -56,7 +56,7 @@ func minSubArrayLenPrefixSum(s int, nums []int) int {
 		bound := sort.SearchInts(sums, target)
 		//  if bound == n + 1, that means we did not find the target
 		if bound <= n {
-			ans = min(ans, bound-(i-1))
+			ans = common.Min(ans, bound-(i-1))
 		}
 	}
 	if ans == math.MaxInt32 {
