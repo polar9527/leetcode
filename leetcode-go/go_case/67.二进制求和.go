@@ -1,8 +1,6 @@
-package offer2
+package go_case
 
-import (
-	"strconv"
-)
+import "strconv"
 
 /*
  * @lc app=leetcode.cn id=67 lang=golang
@@ -46,6 +44,7 @@ import (
  *
  *
  */
+
 // @lc code=start
 func addBinary(a string, b string) string {
 	ans := ""
@@ -69,9 +68,4 @@ func addBinary(a string, b string) string {
 	return ans
 }
 
-func max(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
+// @lc code=end

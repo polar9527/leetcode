@@ -1,4 +1,4 @@
-package offer2
+package go_case
 
 /*
  * @lc app=leetcode.cn id=167 lang=golang
@@ -61,6 +61,8 @@ package offer2
  *
  *
  */
+
+// @lc code=start
 func twoSum(numbers []int, target int) []int {
 	low, high := 0, len(numbers)-1
 	for low < high {
@@ -75,3 +77,5 @@ func twoSum(numbers []int, target int) []int {
 	}
 	return []int{-1, -1}
 }
+
+// @lc code=end

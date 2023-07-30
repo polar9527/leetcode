@@ -1,4 +1,4 @@
-package offer2
+package go_case
 
 /*
  * @lc app=leetcode.cn id=137 lang=golang
@@ -49,6 +49,7 @@ package offer2
  *
  */
 
+// @lc code=start
 // 状态转移，卡诺图
 func singleNumber(nums []int) int {
 
@@ -61,3 +62,5 @@ func singleNumber(nums []int) int {
 	}
 	return one
 }
+
+// @lc code=end

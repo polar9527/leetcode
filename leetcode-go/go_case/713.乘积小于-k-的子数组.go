@@ -1,4 +1,4 @@
-package offer2
+package go_case
 
 /*
  * @lc app=leetcode.cn id=713 lang=golang
@@ -44,6 +44,8 @@ package offer2
  *
  *
  */
+
+// @lc code=start
 func numSubarrayProductLessThanK(nums []int, k int) (ans int) {
 	prod, i := 1, 0
 	for j, num := range nums {
@@ -55,3 +57,5 @@ func numSubarrayProductLessThanK(nums []int, k int) (ans int) {
 	}
 	return
 }
+
+// @lc code=end

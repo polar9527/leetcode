@@ -1,4 +1,4 @@
-package offer2
+package go_case
 
 /*
  * @lc app=leetcode.cn id=318 lang=golang
@@ -53,6 +53,8 @@ package offer2
  *
  *
  */
+
+// @lc code=start
 func maxProduct(words []string) int {
 	ret := 0
 	bitMap := make(map[int]int)
@@ -75,3 +77,5 @@ func maxProduct(words []string) int {
 	}
 	return ret
 }
+
+// @lc code=end

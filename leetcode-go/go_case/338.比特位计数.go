@@ -1,4 +1,4 @@
-package offer2
+package go_case
 
 /*
  * @lc app=leetcode.cn id=338 lang=golang
@@ -67,6 +67,8 @@ package offer2
  *
  *
  */
+
+// @lc code=start
 func countBits(n int) []int {
 
 	countBits := make([]int, n+1)
@@ -76,3 +78,5 @@ func countBits(n int) []int {
 
 	return countBits
 }
+
+// @lc code=end

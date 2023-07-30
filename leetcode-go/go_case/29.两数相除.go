@@ -1,4 +1,4 @@
-package offer2
+package go_case
 
 import "math"
 
@@ -53,34 +53,35 @@ import "math"
  *
  */
 
-func divide(a int, b int) int {
-	if a == math.MinInt32 { // 考虑被除数为最小值的情况
-		if b == 1 {
+// @lc code=start
+func divide(dividend int, divisor int) int {
+	if dividend == math.MinInt32 { // 考虑被除数为最小值的情况
+		if divisor == 1 {
 			return math.MinInt32
 		}
-		if b == -1 {
+		if divisor == -1 {
 			return math.MaxInt32
 		}
 	}
-	if b == math.MinInt32 { // 考虑除数为最小值的情况
-		if a == math.MinInt32 {
+	if divisor == math.MinInt32 { // 考虑除数为最小值的情况
+		if dividend == math.MinInt32 {
 			return 1
 		}
 		return 0
 	}
-	if a == 0 { // 考虑被除数为 0 的情况
+	if dividend == 0 { // 考虑被除数为 0 的情况
 		return 0
 	}
 
 	// 一般情况，使用二分查找
 	// 将所有的正数取相反数，这样就只需要考虑一种情况
 	rev := false
-	if a > 0 {
-		a = -a
+	if dividend > 0 {
+		dividend = -dividend
 		rev = !rev
 	}
-	if b > 0 {
-		b = -b
+	if divisor > 0 {
+		divisor = -divisor
 		rev = !rev
 	}
 
@@ -88,7 +89,7 @@ func divide(a int, b int) int {
 	left, right := 1, math.MaxInt32
 	for left <= right {
 		mid := left + (right-left)>>1 // 注意溢出，并且不能使用除法
-		if quickAdd(b, mid, a) {
+		if quickAdd(divisor, mid, dividend) {
 			ans = mid
 			if mid == math.MaxInt32 { // 注意溢出
 				break
@@ -139,3 +140,5 @@ func quickAdd(y, z, x int) bool {
 // if divisor = -2**31
 // 	if dividend = -2**31 then result = 1
 // 	else result = 0
+
+// @lc code=end

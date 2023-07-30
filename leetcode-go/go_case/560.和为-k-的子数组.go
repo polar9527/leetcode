@@ -1,4 +1,4 @@
-package offer2
+package go_case
 
 /*
  * @lc app=leetcode.cn id=560 lang=golang
@@ -44,6 +44,8 @@ package offer2
  *
  *
  */
+
+// @lc code=start
 func subarraySum(nums []int, k int) int {
 	n := len(nums)
 	count, preSum := 0, 0
@@ -65,3 +67,5 @@ func subarraySum(nums []int, k int) int {
 
 	return count
 }
+
+// @lc code=end

@@ -14,7 +14,7 @@ func Test_threeSum(t *testing.T) {
 		args args
 		want [][]int
 	}{
-		{"sample", args{int[1.-1.-1,0]}, [][]int{}}
+		{"sample", args{[]int{1. - 1. - 1, 0}}, [][]int{}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
