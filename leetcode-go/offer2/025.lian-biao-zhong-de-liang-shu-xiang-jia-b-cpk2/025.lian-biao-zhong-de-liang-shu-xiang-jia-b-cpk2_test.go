@@ -2,24 +2,26 @@ package offer2
 
 import (
 	"testing"
+
+	"github.com/polar9527/leetcode/leetcode-go/offer2/listnode"
 )
 
-var l1, l2, l3 *ListNode
+var l1, l2, l3 *listnode.ListNode
 
 func init() {
-	a := ListNode{
+	a := listnode.ListNode{
 		Val: 7,
 	}
 
-	b := ListNode{
+	b := listnode.ListNode{
 		Val: 2,
 	}
 
-	c := ListNode{
+	c := listnode.ListNode{
 		Val: 4,
 	}
 
-	d := ListNode{
+	d := listnode.ListNode{
 		Val: 3,
 	}
 	a.Next = &b
@@ -27,34 +29,34 @@ func init() {
 	c.Next = &d
 	l1 = &a
 
-	e := ListNode{
+	e := listnode.ListNode{
 		Val: 5,
 	}
 
-	f := ListNode{
+	f := listnode.ListNode{
 		Val: 6,
 	}
 
-	g := ListNode{
+	g := listnode.ListNode{
 		Val: 4,
 	}
 	e.Next = &f
 	f.Next = &g
 	l2 = &e
 
-	h := ListNode{
+	h := listnode.ListNode{
 		Val: 7,
 	}
 
-	i := ListNode{
+	i := listnode.ListNode{
 		Val: 8,
 	}
 
-	j := ListNode{
+	j := listnode.ListNode{
 		Val: 0,
 	}
 
-	k := ListNode{
+	k := listnode.ListNode{
 		Val: 7,
 	}
 	h.Next = &i
@@ -65,13 +67,13 @@ func init() {
 
 func Test_addTwoNumbers(t *testing.T) {
 	type args struct {
-		l1 *ListNode
-		l2 *ListNode
+		l1 *listnode.ListNode
+		l2 *listnode.ListNode
 	}
 	tests := []struct {
 		name string
 		args args
-		want *ListNode
+		want *listnode.ListNode
 	}{
 		// TODO: Add test cases.
 		{"case1", args{l1, l2}, l3},
