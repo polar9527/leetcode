@@ -75,7 +75,7 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	len1 := len(stack1)
 	len2 := len(stack2)
 	carry := 0
-	var ans ListNode
+	var ans *ListNode
 	for len1 != 0 || len2 != 0 || carry != 0 {
 		var a, b int
 		if len1 != 0 {
@@ -95,10 +95,10 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		cur %= 10
 
 		curNode := ListNode{cur, nil}
-		curNode.Next = &ans
-		ans = curNode
+		curNode.Next = ans
+		ans = &curNode
 	}
-	return &ans
+	return ans
 }
 
 func stackACC(l *ListNode) (s []int) {
