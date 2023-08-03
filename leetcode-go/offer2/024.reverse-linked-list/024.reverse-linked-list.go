@@ -1,7 +1,5 @@
 package offer2
 
-import "github.com/polar9527/leetcode/leetcode-go/offer2/listnode"
-
 /*
  * @lc app=leetcode.cn id=206 lang=golang
  *
@@ -68,8 +66,8 @@ import "github.com/polar9527/leetcode/leetcode-go/offer2/listnode"
  *     Next *ListNode
  * }
  */
-func reverseList(head *listnode.ListNode) *listnode.ListNode {
-	var pre, post *listnode.ListNode
+func reverseList(head *ListNode) *ListNode {
+	var pre, post *ListNode
 	for head != nil {
 		post, head.Next = head.Next, pre
 		pre, head = head, post

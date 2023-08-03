@@ -1,7 +1,5 @@
 package offer2
 
-import "github.com/polar9527/leetcode/leetcode-go/offer2/listnode"
-
 /*
  * @lc app=leetcode.cn id=445 lang=golang
  *
@@ -65,20 +63,20 @@ import "github.com/polar9527/leetcode/leetcode-go/offer2/listnode"
 // @lc code=start
 /**
  * Definition for singly-linked list.
- * type listnode.ListNode struct {
+ * type ListNode struct {
  *     Val int
- *     Next *listnode.ListNode
+ *     Next *ListNode
  * }
  */
 
-func addTwoNumbers(l1 *listnode.ListNode, l2 *listnode.ListNode) *listnode.ListNode {
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	stack1 := stackACC(l1)
 	stack2 := stackACC(l2)
 
 	len1 := len(stack1)
 	len2 := len(stack2)
 	carry := 0
-	var ans *listnode.ListNode
+	var ans *ListNode
 	for len1 != 0 || len2 != 0 || carry != 0 {
 		var a, b int
 		if len1 != 0 {
@@ -97,14 +95,14 @@ func addTwoNumbers(l1 *listnode.ListNode, l2 *listnode.ListNode) *listnode.ListN
 		carry = cur / 10
 		cur %= 10
 
-		curNode := listnode.ListNode{cur, nil}
+		curNode := ListNode{cur, nil}
 		curNode.Next = ans
 		ans = &curNode
 	}
 	return ans
 }
 
-func stackACC(l *listnode.ListNode) (s []int) {
+func stackACC(l *ListNode) (s []int) {
 	for ; l != nil; l = l.Next {
 		s = append(s, l.Val)
 	}

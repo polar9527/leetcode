@@ -1,9 +1,5 @@
 package offer2
 
-import (
-	listnode "github.com/polar9527/leetcode/leetcode-go/offer2/listnode"
-)
-
 /*
  * @lc app=leetcode.cn id=160 lang=golang
  *
@@ -118,7 +114,7 @@ import (
  *     Next *ListNode
  * }
  */
-func getIntersectionNode(headA, headB *listnode.ListNode) *listnode.ListNode {
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	if headA == nil || headB == nil {
 		return nil
 	}

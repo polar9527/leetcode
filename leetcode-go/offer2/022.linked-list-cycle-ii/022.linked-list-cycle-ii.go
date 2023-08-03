@@ -1,9 +1,5 @@
 package offer2
 
-import (
-	listnode "github.com/polar9527/leetcode/leetcode-go/offer2/listnode"
-)
-
 /*
  * @lc app=leetcode.cn id=142 lang=golang
  *
@@ -86,7 +82,7 @@ import (
  *     Next *ListNode
  * }
  */
-func detectCycle(head *listnode.ListNode) *listnode.ListNode {
+func detectCycle(head *ListNode) *ListNode {
 	// fast 进入圆圈之后，即便是在最坏情况下,即slow刚进入圆圈的那一刻，fast正好在slow前面一丁点，slow 在圆圈之中走完第一圈之前，fast必定能遇上slow
 	// 基于这个前提,
 	// 设链表中环外部分的长度为 a。slow指针进入环后，又走了 b 的距离与 fast 相遇。
