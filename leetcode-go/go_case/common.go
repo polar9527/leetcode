@@ -5,6 +5,11 @@ type ListNode struct {
 	Next *ListNode
 }
 
+type Node struct {
+	Val  int
+	Next *ListNode
+}
+
 func min(x, y int) int {
 	if x < y {
 		return x
