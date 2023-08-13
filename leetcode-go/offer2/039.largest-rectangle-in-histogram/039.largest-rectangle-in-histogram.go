@@ -1,4 +1,4 @@
-package go_case
+package offer2
 
 /*
  * @lc app=leetcode.cn id=84 lang=golang
