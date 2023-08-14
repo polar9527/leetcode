@@ -68,4 +68,11 @@ func findMinDifference(timePoints []string) int {
 	return ans
 }
 
+// func min(x, y int) int {
+// 	if x < y {
+// 		return x
+// 	}
+// 	return y
+// }
+
 // @lc code=end
