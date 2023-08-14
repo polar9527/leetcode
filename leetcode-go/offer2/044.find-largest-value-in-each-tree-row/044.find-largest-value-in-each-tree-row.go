@@ -59,6 +59,7 @@ import "math"
  *     Right *TreeNode
  * }
  */
+// BFS
 func largestValues(root *TreeNode) []int {
 	ans := []int{}
 	if root == nil {
@@ -85,6 +86,37 @@ func largestValues(root *TreeNode) []int {
 	}
 	return ans
 }
+
+// DFS
+func largestValuesDFS(root *TreeNode) (ans []int) {
+    var dfs func(*TreeNode, int)
+    dfs = func(node *TreeNode, curHeight int) {
+        if node == nil {
+            return
+        }
+        if curHeight == len(ans) {
+            ans = append(ans, node.Val)
+        } else {
+            ans[curHeight] = max(ans[curHeight], node.Val)
+        }
+        dfs(node.Left, curHeight+1)
+        dfs(node.Right, curHeight+1)
+    }
+    dfs(root, 0)
+    return
+}
+
+func max(a, b int) int {
+    if b > a {
+        return b
+    }
+    return a
+}
+
+作者：力扣官方题解
+链接：https://leetcode.cn/problems/hPov7L/solutions/1619295/er-cha-shu-mei-ceng-de-zui-da-zhi-by-lee-q4y2/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 // func max(a, b int) int {
 // 	if b > a {
