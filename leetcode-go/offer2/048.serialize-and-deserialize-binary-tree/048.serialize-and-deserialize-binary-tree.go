@@ -79,7 +79,11 @@ import (
  *     Right *TreeNode
  * }
  */
-
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
 type Codec struct{}
 
 func Constructor() (_ Codec) {

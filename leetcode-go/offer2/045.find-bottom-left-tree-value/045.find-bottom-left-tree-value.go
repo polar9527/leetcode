@@ -59,6 +59,11 @@ package offer2
  *     Right *TreeNode
  * }
  */
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
 
 // DFS
 func findBottomLeftValue(root *TreeNode) (curVal int) {

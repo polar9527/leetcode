@@ -55,6 +55,11 @@ package offer2
  *     Right *TreeNode
  * }
  */
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
 
 // Two Point
 func findTarget(root *TreeNode, k int) bool {

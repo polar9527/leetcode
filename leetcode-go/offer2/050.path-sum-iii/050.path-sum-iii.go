@@ -59,7 +59,13 @@ package offer2
  *     Right *TreeNode
  * }
  */
-//  DFS
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// DFS
 func rootSum(root *TreeNode, targetSum int) (res int) {
 	if root == nil {
 		return

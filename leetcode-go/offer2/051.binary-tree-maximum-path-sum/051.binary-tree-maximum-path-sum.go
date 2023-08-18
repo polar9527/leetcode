@@ -61,6 +61,12 @@ import "math"
  *     Right *TreeNode
  * }
  */
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
 func maxPathSum(root *TreeNode) int {
 	maxSum := math.MinInt32
 	var maxGain func(*TreeNode) int
@@ -87,11 +93,11 @@ func maxPathSum(root *TreeNode) int {
 	return maxSum
 }
 
-// func max(x, y int) int {
-// 	if x > y {
-// 		return x
-// 	}
-// 	return y
-// }
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}
 
 // @lc code=end

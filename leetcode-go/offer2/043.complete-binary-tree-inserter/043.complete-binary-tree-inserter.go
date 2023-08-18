@@ -73,6 +73,11 @@ package offer2
  *     Right *TreeNode
  * }
  */
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
 type CBTInserter struct {
 	root      *TreeNode
 	candidate []*TreeNode

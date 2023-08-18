@@ -54,6 +54,12 @@ package offer2
  *     Right *TreeNode
  * }
  */
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
 func increasingBST(root *TreeNode) *TreeNode {
 	vals := []int{}
 	var inorder func(*TreeNode)

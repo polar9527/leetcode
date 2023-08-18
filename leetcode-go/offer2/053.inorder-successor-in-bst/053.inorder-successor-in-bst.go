@@ -54,6 +54,11 @@ package oofer2
  *     Right *TreeNode
  * }
  */
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
 
 func inorderSuccessor(root *TreeNode, p *TreeNode) *TreeNode {
 	var successor *TreeNode

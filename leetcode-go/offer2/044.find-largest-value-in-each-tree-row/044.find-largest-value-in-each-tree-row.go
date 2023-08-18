@@ -59,6 +59,13 @@ import "math"
  *     Right *TreeNode
  * }
  */
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
 // BFS
 func largestValues(root *TreeNode) []int {
 	ans := []int{}
