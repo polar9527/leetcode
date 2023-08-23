@@ -113,3 +113,5 @@ cmake-build-debug
 
 # Golang
 vendor
+
+.lcpr_data
