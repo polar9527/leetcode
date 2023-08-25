@@ -61,18 +61,20 @@ func searchInsert(nums []int, target int) int {
 	if length == 0 {
 		return 0
 	}
-	l, r := 0, length
-	for l < r {
+	l, r := 0, length-1
+	ans := length
+	for l <= r {
 		mid := l + (r-l)>>1
 		if target == nums[mid] {
-			r = mid // lower_bound 查找第一个大于或等于 target 的数字，不直接返回，收缩右边界
+			return mid
 		} else if target < nums[mid] {
-			r = mid // 左闭右开,所以这里取 mid 而不是 mid + 1
+			ans = mid
+			r = mid - 1
 		} else {
 			l = mid + 1
 		}
 	}
-	return l
+	return ans
 }
 
 // @lc code=end
