@@ -1,4 +1,9 @@
-package go_case
+package offer2
+
+import (
+	"container/heap"
+	"sort"
+)
 
 /*
  * @lc app=leetcode.cn id=215 lang=golang
@@ -85,70 +90,69 @@ package go_case
 // }
 
 // 堆排序
-func findKthLargest(nums []int, k int) int {
-	heapSize := len(nums)
-	buildMaxHeapSize(nums, heapSize)
-	for i := len(nums) - 1; i >= len(nums)-k+1; i-- {
-		// 大顶堆的顶部最大元素放在数组尾部，
-		// 然后减小堆大小（数组长度），就相当于将刚才置换到堆尾的最大元素删除
-		nums[0], nums[i] = nums[i], nums[0]
-		heapSize--
-		// 然后需要重新下沉新的顶部的小元素，将堆恢复为大顶堆
-		maxHeapify(nums, 0, heapSize)
-	} // 经过 k-1 次迭代之后，堆顶部就是第k大的元素
-	return nums[0]
-}
+// func findKthLargest(nums []int, k int) int {
+// 	heapSize := len(nums)
+// 	buildMaxHeapSize(nums, heapSize)
+// 	for i := len(nums) - 1; i >= len(nums)-k+1; i-- {
+// 		// 大顶堆的顶部最大元素放在数组尾部，
+// 		// 然后减小堆大小（数组长度），就相当于将刚才置换到堆尾的最大元素删除
+// 		nums[0], nums[i] = nums[i], nums[0]
+// 		heapSize--
+// 		// 然后需要重新下沉新的顶部的小元素，将堆恢复为大顶堆
+// 		maxHeapify(nums, 0, heapSize)
+// 	} // 经过 k-1 次迭代之后，堆顶部就是第k大的元素
+// 	return nums[0]
+// }
 
-func buildMaxHeapSize(a []int, heapSize int) {
-	// a[heapSize/2] 之后都是叶子，所以只需要对非叶子节点做下沉操作
-	for i := heapSize / 2; i >= 0; i-- {
-		maxHeapify(a, i, heapSize)
-	}
-}
+// func buildMaxHeapSize(a []int, heapSize int) {
+// 	// a[heapSize/2] 之后都是叶子，所以只需要对非叶子节点做下沉操作
+// 	for i := heapSize / 2; i >= 0; i-- {
+// 		maxHeapify(a, i, heapSize)
+// 	}
+// }
 
-func maxHeapify(a []int, i, heapSize int) {
-	lc, rc := i*2+1, i*2+2
-	largest := i
-	if lc < heapSize && a[lc] > a[largest] {
-		largest = lc
-	}
-	if rc < heapSize && a[rc] > a[largest] {
-		largest = rc
-	}
-	if largest != i {
-		// 如果 i 不是最大的，那么就要将a[i] 下沉到左孩子或者右孩子当中去
-		a[i], a[largest] = a[largest], a[i]
-		maxHeapify(a, largest, heapSize)
-	}
-}
+// func maxHeapify(a []int, i, heapSize int) {
+// 	lc, rc := i*2+1, i*2+2
+// 	largest := i
+// 	if lc < heapSize && a[lc] > a[largest] {
+// 		largest = lc
+// 	}
+// 	if rc < heapSize && a[rc] > a[largest] {
+// 		largest = rc
+// 	}
+// 	if largest != i {
+// 		// 如果 i 不是最大的，那么就要将a[i] 下沉到左孩子或者右孩子当中去
+// 		a[i], a[largest] = a[largest], a[i]
+// 		maxHeapify(a, largest, heapSize)
+// 	}
+// }
 
 // 利用 container/heap 库
-// func findKthLargest(nums []int, k int) int {
-// 	a := &kthLargest{k: k}
-// 	for _, num := range nums {
-// 		heap.Push(a, num)
-// 		if a.Len() > a.k {
-// 			heap.Pop(a)
-// 		}
-// 	}
+func findKthLargest(nums []int, k int) int {
+	a := &KthLargest{k: k}
+	for _, num := range nums {
+		heap.Push(a, num)
+		if a.Len() > a.k {
+			heap.Pop(a)
+		}
+	}
+	return a.IntSlice[0]
+}
 
-// 	return a.IntSlice[0]
-// }
+type KthLargest struct {
+	sort.IntSlice
+	k int
+}
 
-// type kthLargest struct {
-// 	sort.IntSlice
-// 	k int
-// }
+func (k *KthLargest) Pop() interface{} {
+	a := k.IntSlice
+	v := a[a.Len()-1]
+	k.IntSlice = a[:k.Len()-1]
+	return v
+}
 
-// func (k *kthLargest) Pop() interface{} {
-// 	a := k.IntSlice
-// 	v := a[a.Len()-1]
-// 	k.IntSlice = a[:k.Len()-1]
-// 	return v
-// }
-
-// func (k *kthLargest) Push(v interface{}) {
-// 	k.IntSlice = append(k.IntSlice, v.(int))
-// }
+func (k *KthLargest) Push(v any) {
+	k.IntSlice = append(k.IntSlice, v.(int))
+}
 
 // @lc code=end
