@@ -93,7 +93,7 @@ func sortL(h, t *ListNode) *ListNode {
 func mergeL(head1, head2 *ListNode) *ListNode {
 	dummyHead := &ListNode{}
 	temp, l, r := dummyHead, head1, head2
-	for l != nil && r ! = nil {
+	for l != nil && r != nil {
 		if l.Val < r.Val {
 			temp.Next = l
 			l = l.Next

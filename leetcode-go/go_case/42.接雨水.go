@@ -1,3 +1,5 @@
+package go_case
+
 /*
  * @lc app=leetcode.cn id=42 lang=golang
  *
@@ -134,4 +136,3 @@ func max(a, b int) int {
 }
 
 // @lc code=end
-

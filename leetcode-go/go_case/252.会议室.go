@@ -1,3 +1,7 @@
+package go_case
+
+import "sort"
+
 /*
  * @lc app=leetcode.cn id=252 lang=golang
  *
@@ -75,4 +79,3 @@ func canAttendMeetings(intervals [][]int) bool {
 }
 
 // @lc code=end
-

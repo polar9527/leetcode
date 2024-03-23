@@ -1,3 +1,7 @@
+package go_case
+
+import "math"
+
 /*
  * @lc app=leetcode.cn id=901 lang=golang
  *
@@ -88,4 +92,3 @@ func (this *StockSpanner) Next(price int) int {
  * param_1 := obj.Next(price);
  */
 // @lc code=end
-

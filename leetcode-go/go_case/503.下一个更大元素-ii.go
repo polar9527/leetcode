@@ -1,3 +1,5 @@
+package go_case
+
 /*
  * @lc app=leetcode.cn id=503 lang=golang
  *
@@ -68,4 +70,3 @@ func nextGreaterElements(nums []int) []int {
 }
 
 // @lc code=end
-

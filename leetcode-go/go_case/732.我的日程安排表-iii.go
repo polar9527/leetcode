@@ -1,3 +1,5 @@
+package go_case
+
 /*
  * @lc app=leetcode.cn id=732 lang=golang
  *
@@ -134,4 +136,3 @@ func max(a, b int) int {
  * param_1 := obj.Book(startTime,endTime);
  */
 // @lc code=end
-
