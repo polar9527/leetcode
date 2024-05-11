@@ -1,9 +1,5 @@
 package go_case
 
-import (
-	"math"
-)
-
 /*
  * @lc app=leetcode.cn id=739 lang=golang
  *
@@ -57,48 +53,46 @@ import (
 
 // @lc code=start
 func dailyTemperatures(temperatures []int) []int {
-	return dailyTemperaturesStack(temperatures)
-}
+	res := make([]int, len(temperatures))
+	// 初始化栈顶元素为第一个下标索引0
+	stack := []int{0}
 
-func dailyTemperaturesStack(temperatures []int) []int {
-	length := len(temperatures)
-	ans := make([]int, length)
-	stack := []int{}
-
-	for i, _ := range temperatures {
-		curT := temperatures[i]
-		for len(stack) > 0 && curT > temperatures[stack[len(stack)-1]] {
-			preIndex := stack[len(stack)-1]
-			stack = stack[:len(stack)-1]
-			ans[preIndex] = i - preIndex
-		}
-		stack = append(stack, i)
-	}
-	return ans
-}
-
-func dailyTemperaturesBrute(temperatures []int) []int {
-	length := len(temperatures)
-	ans := make([]int, length)
-	next := make([]int, 101)
-
-	for i := 0; i < 101; i++ {
-		next[i] = math.MaxInt32
-	}
-
-	for i := length - 1; i >= 0; i-- {
-		warmerIndex := math.MaxInt32
-		for t := temperatures[i] + 1; t <= 100; t++ {
-			if next[t] < warmerIndex {
-				warmerIndex = next[t]
+	for i := 1; i < len(temperatures); i++ {
+		top := stack[len(stack)-1]
+		if temperatures[i] < temperatures[top] {
+			stack = append(stack, i)
+		} else if temperatures[i] == temperatures[top] {
+			stack = append(stack, i)
+		} else {
+			for len(stack) != 0 && temperatures[i] > temperatures[top] {
+				res[top] = i - top
+				stack = stack[:len(stack)-1]
+				if len(stack) != 0 {
+					top = stack[len(stack)-1]
+				}
 			}
+			stack = append(stack, i)
 		}
-		if warmerIndex < math.MaxInt32 {
-			ans[i] = warmerIndex - i
-		}
-		next[temperatures[i]] = i
 	}
-	return ans
+	return res
 }
+
+// 代码简化版本
+// func dailyTemperatures(num []int) []int {
+//     ans := make([]int, len(num))
+//     stack := []int{}
+//     for i, v := range num {
+//         // 栈不空，且当前遍历元素 v 破坏了栈的单调性
+//         for len(stack) != 0 && v > num[stack[len(stack)-1]] {
+//             // pop
+//             top := stack[len(stack)-1]
+//             stack = stack[:len(stack)-1]
+
+//             ans[top] = i - top
+//         }
+//         stack = append(stack, i)
+//     }
+//     return ans
+// }
 
 // @lc code=end
