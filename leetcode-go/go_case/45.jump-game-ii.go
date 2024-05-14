@@ -1,3 +1,5 @@
+package go_case
+
 /*
  * @lc app=leetcode id=45 lang=golang
  *
@@ -78,4 +80,3 @@ func jump(nums []int) int {
 }
 
 // @lc code=end
-
