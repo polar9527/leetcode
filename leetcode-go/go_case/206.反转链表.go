@@ -67,10 +67,18 @@ package go_case
  * }
  */
 func reverseList(head *ListNode) *ListNode {
-	var pre, post *ListNode
-	for head != nil {
-		post, head.Next = head.Next, pre
-		pre, head = head, post
+	var pre, cur *ListNode
+	cur = head
+	for cur != nil {
+		// 保存下一个节点
+		tmp := cur.Next
+
+		// 反转当前节点指针
+		cur.Next = pre
+
+		// 移动指针
+		pre = cur
+		cur = tmp
 	}
 	return pre
 }
