@@ -1,5 +1,7 @@
 package go_case
 
+import "container/list"
+
 /*
  * @lc app=leetcode.cn id=513 lang=golang
  *
@@ -61,40 +63,55 @@ package go_case
  */
 
 // DFS
-func findBottomLeftValue(root *TreeNode) (curVal int) {
-	curHeight := 0
-	var dfs func(*TreeNode, int)
-	dfs = func(node *TreeNode, height int) {
-		if node == nil {
-			return
-		}
-		height++
-		dfs(node.Left, height)
-		dfs(node.Right, height)
-		if height > curHeight {
-			curHeight = height
-			curVal = node.Val
-		}
-	}
-	dfs(root, 0)
-	return
-}
+// func findBottomLeftValue(root *TreeNode) (curVal int) {
+// 	if root == nil {
+// 		return 0
+// 	}
+// 	var res int
+// 	maxDepth := math.MinInt
+// 	var dfs func(root *TreeNode, curDepth int)
+// 	dfs = func(root *TreeNode, curDepth int) {
+// 		if root == nil {
+// 			return
+// 		}
+// 		if root.Left == nil && root.Right == nil {
+
+// 			if curDepth > maxDepth {
+// 				maxDepth = curDepth
+// 				res = root.Val
+// 			}
+// 			return
+// 		}
+// 		dfs(root.Left, curDepth+1)
+// 		dfs(root.Right, curDepth+1)
+// 	}
+
+// 	dfs(root, 0)
+// 	return res
+// }
 
 // BFS
-func findBottomLeftValueBFS(root *TreeNode) (ans int) {
-	q := []*TreeNode{root}
-	for len(q) > 0 {
-		node := q[0]
-		q = q[1:]
-		if node.Right != nil {
-			q = append(q, node.Right)
+func findBottomLeftValue(root *TreeNode) int {
+	var gradation int
+	queue := list.New()
+
+	queue.PushBack(root)
+	for queue.Len() > 0 {
+		length := queue.Len()
+		for i := 0; i < length; i++ {
+			node := queue.Remove(queue.Front()).(*TreeNode)
+			if i == 0 {
+				gradation = node.Val
+			}
+			if node.Left != nil {
+				queue.PushBack(node.Left)
+			}
+			if node.Right != nil {
+				queue.PushBack(node.Right)
+			}
 		}
-		if node.Left != nil {
-			q = append(q, node.Left)
-		}
-		ans = node.Val
 	}
-	return
+	return gradation
 }
 
 // @lc code=end

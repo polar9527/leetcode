@@ -1,5 +1,7 @@
 package go_case
 
+import "container/list"
+
 /*
  * @lc app=leetcode.cn id=199 lang=golang
  *
@@ -63,50 +65,77 @@ package go_case
  * }
  */
 //  DFS
-func rightSideView(root *TreeNode) []int {
-	ans := []int{}
-	var dfs func(*TreeNode, int)
-	dfs = func(node *TreeNode, height int) {
-		if node == nil {
-			return
-		}
-		if height == len(ans) {
-			ans = append(ans, node.Val)
-		}
-		dfs(node.Right, height+1)
-		dfs(node.Left, height+1)
-	}
-	dfs(root, 0)
-	return ans
-}
+// func rightSideView(root *TreeNode) []int {
+// 	ans := []int{}
+// 	var dfs func(*TreeNode, int)
+// 	dfs = func(node *TreeNode, height int) {
+// 		if node == nil {
+// 			return
+// 		}
+// 		if height == len(ans) {
+// 			ans = append(ans, node.Val)
+// 		}
+// 		dfs(node.Right, height+1)
+// 		dfs(node.Left, height+1)
+// 	}
+// 	dfs(root, 0)
+// 	return ans
+// }
 
 // BFS
-func rightSideViewBFS(root *TreeNode) []int {
-	if root == nil {
-		return []int{}
-	}
+// func rightSideViewBFS(root *TreeNode) []int {
+// 	if root == nil {
+// 		return []int{}
+// 	}
 
-	type i struct {
-		n *TreeNode
-		h int
+// 	type i struct {
+// 		n *TreeNode
+// 		h int
+// 	}
+// 	q := []i{i{root, 0}}
+// 	ans := []int{}
+// 	for len(q) > 0 {
+// 		n := q[0]
+// 		q = q[1:]
+// 		curHeight := n.h
+// 		if curHeight == len(ans) {
+// 			ans = append(ans, n.n.Val)
+// 		}
+// 		if n.n.Right != nil {
+// 			q = append(q, i{n.n.Right, curHeight + 1})
+// 		}
+// 		if n.n.Left != nil {
+// 			q = append(q, i{n.n.Left, curHeight + 1})
+// 		}
+// 	}
+// 	return ans
+// }
+
+func rightSideView(root *TreeNode) []int {
+	if root == nil {
+		return nil
 	}
-	q := []i{i{root, 0}}
-	ans := []int{}
-	for len(q) > 0 {
-		n := q[0]
-		q = q[1:]
-		curHeight := n.h
-		if curHeight == len(ans) {
-			ans = append(ans, n.n.Val)
-		}
-		if n.n.Right != nil {
-			q = append(q, i{n.n.Right, curHeight + 1})
-		}
-		if n.n.Left != nil {
-			q = append(q, i{n.n.Left, curHeight + 1})
+	res := make([]int, 0)
+	queue := list.New()
+	queue.PushBack(root)
+
+	for queue.Len() > 0 {
+		length := queue.Len()
+		for i := 0; i < length; i++ {
+			node := queue.Remove(queue.Front()).(*TreeNode)
+			if node.Left != nil {
+				queue.PushBack(node.Left)
+			}
+			if node.Right != nil {
+				queue.PushBack(node.Right)
+			}
+			// 取每层的最后一个元素，添加到结果集中
+			if i == length-1 {
+				res = append(res, node.Val)
+			}
 		}
 	}
-	return ans
+	return res
 }
 
 // @lc code=end

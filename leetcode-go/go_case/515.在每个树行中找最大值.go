@@ -1,6 +1,9 @@
 package go_case
 
-import "math"
+import (
+	"container/list"
+	"math"
+)
 
 /*
  * @lc app=leetcode.cn id=515 lang=golang
@@ -60,37 +63,39 @@ import "math"
  * }
  */
 func largestValues(root *TreeNode) []int {
-	ans := []int{}
-	if root == nil {
-		return ans
+	max := func(x, y int) int {
+		if x > y {
+			return x
+		}
+		return y
 	}
-	q := []*TreeNode{root}
-
-	for len(q) > 0 {
-		maxVal := math.MinInt32
-		level := q
-		q = nil
-		for _, n := range level {
-			maxVal = max(maxVal, n.Val)
-			if n.Left != nil {
-				q = append(q, n.Left)
+	if root == nil {
+		//防止为空
+		return nil
+	}
+	queue := list.New()
+	queue.PushBack(root)
+	ans := make([]int, 0)
+	temp := math.MinInt64
+	// 层序遍历
+	for queue.Len() > 0 {
+		//保存当前层的长度，然后处理当前层（十分重要，防止添加下层元素影响判断层中元素的个数）
+		length := queue.Len()
+		for i := 0; i < length; i++ {
+			node := queue.Remove(queue.Front()).(*TreeNode) //出队列
+			// 比较当前层中的最大值和新遍历的元素大小，取两者中大值
+			temp = max(temp, node.Val)
+			if node.Left != nil {
+				queue.PushBack(node.Left)
 			}
-
-			if n.Right != nil {
-				q = append(q, n.Right)
+			if node.Right != nil {
+				queue.PushBack(node.Right)
 			}
 		}
-
-		ans = append(ans, maxVal)
+		ans = append(ans, temp)
+		temp = math.MinInt64
 	}
 	return ans
 }
-
-// func max(a, b int) int {
-// 	if b > a {
-// 		return b
-// 	}
-// 	return a
-// }
 
 // @lc code=end
