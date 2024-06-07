@@ -83,26 +83,16 @@ package go_case
  * }
  */
 func detectCycle(head *ListNode) *ListNode {
-	// fast 进入圆圈之后，即便是在最坏情况下,即slow刚进入圆圈的那一刻，fast正好在slow前面一丁点，slow 在圆圈之中走完第一圈之前，fast必定能遇上slow
-	// 基于这个前提,
-	// 设链表中环外部分的长度为 a。slow指针进入环后，又走了 b 的距离与 fast 相遇。
-	// 此时，fast 指针已经走完了环的 n 圈，因此它走过的总距离为 a+n(b+c)+b=a+(n+1)b+nc。
-	// 根据题意，任意时刻，fast 指针走过的距离都为 slow 指针的 2 倍。
-	// 因此，我们有a(n+1)b+nc=2(a+b)⟹a=c+(n−1)(b+c)
 	slow, fast := head, head
-	for fast != nil {
+	for fast != nil && fast.Next != nil {
 		slow = slow.Next
-		if fast.Next == nil {
-			return nil
-		}
 		fast = fast.Next.Next
-		if fast == slow {
-			p := head
-			for p != slow {
-				p = p.Next
+		if slow == fast {
+			for slow != head {
 				slow = slow.Next
+				head = head.Next
 			}
-			return p
+			return head
 		}
 	}
 	return nil

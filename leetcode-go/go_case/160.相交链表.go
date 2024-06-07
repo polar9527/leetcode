@@ -118,7 +118,17 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	if headA == nil || headB == nil {
 		return nil
 	}
+	// 本质还是快慢指针
 	pa, pb := headA, headB
+	// 当pa和pb 其中一个最先到达 nil 的时候
+	// pa 和 pb 之间的距离差值 就是 | a - b |
+	// 假设pa 先到达 nil, 那么 a 一定是短边，b一定是长边，
+	// 所以让pa继续在长边b上继续跑动，
+	// 当 pb 把 剩下的距离 | a-b |  跑完后
+	// pa 在长边 b 上也相应跑动了 | a-b |
+	// 此时 把 pb 指向 短边 a,
+	// 此时 pa 和 pb 就在同一起跑线上了，之后他们就会相遇，
+	// 循环结束是，pa 和 pb 都指向交汇点
 	for pa != pb {
 		if pa == nil {
 			pa = headB
