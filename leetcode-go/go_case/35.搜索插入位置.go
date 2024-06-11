@@ -57,22 +57,30 @@ package go_case
 // https://leetcode.cn/problems/N6YdxV/solutions/1228864/jian-zhi-offer-ii-068-cha-zhao-cha-ru-we-acsn/
 // @lc code=start
 func searchInsert(nums []int, target int) int {
-	length := len(nums)
-	if length == 0 {
+	if len(nums) == 0 {
 		return 0
 	}
-	l, r := 0, length
-	for l < r {
-		mid := l + (r-l)>>1
-		if target == nums[mid] {
-			r = mid // lower_bound 查找第一个大于或等于 target 的数字，不直接返回，收缩右边界
-		} else if target < nums[mid] {
-			r = mid // 左闭右开,所以这里取 mid 而不是 mid + 1
-		} else {
-			l = mid + 1
+	// res值的可能分布范围是 [0,len(nums)]
+	var res int
+	left, right := 0, len(nums)
+	// res = left
+	res = right
+	for left < right {
+		mid := left + (right-left)>>1
+		if nums[mid] == target {
+			return mid
+		} else if nums[mid] < target {
+			// mid+1 可能 和 right,也就是 len(nums) 相等
+			left = mid + 1
+			// res = left
+		} else if nums[mid] > target {
+			right = mid
+			res = right
+
 		}
 	}
-	return l
+
+	return res
 }
 
 // @lc code=end

@@ -53,19 +53,22 @@ func mySqrt(x int) int {
 	if x == 0 {
 		return 0
 	}
+	if x == 1 {
+		return 1
+	}
 	l, r := 1, x-1
 	ans := 0
 	for l <= r {
-		n := (l + r) >> 1
-		if n*n == x {
-			return n
+		m := l + (r-l)>>1
+		if m*m == x {
+			return m
 		}
-		if n*n > x {
-			r = n - 1
+		if m*m > x {
+			r = m - 1
 		}
-		if n*n < x {
-			ans = n
-			l = n + 1
+		if m*m < x {
+			ans = m
+			l = m + 1
 		}
 	}
 	return ans

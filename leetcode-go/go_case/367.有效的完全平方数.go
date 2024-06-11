@@ -57,7 +57,7 @@ func isPerfectSquare(num int) bool {
 	l, r := 1, num-1
 	// ans := 0
 	for l <= r {
-		n := (l + r) >> 1
+		n := l + (r-l)>>1
 		if n*n == num {
 			return true
 		}
