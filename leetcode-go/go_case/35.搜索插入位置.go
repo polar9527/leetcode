@@ -56,31 +56,49 @@ package go_case
  */
 // https://leetcode.cn/problems/N6YdxV/solutions/1228864/jian-zhi-offer-ii-068-cha-zhao-cha-ru-we-acsn/
 // @lc code=start
+// func searchInsert(nums []int, target int) int {
+// 	if len(nums) == 0 {
+// 		return 0
+// 	}
+// 	// res值的可能分布范围是 [0,len(nums)]
+// 	var res int
+// 	left, right := 0, len(nums)
+// 	// res = left
+// 	res = right
+// 	for left < right {
+// 		mid := left + (right-left)>>1
+// 		if nums[mid] == target {
+// 			return mid
+// 		} else if nums[mid] < target {
+// 			// mid+1 可能 和 right,也就是 len(nums) 相等
+// 			left = mid + 1
+// 			// res = left
+// 		} else if nums[mid] > target {
+// 			right = mid
+// 			res = right
+
+// 		}
+// 	}
+
+// 	return res
+// }
+
 func searchInsert(nums []int, target int) int {
-	if len(nums) == 0 {
-		return 0
-	}
-	// res值的可能分布范围是 [0,len(nums)]
-	var res int
-	left, right := 0, len(nums)
-	// res = left
-	res = right
-	for left < right {
+	left := 0
+	right := len(nums) - 1
+
+	for left <= right {
 		mid := left + (right-left)>>1
 		if nums[mid] == target {
 			return mid
-		} else if nums[mid] < target {
-			// mid+1 可能 和 right,也就是 len(nums) 相等
+		}
+		if nums[mid] < target {
 			left = mid + 1
-			// res = left
-		} else if nums[mid] > target {
-			right = mid
-			res = right
-
+		} else {
+			right = mid - 1
 		}
 	}
-
-	return res
+	return left
 }
 
 // @lc code=end
