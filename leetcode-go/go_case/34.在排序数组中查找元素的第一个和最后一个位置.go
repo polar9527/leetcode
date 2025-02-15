@@ -56,6 +56,15 @@ package go_case
 
 // @lc code=start
 func searchRange(nums []int, target int) []int {
+	res := []int{-1, -1}
+
+	if len(nums) == 0 {
+		return res
+	}
+	// extreme condition
+	if nums[0] > target || nums[len(nums)-1] < target {
+		return res
+	}
 
 	// A
 	// target = 2
@@ -133,12 +142,10 @@ func searchRange(nums []int, target int) []int {
 		return leftBoard
 	}
 
-	leftBoard := getLeftBoard(nums, target)
-	rightBoard := getRightBoard(nums, target)
-	if leftBoard == -1 && rightBoard == -1 {
-		return []int{-1, -1}
-	}
-	return []int{leftBoard, rightBoard}
+	res[0] = getLeftBoard(nums, target)
+	res[1] = getRightBoard(nums, target)
+
+	return res
 
 }
 
