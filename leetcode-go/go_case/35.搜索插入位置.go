@@ -91,10 +91,9 @@ func searchInsert(nums []int, target int) int {
 		mid := left + (right-left)>>1
 		if nums[mid] == target {
 			return mid
-		}
-		if nums[mid] < target {
+		} else if nums[mid] < target {
 			left = mid + 1
-		} else {
+		} else if nums[mid] > target {
 			right = mid - 1
 		}
 	}
