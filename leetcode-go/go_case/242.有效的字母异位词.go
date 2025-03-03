@@ -1,7 +1,5 @@
 package go_case
 
-import "sort"
-
 /*
  * @lc app=leetcode.cn id=242 lang=golang
  *
@@ -39,32 +37,62 @@ import "sort"
  */
 
 // @lc code=start
+// func isAnagram(s string, t string) bool {
+// 	return isAnagramHash(s, t)
+// }
+
+// func isAnagramSort(s, t string) bool {
+// 	if s == t {
+// 		return false
+// 	}
+// 	s1, s2 := []byte(s), []byte(t)
+// 	sort.Slice(s1, func(i, j int) bool { return s1[i] < s1[j] })
+// 	sort.Slice(s2, func(i, j int) bool { return s2[i] < s2[j] })
+// 	return string(s1) == string(s2)
+// }
+
+// func isAnagramHash(s, t string) bool {
+// 	if s == t {
+// 		return false
+// 	}
+// 	var c1, c2 [26]int
+// 	for _, ch := range s {
+// 		c1[ch-'a']++
+// 	}
+// 	for _, ch := range t {
+// 		c2[ch-'a']++
+// 	}
+// 	return c1 == c2
+// }
+
+// func isAnagram(s string, t string) bool {
+// 	if len(s) != len(t) {
+// 		return false
+// 	}
+// 	ld := [26]int{}
+// 	for _, r := range s {
+// 		ld[r-'a']++
+// 	}
+// 	for _, r := range t {
+// 		ld[r-'a']--
+// 	}
+
+// 	return ld == [26]int{}
+// }
+
 func isAnagram(s string, t string) bool {
-	return isAnagramHash(s, t)
-}
-
-func isAnagramSort(s, t string) bool {
-	if s == t {
+	if len(s) != len(t) {
 		return false
 	}
-	s1, s2 := []byte(s), []byte(t)
-	sort.Slice(s1, func(i, j int) bool { return s1[i] < s1[j] })
-	sort.Slice(s2, func(i, j int) bool { return s2[i] < s2[j] })
-	return string(s1) == string(s2)
-}
+	records := [26]int{}
+	for index := 0; index < len(s); index++ {
 
-func isAnagramHash(s, t string) bool {
-	if s == t {
-		return false
+		sCharIndex := s[index] - 'a'
+		tCharIndex := t[index] - 'a'
+		records[sCharIndex]++
+		records[tCharIndex]--
 	}
-	var c1, c2 [26]int
-	for _, ch := range s {
-		c1[ch-'a']++
-	}
-	for _, ch := range t {
-		c2[ch-'a']++
-	}
-	return c1 == c2
+	return records == [26]int{}
 }
 
 // @lc code=end

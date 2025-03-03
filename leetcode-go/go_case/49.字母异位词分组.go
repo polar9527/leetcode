@@ -1,7 +1,5 @@
 package go_case
 
-import "sort"
-
 /*
  * @lc app=leetcode.cn id=49 lang=golang
  *
@@ -55,19 +53,37 @@ import "sort"
  */
 
 // @lc code=start
+//
+//	func groupAnagrams(strs []string) [][]string {
+//		m := map[string][]string{}
+//		for _, str := range strs {
+//			s := []byte(str)
+//			sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+//			sortedStr := string(s)
+//			m[sortedStr] = append(m[sortedStr], str)
+//		}
+//		ans := make([][]string, 0, len(m))
+//		for _, v := range m {
+//			ans = append(ans, v)
+//		}
+//		return ans
+//	}
+
 func groupAnagrams(strs []string) [][]string {
-	m := map[string][]string{}
-	for _, str := range strs {
-		s := []byte(str)
-		sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
-		sortedStr := string(s)
-		m[sortedStr] = append(m[sortedStr], str)
+	records := make(map[[26]int][]string, 0)
+	for _, s := range strs {
+		counts := [26]int{}
+		for _, r := range s {
+			counts[r-'a']++
+		}
+		records[counts] = append(records[counts], s)
 	}
-	ans := make([][]string, 0, len(m))
-	for _, v := range m {
-		ans = append(ans, v)
+
+	ret := make([][]string, 0, len(records))
+	for _, i := range records {
+		ret = append(ret, i)
 	}
-	return ans
+	return ret
 }
 
 // @lc code=end
