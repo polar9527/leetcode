@@ -2,7 +2,6 @@ package go_case
 
 import (
 	"math"
-	"sort"
 )
 
 /*
@@ -70,31 +69,56 @@ import (
  */
 
 // @lc code=start
+// func minSubArrayLen(target int, nums []int) int {
+// 	n := len(nums)
+// 	if n == 0 {
+// 		return 0
+// 	}
+// 	ans := math.MaxInt32
+// 	sums := make([]int, n+1)
+// 	// 为了方便计算，令 size = n + 1
+// 	// sums[0] = 0 意味着前 0 个元素的前缀和为 0
+// 	// sums[1] = A[0] 前 1 个元素的前缀和为 A[0]
+// 	// 以此类推
+// 	for i := 1; i <= n; i++ {
+// 		sums[i] = sums[i-1] + nums[i-1]
+// 	}
+// 	for i := 1; i <= n; i++ {
+// 		t := target + sums[i-1]
+// 		bound := sort.SearchInts(sums, t)
+
+// 		ans = min(ans, bound-(i-1))
+
+// 	}
+// 	if ans == math.MaxInt32 {
+// 		return 0
+// 	}
+// 	return ans
+// }
+
 func minSubArrayLen(target int, nums []int) int {
-	n := len(nums)
-	if n == 0 {
+	min := func(x, y int) int {
+		if x > y {
+			return y
+		}
+		return x
+	}
+	res := math.MaxInt32
+	sum := 0
+	i := 0
+	for j := 0; j < len(nums); j++ {
+		sum += nums[j]
+		for sum >= target {
+			subl := j - i + 1
+			res = min(res, subl)
+			sum -= nums[i]
+			i++
+		}
+	}
+	if res > len(nums) {
 		return 0
 	}
-	ans := math.MaxInt32
-	sums := make([]int, n+1)
-	// 为了方便计算，令 size = n + 1
-	// sums[0] = 0 意味着前 0 个元素的前缀和为 0
-	// sums[1] = A[0] 前 1 个元素的前缀和为 A[0]
-	// 以此类推
-	for i := 1; i <= n; i++ {
-		sums[i] = sums[i-1] + nums[i-1]
-	}
-	for i := 1; i <= n; i++ {
-		t := target + sums[i-1]
-		bound := sort.SearchInts(sums, t)
-
-		ans = min(ans, bound-(i-1))
-
-	}
-	if ans == math.MaxInt32 {
-		return 0
-	}
-	return ans
+	return res
 }
 
 // @lc code=end
