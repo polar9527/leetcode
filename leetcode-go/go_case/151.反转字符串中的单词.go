@@ -66,55 +66,102 @@
  */
 
 // @lc code=start
+// func reverseWords(s string) string {
+// 	sb := []byte(s)
+
+// 	slow := 0
+// 	for fast := 0; fast < len(sb); fast++ {
+// 		// sb[fast] 为空格， fast 继续往后走
+// 		if sb[fast] != byte(' ') {
+// 			// 补上单词之间的一个空格
+// 			if slow != 0 {
+// 				sb[slow] = byte(' ')
+// 				slow++
+// 			}
+// 			// 把单词整体往前挪动
+// 			for fast < len(sb) && sb[fast] != byte(' ') {
+// 				sb[slow] = sb[fast]
+// 				fast++
+// 				slow++
+// 			}
+// 		}
+// 	}
+// 	sb = sb[:slow]
+
+// 	reverse := func(sb []byte) []byte {
+// 		l, r := 0, len(sb)-1
+// 		for l < r {
+// 			sb[l] ^= sb[r]
+// 			sb[r] ^= sb[l]
+// 			sb[l] ^= sb[r]
+// 			l++
+// 			r--
+// 		}
+// 		return sb
+// 	}
+
+// 	reverse(sb)
+
+// 	head := 0
+// 	for i, c := range sb {
+// 		if c == byte(' ') {
+// 			reverse(sb[head:i])
+// 			head = i + 1
+// 		}
+// 		// 处理最后一个单词
+// 		if i == len(sb)-1 {
+// 			reverse(sb[head : i+1])
+// 		}
+
+// 	}
+// 	return string(sb)
+// }
+
 func reverseWords(s string) string {
-	sb := []byte(s)
-
-	slow := 0
-	for fast := 0; fast < len(sb); fast++ {
-		// sb[fast] 为空格， fast 继续往后走
-		if sb[fast] != byte(' ') {
-			// 补上单词之间的一个空格
-			if slow != 0 {
-				sb[slow] = byte(' ')
-				slow++
-			}
-			// 把单词整体往前挪动
-			for fast < len(sb) && sb[fast] != byte(' ') {
-				sb[slow] = sb[fast]
-				fast++
-				slow++
-			}
-		}
+	//1.使用双指针删除冗余的空格
+	slowIndex, fastIndex := 0, 0
+	b := []byte(s)
+	//删除头部冗余空格
+	for len(b) > 0 && fastIndex < len(b) && b[fastIndex] == ' ' {
+		fastIndex++
 	}
-	sb = sb[:slow]
-
-	reverse := func(sb []byte) []byte {
-		l, r := 0, len(sb)-1
-		for l < r {
-			sb[l] ^= sb[r]
-			sb[r] ^= sb[l]
-			sb[l] ^= sb[r]
-			l++
-			r--
+	//删除单词间冗余空格
+	for ; fastIndex < len(b); fastIndex++ {
+		if fastIndex-1 > 0 && b[fastIndex-1] == b[fastIndex] && b[fastIndex] == ' ' {
+			continue
 		}
-		return sb
+		b[slowIndex] = b[fastIndex]
+		slowIndex++
 	}
-
-	reverse(sb)
-
-	head := 0
-	for i, c := range sb {
-		if c == byte(' ') {
-			reverse(sb[head:i])
-			head = i + 1
-		}
-		// 处理最后一个单词
-		if i == len(sb)-1 {
-			reverse(sb[head : i+1])
-		}
-
+	//删除尾部冗余空格
+	if slowIndex-1 > 0 && b[slowIndex-1] == ' ' {
+		b = b[:slowIndex-1]
+	} else {
+		b = b[:slowIndex]
 	}
-	return string(sb)
+	//2.反转整个字符串
+	reverse(b)
+	//3.反转单个单词  i单词开始位置，j单词结束位置
+	i := 0
+	for i < len(b) {
+		j := i
+		for ; j < len(b) && b[j] != ' '; j++ {
+		}
+		reverse(b[i:j])
+		i = j
+		i++
+	}
+	return string(b)
+}
+
+func reverse(b []byte) {
+	left := 0
+	right := len(b) - 1
+	for left < right {
+		b[left], b[right] = b[right], b[left]
+		left++
+		right--
+	}
 }
 
 // @lc code=end
