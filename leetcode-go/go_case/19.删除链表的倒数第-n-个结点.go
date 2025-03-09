@@ -67,17 +67,21 @@ package go_case
  */
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
 	dummy := &ListNode{0, head}
-	fast, slow := dummy, dummy
-	for i := n; fast != nil && i > 0; i-- {
+	slow, fast := dummy, dummy
+	// 注意倒数第n个节点是head 的情况
+	for i := n; i > 0 && fast.Next != nil; i-- {
 		fast = fast.Next
 	}
 	fast = fast.Next
+	// 此时 slow 和 fast 之间,不包括他们本身指向的node，有 n 个 node
 	for fast != nil {
 		fast = fast.Next
 		slow = slow.Next
 	}
-	slow.Next = slow.Next.Next
+	// 此时 slow 指向倒数第 n-1 个 node
+	// remove the Nth node
 
+	slow.Next = slow.Next.Next
 	return dummy.Next
 
 }
