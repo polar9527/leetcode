@@ -1,6 +1,8 @@
 package go_case
 
-import "container/heap"
+import (
+	"container/heap"
+)
 
 /*
  * @lc app=leetcode.cn id=347 lang=golang
@@ -52,41 +54,70 @@ import "container/heap"
 
 // @lc code=start
 func topKFrequent(nums []int, k int) []int {
-	occurrences := map[int]int{}
+
+	set := make(map[int]int, 0)
 	for _, num := range nums {
-		occurrences[num]++
+		set[num]++
 	}
-	h := &IHeap{}
-	// heap.Init(h)
-	for key, value := range occurrences {
-		heap.Push(h, [2]int{key, value})
-		if h.Len() > k {
-			heap.Pop(h)
+
+	hPri := &kHeap{}
+	heap.Init(hPri)
+
+	for num, feq := range set {
+		heap.Push(hPri, [2]int{num, feq})
+		if hPri.Len() > k {
+			heap.Pop(hPri)
 		}
 	}
-	ret := make([]int, k)
+	res := make([]int, k)
 	for i := 0; i < k; i++ {
-		ret[i] = heap.Pop(h).([2]int)[0]
+		res[k-i-1] = heap.Pop(hPri).([2]int)[0]
 	}
-	return ret
+	return res
 }
 
-type IHeap [][2]int
+type kHeap [][2]int
 
-func (h IHeap) Len() int           { return len(h) }
-func (h IHeap) Less(i, j int) bool { return h[i][1] < h[j][1] }
-func (h IHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
-
-func (h *IHeap) Push(x interface{}) {
-	*h = append(*h, x.([2]int))
+func (k kHeap) Len() int {
+	return len(k)
 }
 
-func (h *IHeap) Pop() interface{} {
-	old := *h
-	n := len(old)
-	x := old[n-1]
-	*h = old[0 : n-1]
+func (k kHeap) Swap(i, j int) {
+	k[i], k[j] = k[j], k[i]
+}
+
+func (k kHeap) Less(i, j int) bool {
+	return k[i][1] < k[j][1]
+}
+
+func (k *kHeap) Push(x any) {
+	*k = append(*k, x.([2]int))
+}
+func (k *kHeap) Pop() (x any) {
+	old := *k
+	l := len(old)
+	x = old[l-1]
+	*k = old[:l-1]
 	return x
 }
+
+// func topKFrequent(nums []int, k int) []int {
+
+// 	vf := make(map[int]int, 0)
+// 	for _, v := range nums {
+// 		vf[v]++
+// 	}
+
+// 	vfList := []int{}
+// 	for v, _ := range vf {
+// 		vfList = append(vfList, v)
+// 	}
+
+// 	sort.Slice(vfList, func(i, j int) bool {
+// 		return vf[vfList[i]] > vf[vfList[j]]
+// 	})
+
+// 	return vfList[:k]
+// }
 
 // @lc code=end
