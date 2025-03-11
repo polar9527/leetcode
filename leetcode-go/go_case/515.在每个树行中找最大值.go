@@ -76,11 +76,12 @@ func largestValues(root *TreeNode) []int {
 	queue := list.New()
 	queue.PushBack(root)
 	ans := make([]int, 0)
-	temp := math.MinInt64
+
 	// 层序遍历
 	for queue.Len() > 0 {
 		//保存当前层的长度，然后处理当前层（十分重要，防止添加下层元素影响判断层中元素的个数）
 		length := queue.Len()
+		temp := math.MinInt64
 		for i := 0; i < length; i++ {
 			node := queue.Remove(queue.Front()).(*TreeNode) //出队列
 			// 比较当前层中的最大值和新遍历的元素大小，取两者中大值
@@ -93,7 +94,6 @@ func largestValues(root *TreeNode) []int {
 			}
 		}
 		ans = append(ans, temp)
-		temp = math.MinInt64
 	}
 	return ans
 }
