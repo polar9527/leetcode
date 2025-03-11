@@ -83,13 +83,14 @@ func levelOrderBottom(root *TreeNode) [][]int {
 			}
 			tmp = append(tmp, node.Val)
 		}
-		res = append(res, tmp)
+		res = append([][]int{tmp}, res...)
+
 	}
 
 	//反转结果集
-	for i := 0; i < len(res)/2; i++ {
-		res[i], res[len(res)-i-1] = res[len(res)-i-1], res[i]
-	}
+	// for i := 0; i < len(res)/2; i++ {
+	// 	res[i], res[len(res)-i-1] = res[len(res)-i-1], res[i]
+	// }
 
 	return res
 }
