@@ -1,7 +1,5 @@
 package go_case
 
-import "container/list"
-
 /*
  * @lc app=leetcode.cn id=112 lang=golang
  *
@@ -107,36 +105,59 @@ import "container/list"
 // }
 
 // BFS
+// func hasPathSum(root *TreeNode, targetSum int) bool {
+// 	if root == nil {
+// 		return false
+// 	}
+
+// 	queue := list.New()
+// 	queue.PushBack(root)
+// 	for queue.Len() > 0 {
+
+// 		item := queue.Front()
+// 		queue.Remove(item)
+// 		node := item.Value.(*TreeNode)
+// 		if node.Left == nil && node.Right == nil {
+// 			if node.Val == targetSum {
+// 				return true
+// 			}
+// 		}
+
+// 		if node.Left != nil {
+// 			node.Left.Val += node.Val
+// 			queue.PushBack(node.Left)
+// 		}
+// 		if node.Right != nil {
+// 			node.Right.Val += node.Val
+// 			queue.PushBack(node.Right)
+// 		}
+
+// 	}
+// 	return false
+
+// }
+
 func hasPathSum(root *TreeNode, targetSum int) bool {
 	if root == nil {
 		return false
 	}
 
-	queue := list.New()
-	queue.PushBack(root)
-	for queue.Len() > 0 {
-
-		item := queue.Front()
-		queue.Remove(item)
-		node := item.Value.(*TreeNode)
-		if node.Left == nil && node.Right == nil {
-			if node.Val == targetSum {
-				return true
-			}
+	var bfs func(*TreeNode, int) bool
+	bfs = func(n *TreeNode, sum int) bool {
+		sum += n.Val
+		if sum == targetSum && n.Left == nil && n.Right == nil {
+			return true
 		}
-
-		if node.Left != nil {
-			node.Left.Val += node.Val
-			queue.PushBack(node.Left)
+		var l, r bool
+		if n.Left != nil {
+			l = bfs(n.Left, sum)
 		}
-		if node.Right != nil {
-			node.Right.Val += node.Val
-			queue.PushBack(node.Right)
+		if n.Right != nil {
+			r = bfs(n.Right, sum)
 		}
-
+		return l || r
 	}
-	return false
-
+	return bfs(root, 0)
 }
 
 // @lc code=end
