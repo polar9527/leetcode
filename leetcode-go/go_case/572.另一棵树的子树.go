@@ -62,39 +62,32 @@
  */
 func isSubtree(root *TreeNode, subRoot *TreeNode) bool {
 
-	var dfs func(*TreeNode) bool
-	dfs = func(root *TreeNode) bool {
-		if root == nil {
-			return false
-		}
-		if isSameTree(root, subRoot) {
-			return true
-		}
-		if isSameTree(root.Left, subRoot) ||
-			isSameTree(root.Right, subRoot) {
-			return true
-		}
-		return dfs(root.Left) || dfs(root.Right)
+	if root == nil {
+		return false
 	}
+	if isSameTree(root, subRoot) {
+		return true
+	}
+	if isSameTree(root.Left, subRoot) ||
+		isSameTree(root.Right, subRoot) {
+		return true
+	}
+	return isSubtree(root.Left, subRoot) || isSubtree(root.Right, subRoot)
 
-	return dfs(root)
 }
 
 func isSameTree(p *TreeNode, q *TreeNode) bool {
-	var dfs func(*TreeNode, *TreeNode) bool
-	dfs = func(left *TreeNode, right *TreeNode) bool {
-		if left == nil && right == nil {
-			return true
-		}
-		if left == nil || right == nil {
-			return false
-		}
-		if left.Val != right.Val {
-			return false
-		}
-		return dfs(left.Left, right.Left) && dfs(right.Right, left.Right)
+	if p == nil && q == nil {
+		return true
 	}
-	return dfs(p, q)
+	if p == nil || q == nil {
+		return false
+	}
+	if p.Val != q.Val {
+		return false
+	}
+	return isSameTree(p.Left, q.Left) && isSameTree(q.Right, p.Right)
+
 }
 
 // @lc code=end
