@@ -56,30 +56,52 @@ import "strconv"
  *     Right *TreeNode
  * }
  */
-func binaryTreePaths(root *TreeNode) []string {
-	var res []string
-	if root == nil {
-		return res
-	}
-	var backtracing func(*TreeNode, string)
-	backtracing = func(node *TreeNode, path string) {
+// func binaryTreePaths(root *TreeNode) []string {
+// 	var res []string
+// 	if root == nil {
+// 		return res
+// 	}
+// 	var backtracing func(*TreeNode, string)
+// 	backtracing = func(node *TreeNode, path string) {
 
-		if node.Left == nil && node.Right == nil {
-			v := path + strconv.Itoa(node.Val)
-			res = append(res, v)
+// 		if node.Left == nil && node.Right == nil {
+// 			v := path + strconv.Itoa(node.Val)
+// 			res = append(res, v)
+// 			return
+// 		}
+
+// 		path = path + strconv.Itoa(node.Val) + "->"
+// 		if node.Left != nil {
+// 			backtracing(node.Left, path)
+// 		}
+
+// 		if node.Right != nil {
+// 			backtracing(node.Right, path)
+// 		}
+// 	}
+// 	backtracing(root, "")
+// 	return res
+// }
+
+func binaryTreePaths(root *TreeNode) []string {
+
+	res := []string{}
+	var dfs func(*TreeNode, string)
+	dfs = func(n *TreeNode, path string) {
+
+		if n.Left == nil && n.Right == nil {
+			tmp := path + strconv.Itoa(n.Val)
+			res = append(res, tmp)
 			return
 		}
-
-		path = path + strconv.Itoa(node.Val) + "->"
-		if node.Left != nil {
-			backtracing(node.Left, path)
+		if n.Left != nil {
+			dfs(n.Left, path+strconv.Itoa(n.Val)+"->")
 		}
-
-		if node.Right != nil {
-			backtracing(node.Right, path)
+		if n.Right != nil {
+			dfs(n.Right, path+strconv.Itoa(n.Val)+"->")
 		}
 	}
-	backtracing(root, "")
+	dfs(root, "")
 	return res
 }
 
