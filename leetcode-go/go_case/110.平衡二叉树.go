@@ -58,38 +58,46 @@
  *     Right *TreeNode
  * }
  */
+
 func isBalanced(root *TreeNode) bool {
-
-	max := func(a, b int) int {
-		if a > b {
-			return a
-		}
-		return b
-	}
-
 	if root == nil {
 		return true
 	}
 
-	var getDepth func(*TreeNode, int) int
-	getDepth = func(root *TreeNode, depth int) int {
-		if root == nil {
-			return 0
+	var getHigh func(*TreeNode) int
+	getHigh = func(n *TreeNode) int {
+		if n.Left == nil && n.Right == nil {
+			return 1
 		}
-
-		ld := getDepth(root.Left, depth+1)
-		rd := getDepth(root.Right, depth+1)
-		if ld == -1 || rd == -1 {
+		var l, r int
+		if n.Left != nil {
+			l = getHigh(n.Left)
+		}
+		if n.Right != nil {
+			r = getHigh(n.Right)
+		}
+		if l == -1 || r == -1 {
 			return -1
 		}
-		diff := ld - rd
-		if diff > 1 || diff < -1 {
-			return -1
-		}
 
-		return max(ld, rd) + 1
+		if l > r {
+			if l-r > 1 {
+				return -1
+			}
+			return l + 1
+		} else {
+			if r-l > 1 {
+				return -1
+			}
+			return r + 1
+		}
 	}
-	return getDepth(root, 1) != -1
+
+	if getHigh(root) == -1 {
+		return false
+	}
+	return true
+
 }
 
 // @lc code=end
