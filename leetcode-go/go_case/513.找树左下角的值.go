@@ -1,7 +1,5 @@
 package go_case
 
-import "container/list"
-
 /*
  * @lc app=leetcode.cn id=513 lang=golang
  *
@@ -91,27 +89,54 @@ import "container/list"
 // }
 
 // BFS
-func findBottomLeftValue(root *TreeNode) int {
-	var gradation int
-	queue := list.New()
+// func findBottomLeftValue(root *TreeNode) int {
+// 	var gradation int
+// 	queue := list.New()
 
-	queue.PushBack(root)
-	for queue.Len() > 0 {
-		length := queue.Len()
-		for i := 0; i < length; i++ {
-			node := queue.Remove(queue.Front()).(*TreeNode)
+// 	queue.PushBack(root)
+// 	for queue.Len() > 0 {
+// 		length := queue.Len()
+// 		for i := 0; i < length; i++ {
+// 			node := queue.Remove(queue.Front()).(*TreeNode)
+// 			if i == 0 {
+// 				gradation = node.Val
+// 			}
+// 			if node.Left != nil {
+// 				queue.PushBack(node.Left)
+// 			}
+// 			if node.Right != nil {
+// 				queue.PushBack(node.Right)
+// 			}
+// 		}
+// 	}
+// 	return gradation
+// }
+
+func findBottomLeftValue(root *TreeNode) int {
+	res := 0
+
+	q := []*TreeNode{root}
+
+	for len(q) > 0 {
+		amoutl := len(q)
+
+		for i := 0; i < amoutl; i++ {
+			node := q[0]
+			q = q[1:]
 			if i == 0 {
-				gradation = node.Val
+				res = node.Val
 			}
+
 			if node.Left != nil {
-				queue.PushBack(node.Left)
+				q = append(q, node.Left)
 			}
 			if node.Right != nil {
-				queue.PushBack(node.Right)
+				q = append(q, node.Right)
 			}
 		}
 	}
-	return gradation
+
+	return res
 }
 
 // @lc code=end
