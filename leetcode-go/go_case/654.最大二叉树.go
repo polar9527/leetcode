@@ -73,32 +73,30 @@ package go_case
  * }
  */
 func constructMaximumBinaryTree(nums []int) *TreeNode {
-
-	var build func([]int) *TreeNode
-	build = func(arr []int) *TreeNode {
-		if len(arr) == 1 {
-			return &TreeNode{Val: arr[0]}
-		}
-		var root *TreeNode
-		maxindex := 0
-		for i, v := range arr {
-			if v > arr[maxindex] {
-				maxindex = i
-			}
-		}
-
-		root = &TreeNode{Val: arr[maxindex]}
-		if maxindex > 0 {
-			root.Left = build(arr[:maxindex])
-		}
-		if maxindex < len(arr)-1 {
-			root.Right = build(arr[maxindex+1:])
-		}
-
-		return root
+	if len(nums) == 0 {
+		return nil
+	}
+	if len(nums) == 1 {
+		return &TreeNode{Val: nums[0]}
 	}
 
-	return build(nums)
+	var maxIndex int
+	max := -1
+	for i, v := range nums {
+		if v > max {
+			max = v
+			maxIndex = i
+		}
+	}
+	root := &TreeNode{Val: max}
+	if maxIndex > 0 {
+		root.Left = constructMaximumBinaryTree(nums[:maxIndex])
+	}
+	if maxIndex < len(nums)-1 {
+		root.Right = constructMaximumBinaryTree(nums[maxIndex+1:])
+	}
+
+	return root
 }
 
 // func constructMaximumBinaryTree(nums []int) *TreeNode {
