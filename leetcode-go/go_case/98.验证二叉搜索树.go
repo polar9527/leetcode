@@ -1,5 +1,9 @@
 package go_case
 
+import (
+	"container/list"
+)
+
 /*
  * @lc app=leetcode.cn id=98 lang=golang
  *
@@ -94,35 +98,73 @@ package go_case
 // 		queue.Remove(queue.Front())
 // 	}
 
-// 	return true
+//		return true
+//	}
+//
+// recursive
+// func isValidBST(root *TreeNode) bool {
+// 	if root == nil {
+// 		return false
+// 	}
+
+// 	var dfs func(*TreeNode) bool
+// 	max := math.MinInt
+// 	dfs = func(n *TreeNode) bool {
+// 		if n == nil {
+// 			return true
+// 		}
+
+// 		if !dfs(n.Left) {
+// 			return false
+// 		}
+
+// 		if n.Val > max {
+// 			max = n.Val
+// 		} else {
+// 			return false
+// 		}
+// 		if !dfs(n.Right) {
+// 			return false
+// 		}
+// 		return true
+// 	}
+// 	return dfs(root)
 // }
 
+// iterative
 func isValidBST(root *TreeNode) bool {
+
 	if root == nil {
 		return false
 	}
-	var preNode *TreeNode
-
-	var dfs func(*TreeNode) bool
-	dfs = func(node *TreeNode) bool {
-		if node == nil {
-			return true
+	stack := list.New()
+	stack.PushBack(root)
+	var node, preNode *TreeNode
+	for stack.Len() > 0 {
+		cur := stack.Back()
+		stack.Remove(cur)
+		if cur.Value == nil {
+			cur = stack.Back()
+			stack.Remove(cur)
+			node = cur.Value.(*TreeNode)
+			if preNode != nil && preNode.Val >= node.Val {
+				return false
+			}
+			preNode = node
+		} else {
+			node = cur.Value.(*TreeNode)
+			if node.Right != nil {
+				stack.PushBack(node.Right)
+			}
+			stack.PushBack(node)
+			stack.PushBack(nil)
+			if node.Left != nil {
+				stack.PushBack(node.Left)
+			}
 		}
-
-		if !dfs(node.Left) {
-			return false
-		}
-
-		if preNode != nil && preNode.Val >= node.Val {
-			return false
-		}
-		preNode = node
-		if !dfs(node.Right) {
-			return false
-		}
-		return true
 	}
-	return dfs(root)
+
+	return true
 }
 
 // @lc code=end
