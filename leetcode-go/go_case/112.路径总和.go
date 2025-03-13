@@ -148,14 +148,18 @@ func hasPathSum(root *TreeNode, targetSum int) bool {
 		if sum == targetSum && n.Left == nil && n.Right == nil {
 			return true
 		}
-		var l, r bool
 		if n.Left != nil {
-			l = bfs(n.Left, sum)
+			if bfs(n.Left, sum) {
+				return true
+			}
+
 		}
 		if n.Right != nil {
-			r = bfs(n.Right, sum)
+			if bfs(n.Right, sum) {
+				return true
+			}
 		}
-		return l || r
+		return false
 	}
 	return bfs(root, 0)
 }
