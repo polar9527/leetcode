@@ -1,6 +1,9 @@
 package go_case
 
-import "math"
+import (
+	"container/list"
+	"math"
+)
 
 /*
  * @lc app=leetcode.cn id=530 lang=golang
@@ -64,22 +67,33 @@ import "math"
  */
 func getMinimumDifference(root *TreeNode) int {
 	var preNode *TreeNode
-	ans := math.MaxInt32
-
-	var dfs func(*TreeNode)
-	dfs = func(node *TreeNode) {
-		if node == nil {
-			return
+	stack := list.New()
+	sub := math.MaxInt
+	stack.PushBack(root)
+	for stack.Len() > 0 {
+		cur := stack.Back()
+		stack.Remove(cur)
+		if cur.Value == nil {
+			cur := stack.Back()
+			stack.Remove(cur)
+			node := cur.Value.(*TreeNode)
+			if preNode != nil && sub > node.Val-preNode.Val {
+				sub = node.Val - preNode.Val
+			}
+			preNode = node
+		} else {
+			node := cur.Value.(*TreeNode)
+			if node.Right != nil {
+				stack.PushBack(node.Right)
+			}
+			stack.PushBack(node)
+			stack.PushBack(nil)
+			if node.Left != nil {
+				stack.PushBack(node.Left)
+			}
 		}
-		dfs(node.Left)
-		if preNode != nil && node.Val-preNode.Val < ans {
-			ans = node.Val - preNode.Val
-		}
-		preNode = node
-		dfs(node.Right)
 	}
-	dfs(root)
-	return ans
+	return sub
 }
 
 // @lc code=end
