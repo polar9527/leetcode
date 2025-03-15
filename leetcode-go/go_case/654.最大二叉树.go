@@ -1,5 +1,7 @@
 package go_case
 
+import "math"
+
 /*
  * @lc app=leetcode.cn id=654 lang=golang
  *
@@ -72,32 +74,6 @@ package go_case
  *     Right *TreeNode
  * }
  */
-func constructMaximumBinaryTree(nums []int) *TreeNode {
-	if len(nums) == 0 {
-		return nil
-	}
-	if len(nums) == 1 {
-		return &TreeNode{Val: nums[0]}
-	}
-
-	var maxIndex int
-	max := -1
-	for i, v := range nums {
-		if v > max {
-			max = v
-			maxIndex = i
-		}
-	}
-	root := &TreeNode{Val: max}
-	if maxIndex > 0 {
-		root.Left = constructMaximumBinaryTree(nums[:maxIndex])
-	}
-	if maxIndex < len(nums)-1 {
-		root.Right = constructMaximumBinaryTree(nums[maxIndex+1:])
-	}
-
-	return root
-}
 
 // func constructMaximumBinaryTree(nums []int) *TreeNode {
 //     if len(nums) == 0 {
@@ -121,5 +97,33 @@ func constructMaximumBinaryTree(nums []int) *TreeNode {
 //     }
 //     return
 // }
+
+func constructMaximumBinaryTree(nums []int) *TreeNode {
+
+	if len(nums) == 0 {
+		return nil
+	}
+	if len(nums) == 1 {
+		return &TreeNode{Val: nums[0]}
+	}
+
+	maxNum := math.MinInt
+	index := 0
+	for i, n := range nums {
+		if n > maxNum {
+			maxNum = n
+			index = i
+		}
+	}
+	var l, r *TreeNode
+	l = constructMaximumBinaryTree(nums[:index])
+	r = constructMaximumBinaryTree(nums[index+1:])
+
+	return &TreeNode{
+		Val:   nums[index],
+		Left:  l,
+		Right: r,
+	}
+}
 
 // @lc code=end
