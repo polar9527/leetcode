@@ -68,20 +68,47 @@ package go_case
  *     Right *TreeNode
  * }
  */
+// func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+// 	if root == nil || root == p || root == q {
+// 		return root
+// 	}
+// 	left := lowestCommonAncestor(root.Left, p, q)
+// 	right := lowestCommonAncestor(root.Right, p, q)
+// 	if left == nil {
+// 		return right
+// 	}
+// 	if right == nil {
+// 		return left
+// 	}
+// 	return root
+
+// }
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-	if root == nil || root == p || root == q {
+	if root == nil {
 		return root
 	}
-	left := lowestCommonAncestor(root.Left, p, q)
-	right := lowestCommonAncestor(root.Right, p, q)
-	if left == nil {
-		return right
+	if root == q || root == p {
+		return root
 	}
-	if right == nil {
-		return left
-	}
-	return root
 
+	l := lowestCommonAncestor(root.Left, p, q)
+	r := lowestCommonAncestor(root.Right, p, q)
+
+	if l == nil && r != nil {
+		return r
+	}
+	if l != nil && r == nil {
+		return l
+	}
+
+	// if l == nil && r == nil {
+	// 	return nil
+	// }
+
+	if l != nil && r != nil {
+		return root
+	}
+	return nil
 }
 
 // @lc code=end
