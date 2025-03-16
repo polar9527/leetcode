@@ -57,17 +57,31 @@ package go_case
  *     Right *TreeNode
  * }
  */
+// func sortedArrayToBST(nums []int) *TreeNode {
+// 	if len(nums) == 0 {
+// 		return nil
+// 	}
+// 	pivot := len(nums) / 2
+
+// 	root := &TreeNode{
+// 		Val: nums[pivot],
+// 	}
+// 	root.Left = sortedArrayToBST(nums[:pivot])
+// 	root.Right = sortedArrayToBST(nums[pivot+1:])
+// 	return root
+// }
+
 func sortedArrayToBST(nums []int) *TreeNode {
 	if len(nums) == 0 {
 		return nil
 	}
-	pivot := len(nums) / 2
-
+	l, r := 0, len(nums)
+	mid := l + (r-l)>>1
 	root := &TreeNode{
-		Val: nums[pivot],
+		Val:   nums[mid],
+		Left:  sortedArrayToBST(nums[:mid]),
+		Right: sortedArrayToBST(nums[mid+1:]),
 	}
-	root.Left = sortedArrayToBST(nums[:pivot])
-	root.Right = sortedArrayToBST(nums[pivot+1:])
 	return root
 }
 
