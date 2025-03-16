@@ -59,30 +59,48 @@ package go_case
  *     Right *TreeNode
  * }
  */
+// func trimBST(root *TreeNode, low int, high int) *TreeNode {
+// 	if root == nil {
+// 		return nil
+// 	}
+
+// 	// root.Val < low
+// 	if root.Val < low {
+// 		if root.Right != nil {
+// 			return trimBST(root.Right, low, high)
+// 		}
+// 		return nil
+// 	}
+// 	// high < root.Val
+// 	if high < root.Val {
+// 		if root.Left != nil {
+// 			return trimBST(root.Left, low, high)
+// 		}
+// 		return nil
+// 	}
+// 	// low <= root.Val <= high
+// 	root.Left = trimBST(root.Left, low, high)
+// 	root.Right = trimBST(root.Right, low, high)
+// 	return root
+
+// }
+
 func trimBST(root *TreeNode, low int, high int) *TreeNode {
+
 	if root == nil {
-		return nil
+		return root
 	}
 
-	// root.Val < low
 	if root.Val < low {
-		if root.Right != nil {
-			return trimBST(root.Right, low, high)
-		}
-		return nil
+		return trimBST(root.Right, low, high)
 	}
-	// high < root.Val
-	if high < root.Val {
-		if root.Left != nil {
-			return trimBST(root.Left, low, high)
-		}
-		return nil
+
+	if root.Val > high {
+		return trimBST(root.Left, low, high)
 	}
-	// low <= root.Val <= high
 	root.Left = trimBST(root.Left, low, high)
 	root.Right = trimBST(root.Right, low, high)
 	return root
-
 }
 
 // @lc code=end
