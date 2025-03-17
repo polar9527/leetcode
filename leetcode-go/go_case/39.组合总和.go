@@ -61,13 +61,41 @@ package go_case
  */
 
 // @lc code=start
+// func combinationSum(candidates []int, target int) [][]int {
+// 	var res [][]int
+// 	var path []int
+
+// 	var backtracing func(int, int)
+
+// 	backtracing = func(startIndex, sum int) {
+// 		if sum > target {
+// 			return
+// 		}
+
+// 		if sum == target {
+// 			res = append(res, append([]int{}, path...))
+// 			return
+// 		}
+
+// 		for i := startIndex; i < len(candidates); i++ {
+
+//				if sum+candidates[i] > target {
+//					continue
+//				}
+//				path = append(path, candidates[i])
+//				backtracing(i, sum+candidates[i])
+//				path = path[:len(path)-1]
+//			}
+//		}
+//		backtracing(0, 0)
+//		return res
+//	}
 func combinationSum(candidates []int, target int) [][]int {
+
 	var res [][]int
-	var path []int
-
-	var backtracing func(int, int)
-
-	backtracing = func(startIndex, sum int) {
+	path := []int{}
+	var bt func(int, int)
+	bt = func(sum int, start int) {
 		if sum > target {
 			return
 		}
@@ -76,18 +104,13 @@ func combinationSum(candidates []int, target int) [][]int {
 			res = append(res, append([]int{}, path...))
 			return
 		}
-
-		for i := startIndex; i < len(candidates); i++ {
-
-			if sum+candidates[i] > target {
-				continue
-			}
+		for i := start; i < len(candidates); i++ {
 			path = append(path, candidates[i])
-			backtracing(i, sum+candidates[i])
+			bt(sum+candidates[i], i)
 			path = path[:len(path)-1]
 		}
 	}
-	backtracing(0, 0)
+	bt(0, 0)
 	return res
 }
 
