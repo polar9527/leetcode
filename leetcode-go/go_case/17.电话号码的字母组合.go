@@ -56,35 +56,70 @@ package go_case
  */
 
 // @lc code=start
+// func letterCombinations(digits string) []string {
+// 	if len(digits) == 0 {
+// 		return []string{}
+// 	}
+
+// 	var s []string
+// 	var path []byte
+// 	letterMap := []string{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}
+
+// 	var backtracing func(int)
+
+// 	backtracing = func(index int) {
+// 		if len(path) == len(digits) {
+// 			tmp := string(path)
+// 			s = append(s, tmp)
+// 			return
+// 		}
+
+// 		letters := letterMap[digits[index]-'0']
+// 		for i := 0; i < len(letters); i++ {
+// 			path = append(path, letters[i])
+// 			backtracing(index + 1)
+// 			path = path[:len(path)-1]
+// 		}
+
+// 	}
+// 	backtracing(0)
+// 	return s
+
+// }
+
 func letterCombinations(digits string) []string {
 	if len(digits) == 0 {
 		return []string{}
 	}
-
-	var s []string
-	var path []byte
-	letterMap := []string{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}
-
-	var backtracing func(int)
-
-	backtracing = func(index int) {
-		if len(path) == len(digits) {
-			tmp := string(path)
-			s = append(s, tmp)
+	ls := len(digits)
+	lm := []string{
+		"",
+		"",
+		"abc",
+		"def",
+		"ghi",
+		"jkl",
+		"mno",
+		"pqrs",
+		"tuv",
+		"wxyz",
+	}
+	var res []string
+	var bt func(int, []byte)
+	bt = func(start int, path []byte) {
+		if ls == start {
+			res = append(res, string(append([]byte{}, path...)))
 			return
 		}
-
-		letters := letterMap[digits[index]-'0']
-		for i := 0; i < len(letters); i++ {
-			path = append(path, letters[i])
-			backtracing(index + 1)
+		charsInMap := []byte(lm[digits[start]-'0'])
+		for _, c := range charsInMap {
+			path = append(path, c)
+			bt(start+1, path)
 			path = path[:len(path)-1]
 		}
-
 	}
-	backtracing(0)
-	return s
-
+	bt(0, []byte{})
+	return res
 }
 
 // @lc code=end
