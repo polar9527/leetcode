@@ -55,21 +55,19 @@ package go_case
 // @lc code=start
 func combine(n int, k int) [][]int {
 	var res [][]int
-	var path []int
-	var backtracing func(int)
-	backtracing = func(startIndex int) {
+	var bt func(int, []int)
+	bt = func(start int, path []int) {
 		if len(path) == k {
 			res = append(res, append([]int{}, path...))
 			return
 		}
-		for i := startIndex; i <= n-(k-len(path))+1; i++ {
+		for i := start; i <= n-(k-len(path))+1; i++ {
 			path = append(path, i)
-			backtracing(i + 1)
+			bt(i+1, path)
 			path = path[:len(path)-1]
 		}
 	}
-
-	backtracing(1)
+	bt(1, []int{})
 	return res
 }
 
