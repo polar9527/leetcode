@@ -53,28 +53,54 @@ import "sort"
  */
 
 // @lc code=start
-func subsetsWithDup(nums []int) [][]int {
-	var res [][]int
-	var track []int
+// func subsetsWithDup(nums []int) [][]int {
+// 	var res [][]int
+// 	var track []int
 
-	var backtracing func([]int, int, []int)
-	backtracing = func(nums []int, startIndex int, track []int) {
-		res = append(res, append([]int{}, track...))
-		// if startIndex == len(nums) {
-		//     return
-		// }
-		for i := startIndex; i < len(nums); i++ {
-			if i > startIndex && nums[i] == nums[i-1] {
+// 	var backtracing func([]int, int, []int)
+// 	backtracing = func(nums []int, startIndex int, track []int) {
+// 		res = append(res, append([]int{}, track...))
+// 		// if startIndex == len(nums) {
+// 		//     return
+// 		// }
+// 		for i := startIndex; i < len(nums); i++ {
+// 			if i > startIndex && nums[i] == nums[i-1] {
+// 				continue
+// 			}
+// 			track = append(track, nums[i])
+// 			backtracing(nums, i+1, track)
+// 			track = track[:len(track)-1]
+// 		}
+// 	}
+
+// 	sort.Ints(nums)
+// 	backtracing(nums, 0, track)
+// 	return res
+// }
+
+func subsetsWithDup(nums []int) [][]int {
+	l := len(nums)
+	sort.Ints(nums)
+
+	var res [][]int
+	var path []int
+
+	var bt func(int)
+	bt = func(start int) {
+		res = append(res, append([]int{}, path...))
+		if start >= l {
+			return
+		}
+		for i := start; i < l; i++ {
+			if i > start && nums[i] == nums[i-1] {
 				continue
 			}
-			track = append(track, nums[i])
-			backtracing(nums, i+1, track)
-			track = track[:len(track)-1]
+			path = append(path, nums[i])
+			bt(i + 1)
+			path = path[:len(path)-1]
 		}
 	}
-
-	sort.Ints(nums)
-	backtracing(nums, 0, track)
+	bt(0)
 	return res
 }
 
