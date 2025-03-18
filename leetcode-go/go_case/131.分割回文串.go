@@ -45,12 +45,47 @@ package go_case
  */
 
 // @lc code=start
+// func partition(s string) [][]string {
+// 	var res [][]string
+// 	var path []string
+// 	var backtracing func(int)
+// 	isPalindrome := func(s string, start, end int) bool {
+// 		for start < end {
+// 			if s[start] != s[end] {
+// 				return false
+// 			}
+// 			start++
+// 			end--
+// 		}
+// 		return true
+// 	}
+
+// 	backtracing = func(startIndex int) {
+// 		if startIndex >= len(s) {
+// 			res = append(res, append([]string{}, path...))
+// 			return
+// 		}
+
+// 		for i := startIndex; i < len(s); i++ {
+// 			if isPalindrome(s, startIndex, i) {
+// 				path = append(path, s[startIndex:i+1])
+// 				backtracing(i + 1)
+// 				path = path[:len(path)-1]
+// 			}
+// 		}
+
+// 	}
+
+// 	backtracing(0)
+// 	return res
+// }
+
 func partition(s string) [][]string {
-	var res [][]string
-	var path []string
-	var backtracing func(int)
-	isPalindrome := func(s string, start, end int) bool {
-		for start < end {
+	n := len(s)
+	res := [][]string{}
+	// 左闭右闭
+	isPal := func(s string, start, end int) bool {
+		for start <= end {
 			if s[start] != s[end] {
 				return false
 			}
@@ -59,24 +94,21 @@ func partition(s string) [][]string {
 		}
 		return true
 	}
-
-	backtracing = func(startIndex int) {
-		if startIndex >= len(s) {
+	var bt func(int, []string)
+	bt = func(start int, path []string) {
+		if start == n {
 			res = append(res, append([]string{}, path...))
-			return
 		}
-
-		for i := startIndex; i < len(s); i++ {
-			if isPalindrome(s, startIndex, i) {
-				path = append(path, s[startIndex:i+1])
-				backtracing(i + 1)
+		for i := start; i < n; i++ {
+			if isPal(s, start, i) {
+				path = append(path, s[start:i+1])
+				bt(i+1, path)
 				path = path[:len(path)-1]
 			}
 		}
-
 	}
 
-	backtracing(0)
+	bt(0, []string{})
 	return res
 }
 
