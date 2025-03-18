@@ -47,33 +47,59 @@ package go_case
  */
 
 // @lc code=start
+// func findSubsequences(nums []int) [][]int {
+
+// 	var res [][]int
+// 	var path []int
+
+// 	var backtracing func(int)
+// 	backtracing = func(startIndex int) {
+// 		if len(path) >= 2 {
+// 			tmp := make([]int, len(path))
+// 			copy(tmp, path)
+// 			res = append(res, tmp)
+// 		}
+// 		used := make(map[int]bool)
+// 		for i := startIndex; i < len(nums); i++ {
+// 			if used[nums[i]] {
+// 				continue
+// 			}
+// 			if len(path) == 0 || path[len(path)-1] <= nums[i] {
+// 				used[nums[i]] = true
+// 				path = append(path, nums[i])
+// 				backtracing(i + 1)
+// 				path = path[:len(path)-1]
+// 			}
+// 		}
+// 	}
+
+// 	backtracing(0)
+// 	return res
+// }
+
 func findSubsequences(nums []int) [][]int {
 
 	var res [][]int
 	var path []int
-
-	var backtracing func(int)
-	backtracing = func(startIndex int) {
-		if len(path) >= 2 {
-			tmp := make([]int, len(path))
-			copy(tmp, path)
-			res = append(res, tmp)
+	l := len(nums)
+	var bt func(int)
+	bt = func(start int) {
+		if len(path) > 1 {
+			res = append(res, append([]int{}, path...))
 		}
+
 		used := make(map[int]bool)
-		for i := startIndex; i < len(nums); i++ {
-			if used[nums[i]] {
+		for i := start; i < l; i++ {
+			if (len(path) > 0 && nums[i] < path[len(path)-1]) || used[nums[i]] {
 				continue
 			}
-			if len(path) == 0 || path[len(path)-1] <= nums[i] {
-				used[nums[i]] = true
-				path = append(path, nums[i])
-				backtracing(i + 1)
-				path = path[:len(path)-1]
-			}
+			used[nums[i]] = true
+			path = append(path, nums[i])
+			bt(i + 1)
+			path = path[:len(path)-1]
 		}
 	}
-
-	backtracing(0)
+	bt(0)
 	return res
 }
 
