@@ -65,49 +65,90 @@ import (
  */
 
 // @lc code=start
-func restoreIpAddresses(s string) []string {
-	var res []string
-	var path []string
+// func restoreIpAddresses(s string) []string {
+// 	var res []string
+// 	var path []string
 
+// 	isValidNum := func(s string) bool {
+// 		num, _ := strconv.Atoi(s)
+// 		if num >= 0 && num <= 255 {
+// 			return true
+// 		}
+// 		return false
+// 	}
+
+// 	var backtracing func(int)
+// 	backtracing = func(startIndex int) {
+
+// 		if len(path) == 4 {
+// 			if startIndex == len(s) {
+// 				str := strings.Join(path, ".")
+// 				res = append(res, str)
+// 			}
+// 			return
+// 		}
+
+// 		for i := startIndex; i < len(s); i++ {
+// 			// 0开头的话，就不需要继续循环来遍历 0x 和 0xx 的情况了
+// 			if i-startIndex > 0 && s[startIndex] == '0' {
+// 				break
+// 			}
+// 			field := s[startIndex : i+1]
+// 			// 出现无效数字，这一层也不需要继续遍历了
+// 			if !isValidNum(field) {
+// 				break
+// 			}
+
+// 			path = append(path, field)
+// 			backtracing(i + 1)
+// 			path = path[:len(path)-1]
+// 		}
+
+// 	}
+// 	backtracing(0)
+// 	return res
+
+// }
+
+func restoreIpAddresses(s string) []string {
 	isValidNum := func(s string) bool {
-		num, _ := strconv.Atoi(s)
+		num, err := strconv.Atoi(s)
+		if err != nil {
+			return false
+		}
 		if num >= 0 && num <= 255 {
 			return true
 		}
 		return false
 	}
-
-	var backtracing func(int)
-	backtracing = func(startIndex int) {
-
+	var res []string
+	l := len(s)
+	path := []string{}
+	var bt func(int)
+	bt = func(start int) {
 		if len(path) == 4 {
-			if startIndex == len(s) {
-				str := strings.Join(path, ".")
-				res = append(res, str)
+			if start == l {
+				res = append(res, strings.Join(path, "."))
 			}
 			return
 		}
 
-		for i := startIndex; i < len(s); i++ {
-			// 0开头的话，就不需要继续循环来遍历 0x 和 0xx 的情况了
-			if i-startIndex > 0 && s[startIndex] == '0' {
+		for i := start; i < l; i++ {
+			field := s[start : i+1]
+			if len(field) > 1 && field[0] == '0' {
 				break
 			}
-			field := s[startIndex : i+1]
-			// 出现无效数字，这一层也不需要继续遍历了
-			if !isValidNum(field) {
+			if isValidNum(field) {
+				path = append(path, field)
+				bt(i + 1)
+				path = path[:len(path)-1]
+			} else {
 				break
 			}
-
-			path = append(path, field)
-			backtracing(i + 1)
-			path = path[:len(path)-1]
 		}
-
 	}
-	backtracing(0)
+	bt(0)
 	return res
-
 }
 
 // @lc code=end
