@@ -48,24 +48,46 @@ package go_case
  */
 
 // @lc code=start
+// func subsets(nums []int) [][]int {
+// 	var res [][]int
+// 	var backtracing func([]int, int, []int)
+// 	backtracing = func(nums []int, startindex int, path []int) {
+// 		res = append(res, append([]int{}, path...))
+// 		// if (startindex >= len(nums)){
+// 		// 	return
+// 		// }
+// 		for i := startindex; i < len(nums); i++ {
+// 			path = append(path, nums[i])
+// 			backtracing(nums, i+1, path)
+// 			path = path[:len(path)-1]
+// 		}
+// 	}
+// 	path := []int{}
+// 	backtracing(nums, 0, path)
+// 	return res
+
+// }
+
 func subsets(nums []int) [][]int {
+	l := len(nums)
 	var res [][]int
-	var backtracing func([]int, int, []int)
-	backtracing = func(nums []int, startindex int, path []int) {
+	var path []int
+	var bt func(int)
+	bt = func(start int) {
 		res = append(res, append([]int{}, path...))
-		// if (startindex >= len(nums)){
-		// 	return
-		// }
-		for i := startindex; i < len(nums); i++ {
+		if start >= l {
+			return
+		}
+
+		for i := start; i < l; i++ {
 			path = append(path, nums[i])
-			backtracing(nums, i+1, path)
+			bt(i + 1)
 			path = path[:len(path)-1]
 		}
 	}
-	path := []int{}
-	backtracing(nums, 0, path)
-	return res
 
+	bt(0)
+	return res
 }
 
 // @lc code=end
