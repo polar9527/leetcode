@@ -60,33 +60,61 @@ import "sort"
  */
 
 // @lc code=start
+// func combinationSum2(candidates []int, target int) [][]int {
+// 	var res [][]int
+// 	var path []int
+
+// 	var backtracing func(startIndex int, sum int)
+// 	backtracing = func(startIndex int, sum int) {
+// 		if sum == target {
+// 			res = append(res, append([]int{}, path...))
+// 			return
+// 		}
+// 		if sum > target {
+// 			return
+// 		}
+// 		for i := startIndex; i < len(candidates); i++ {
+// 			if i > startIndex && candidates[i] == candidates[i-1] {
+// 				continue
+// 			}
+// 			path = append(path, candidates[i])
+// 			backtracing(i+1, sum+candidates[i])
+// 			path = path[:len(path)-1]
+// 		}
+// 	}
+
+// 	sort.Ints(candidates)
+// 	backtracing(0, 0)
+// 	return res
+
+// }
+
 func combinationSum2(candidates []int, target int) [][]int {
 	var res [][]int
-	var path []int
-
-	var backtracing func(startIndex int, sum int)
-	backtracing = func(startIndex int, sum int) {
+	sort.Ints(candidates)
+	l := len(candidates)
+	path := []int{}
+	var bt func(int, int)
+	bt = func(start int, sum int) {
+		if sum > target {
+			return
+		}
 		if sum == target {
 			res = append(res, append([]int{}, path...))
 			return
 		}
-		if sum > target {
-			return
-		}
-		for i := startIndex; i < len(candidates); i++ {
-			if i > startIndex && candidates[i] == candidates[i-1] {
+		for i := start; i < l; i++ {
+			if i > start && candidates[i] == candidates[i-1] {
 				continue
 			}
 			path = append(path, candidates[i])
-			backtracing(i+1, sum+candidates[i])
+			bt(i+1, sum+candidates[i])
 			path = path[:len(path)-1]
 		}
 	}
 
-	sort.Ints(candidates)
-	backtracing(0, 0)
+	bt(0, 0)
 	return res
-
 }
 
 // @lc code=end
