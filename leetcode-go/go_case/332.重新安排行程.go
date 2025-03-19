@@ -1,5 +1,7 @@
 package go_case
 
+import "sort"
+
 /*
  * @lc app=leetcode.cn id=332 lang=golang
  *
@@ -61,47 +63,69 @@ package go_case
  */
 
 // @lc code=start
+type SortedMap struct {
+	toes   []string       // 有序键序列
+	values map[string]int // 实际键值对
+}
+
+func NewSortedMap() *SortedMap {
+	return &SortedMap{
+		toes:   []string{},
+		values: make(map[string]int),
+	}
+}
+
+func (s *SortedMap) Set(to string) {
+	if _, ok := s.values[to]; !ok {
+		s.toes = append(s.toes, to)
+	}
+	s.values[to]++
+}
+
+func (s *SortedMap) Sort() {
+	sort.Sort(sort.StringSlice(s.toes))
+	return
+}
+
 func findItinerary(tickets [][]string) []string {
 
-	var res []string
-	var path []string
-	ticketUsed := make([]bool, len(tickets))
-	for i, _ := range ticketUsed {
-		ticketUsed[i] = false
+	targetsMap := make(map[string]*SortedMap)
+	for _, pair := range tickets {
+		from, to := pair[0], pair[1]
+		if _, ok := targetsMap[from]; !ok {
+			targetsMap[from] = NewSortedMap()
+		}
+		targetsMap[from].Set(to)
+	}
+	for k, _ := range targetsMap {
+		targetsMap[k].Sort()
 	}
 
-	var backtracing func(string) bool
-
-	backtracing = func(cur string) bool {
-		if len(path) == len(tickets) {
-			res = append([]string{}, path...)
-			res = append([]string{}, cur)
+	res := []string{"JFK"}
+	var bt func() bool
+	bt = func() bool {
+		if len(res) == len(tickets)+1 {
 			return true
 		}
-		for i, ticket := range tickets {
-			// if ticket 被使用过 则continue
-			if ticketUsed[i] {
-				continue
-			}
-			if ticket[0] == cur {
-				path = append(path, ticket[0])
-				ticketUsed[i] = true
-				if backtracing(ticket[1]) {
-					return true
+		start := res[len(res)-1]
+		destinations := targetsMap[start]
+		if destinations != nil {
+			for _, to := range destinations.toes {
+				if destinations.values[to] > 0 {
+					destinations.values[to]--
+					res = append(res, to)
+					if bt() {
+						return true
+					}
+					res = res[:len(res)-1]
+					destinations.values[to]++
 				}
-				ticketUsed[i] = false
-				path = path[:len(path)-1]
-
 			}
-
 		}
 		return false
-
 	}
-
-	backtracing("JFK")
+	bt()
 	return res
-
 }
 
 // @lc code=end
