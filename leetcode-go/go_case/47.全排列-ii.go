@@ -51,36 +51,33 @@ import "sort"
 
 // @lc code=start
 func permuteUnique(nums []int) [][]int {
+	sort.Ints(nums)
+	l := len(nums)
 	var res [][]int
 	var path []int
-	var used = make([]bool, len(nums))
-
-	var backtracing func(int)
-	backtracing = func(start int) {
-		if start == len(nums) {
+	used := make([]bool, l)
+	var bt func()
+	bt = func() {
+		if len(path) == l {
 			res = append(res, append([]int{}, path...))
 			return
 		}
-		for i := 0; i < len(nums); i++ {
-			// 同层去重
-			if i > 0 && nums[i] == nums[i-1] && !used[i-1] {
+		for i := 0; i < l; i++ {
+			if i > 0 && nums[i] == nums[i-1] && used[i-1] {
 				continue
 			}
-			// 树枝去重
+
 			if !used[i] {
 				used[i] = true
 				path = append(path, nums[i])
-				backtracing(start + 1)
+				bt()
 				path = path[:len(path)-1]
 				used[i] = false
 			}
-
 		}
 	}
-	sort.Ints(nums)
-	backtracing(0)
+	bt()
 	return res
-
 }
 
 // @lc code=end
