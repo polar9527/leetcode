@@ -19,6 +19,28 @@ func quickSort(nums []int, pFunc partition) {
 	quickSort(nums[pivot+1:], pFunc)
 }
 
+// 分区函数（核心逻辑）
+func partitionNonStable(arr []int) int {
+	low := 0
+	high := len(arr) - 1
+	// 随机选择基准（避免最坏情况）
+	randomIndex := rand.Intn(high-low+1) + low
+	arr[high], arr[randomIndex] = arr[randomIndex], arr[high]
+	pivot := arr[high]
+
+	// 双指针法分区
+	i := low // 指向比基准小的最后一个元素位置
+	for j := low; j < high; j++ {
+		if arr[j] < pivot {
+			arr[i], arr[j] = arr[j], arr[i] // 交换确保i左侧都小于基准
+			i++
+		}
+	}
+	// 将基准放到正确位置
+	arr[i], arr[high] = arr[high], arr[i]
+	return i
+}
+
 // lazy switch
 func partitionLazySwitch(nums []int) int {
 	l := len(nums)
