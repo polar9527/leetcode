@@ -55,58 +55,58 @@ import "strings"
 
 // @lc code=start
 func solveNQueens(n int) [][]string {
-	board := make([][]string, n)
+	isValid := func(row, col int, b [][]string) bool {
+		// col
+		for r := row; r >= 0; r-- {
+			if b[r][col] == "Q" {
+				return false
+			}
+		}
+		// diagonal
+		for r, l := row-1, col-1; r >= 0 && l >= 0; r, l = r-1, l-1 {
+			if b[r][l] == "Q" {
+				return false
+			}
+		}
+		for r, l := row-1, col+1; r >= 0 && l < n; r, l = r-1, l+1 {
+			if b[r][l] == "Q" {
+				return false
+			}
+		}
+		return true
+	}
 
+	board := make([][]string, n)
 	for i := 0; i < n; i++ {
 		board[i] = make([]string, n)
 		for j := 0; j < n; j++ {
 			board[i][j] = "."
 		}
 	}
+
 	var res [][]string
-	var backtracing func(int)
-	backtracing = func(curRow int) {
+	var bt func(int)
+	bt = func(curRow int) {
 		if curRow == n {
-			tmp := []string{}
-			for _, v := range board {
-				tmp = append(tmp, strings.Join(v, ""))
+			var solution []string
+			for _, row := range board {
+				solution = append(solution, strings.Join(row, ""))
 			}
-			res = append(res, tmp)
+			res = append(res, solution)
 			return
 		}
 
 		for col := 0; col < n; col++ {
-			if isValidPlacement(curRow, col, board) {
-				// place
+			if isValid(curRow, col, board) {
 				board[curRow][col] = "Q"
-				backtracing(curRow + 1)
+				bt(curRow + 1)
 				board[curRow][col] = "."
 			}
 		}
 	}
-	backtracing(0)
-	return res
-}
 
-func isValidPlacement(row, col int, board [][]string) bool {
-	for r := 0; r < len(board); r++ {
-		// 同列
-		if board[r][col] == "Q" {
-			return false
-		}
-	}
-	// 同一对角线
-	for r, c := row-1, col-1; r >= 0 && c >= 0; r, c = r-1, c-1 {
-		if board[r][c] == "Q" {
-			return false
-		}
-	}
-	for r, c := row-1, col+1; r >= 0 && c < len(board); r, c = r-1, c+1 {
-		if board[r][c] == "Q" {
-			return false
-		}
-	}
-	return true
+	bt(0)
+	return res
 }
 
 // @lc code=end
