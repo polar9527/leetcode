@@ -57,19 +57,38 @@
  */
 
 // @lc code=start
+// greedy
+// func maxSubArray(nums []int) int {
+// 	preSum := 0
+// 	res := nums[0]
+
+// 	for i := 0; i < len(nums); i++ {
+// 		if preSum+nums[i] < nums[i] {
+// 			preSum = nums[i]
+// 		} else {
+// 			preSum += nums[i]
+// 		}
+// 		if res < preSum {
+// 			res = preSum
+// 		}
+// 	}
+// 	return res
+// }
+
+// dp
 func maxSubArray(nums []int) int {
 
-	preSum := 0
-	res := nums[0]
-	for i := 0; i < len(nums); i++ {
-
-		if preSum+nums[i] < nums[i] {
-			preSum = nums[i]
+	dp := make([]int, len(nums))
+	dp[0] = nums[0]
+	res := dp[0]
+	for i := 1; i < len(nums); i++ {
+		if dp[i-1]+nums[i] < nums[i] {
+			dp[i] = nums[i]
 		} else {
-			preSum = preSum + nums[i]
+			dp[i] = dp[i-1] + nums[i]
 		}
-		if res < preSum {
-			res = preSum
+		if res < dp[i] {
+			res = dp[i]
 		}
 	}
 	return res
