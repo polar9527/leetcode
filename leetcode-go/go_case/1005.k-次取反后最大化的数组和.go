@@ -69,22 +69,44 @@ import (
  */
 
 // @lc code=start
+// func largestSumAfterKNegations(nums []int, k int) int {
+// 	sort.Slice(nums, func(i, j int) bool {
+// 		return math.Abs(float64(nums[i])) > math.Abs(float64(nums[j]))
+// 	})
+
+// 	for i := 0; i < len(nums); i++ {
+// 		if k > 0 && nums[i] < 0 {
+// 			nums[i] = -nums[i]
+// 			k--
+// 		}
+// 	}
+
+// 	if k%2 == 1 {
+// 		nums[len(nums)-1] = -nums[len(nums)-1]
+// 	}
+
+// 	var res int
+// 	for i := 0; i < len(nums); i++ {
+// 		res += nums[i]
+// 	}
+// 	return res
+// }
+
 func largestSumAfterKNegations(nums []int, k int) int {
-	sort.Slice(nums, func(i, j int) bool {
+	sort.SliceStable(nums, func(i, j int) bool {
 		return math.Abs(float64(nums[i])) > math.Abs(float64(nums[j]))
 	})
-
 	for i := 0; i < len(nums); i++ {
-		if k > 0 && nums[i] < 0 {
+		if nums[i] < 0 && k > 0 {
 			nums[i] = -nums[i]
 			k--
 		}
 	}
-
+	// 此处，k == 0 或者 k > 0
+	// 如果 k > 0
 	if k%2 == 1 {
 		nums[len(nums)-1] = -nums[len(nums)-1]
 	}
-
 	var res int
 	for i := 0; i < len(nums); i++ {
 		res += nums[i]
