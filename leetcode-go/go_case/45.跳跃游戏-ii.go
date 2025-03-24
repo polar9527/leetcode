@@ -60,20 +60,19 @@ func jump(nums []int) int {
 	if len(nums) == 1 {
 		return 0
 	}
-	r := 0
-	res := 0
+	curScope := 0
 	maxScope := 0
-	for i := 0; i <= r; i++ {
-
+	res := 0
+	for i := 0; i <= curScope; i++ {
 		if i+nums[i] > maxScope {
 			maxScope = i + nums[i]
 		}
-		if i == r {
-			r = maxScope
+		if i == curScope {
+			curScope = maxScope
 			res++
-		}
-		if r >= len(nums)-1 {
-			break
+			if curScope >= len(nums)-1 {
+				break
+			}
 		}
 	}
 	return res
