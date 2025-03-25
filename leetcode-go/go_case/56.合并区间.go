@@ -50,41 +50,23 @@ import "sort"
  */
 
 // @lc code=start
-type gaps [][]int
-
-func (g gaps) Len() int {
-	return len(g)
-}
-
-func (g gaps) Less(i, j int) bool {
-	return g[i][0] < g[j][0]
-}
-
-func (g gaps) Swap(i, j int) {
-	g[i], g[j] = g[j], g[i]
-}
 
 func merge(intervals [][]int) [][]int {
-	if len(intervals) == 0 {
-		return nil
-	}
-	var ans [][]int
-	sort.Sort(gaps(intervals))
-	for i := 0; i < len(intervals); i++ {
-		if len(ans) == 0 || ans[len(ans)-1][1] < intervals[i][0] {
-			ans = append(ans, intervals[i])
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
+
+	res := [][]int{intervals[0]}
+	for i := 1; i < len(intervals); i++ {
+		if res[len(res)-1][1] >= intervals[i][0] {
+			if res[len(res)-1][1] < intervals[i][1] {
+				res[len(res)-1][1] = intervals[i][1]
+			}
 		} else {
-			ans[len(ans)-1][1] = max(ans[len(ans)-1][1], intervals[i][1])
+			res = append(res, intervals[i])
 		}
 	}
-	return ans
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+	return res
 }
 
 // @lc code=end
