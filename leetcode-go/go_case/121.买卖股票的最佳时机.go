@@ -64,23 +64,45 @@
 // }
 
 // dp
-func maxProfit(prices []int) int {
-	dp := make([][2]int, len(prices))
+// func maxProfit(prices []int) int {
+// 	dp := make([][2]int, len(prices))
 
-	// 持有股票i   时所得的最多现金
+// 	// 持有股票i   时所得的最多现金
+// 	// dp[i][0]
+// 	// 不持有股票i 所得的最多现金
+// 	// dp[i][1]
+// 	dp[0][0] = -prices[0]
+// 	dp[0][1] = 0
+// 	if len(prices) == 1 {
+// 		return 0
+// 	}
+// 	for i := 1; i < len(prices); i++ {
+// 		dp[i][0] = max(dp[i-1][0], -prices[i])
+// 		dp[i][1] = max(dp[i-1][0]+prices[i], dp[i-1][1])
+// 	}
+// 	return max(dp[len(prices)-1][0], dp[len(prices)-1][1])
+// }
+
+func maxProfit(prices []int) int {
+	dp := make([][3]int, len(prices))
+	// 第i天 从来就没有持有过股票
 	// dp[i][0]
-	// 不持有股票i 所得的最多现金
+	// 第i天 持有股票   时所得的最多现金
 	// dp[i][1]
-	dp[0][0] = -prices[0]
-	dp[0][1] = 0
+	// 第i天 卖出过着之前已经卖出了股票 所得的最多现金
+	// dp[i][2]
+	dp[0][0] = 0
+	dp[0][1] = -prices[0]
+	dp[0][2] = 0
 	if len(prices) == 1 {
 		return 0
 	}
 	for i := 1; i < len(prices); i++ {
-		dp[i][0] = max(dp[i-1][0], -prices[i])
-		dp[i][1] = max(dp[i-1][0]+prices[i], dp[i-1][1])
+		dp[i][0] = dp[i-1][0]
+		dp[i][1] = max(dp[i-1][1], dp[i-1][0]-prices[i])
+		dp[i][2] = max(dp[i-1][2], dp[i-1][1]+prices[i])
 	}
-	return max(dp[len(prices)-1][0], dp[len(prices)-1][1])
+	return dp[len(prices)-1][2]
 }
 
 // @lc code=end
