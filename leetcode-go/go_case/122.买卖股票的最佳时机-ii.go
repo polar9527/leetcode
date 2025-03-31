@@ -58,15 +58,35 @@
 
 // @lc code=start
 // greedy
+// func maxProfit(prices []int) int {
+// 	sum := 0
+// 	for i := 1; i < len(prices); i++ {
+// 		delta := prices[i] - prices[i-1]
+// 		if delta > 0 {
+// 			sum += delta
+// 		}
+// 	}
+// 	return sum
+// }
+
+// dp
 func maxProfit(prices []int) int {
-	sum := 0
-	for i := 1; i < len(prices); i++ {
-		delta := prices[i] - prices[i-1]
-		if delta > 0 {
-			sum += delta
-		}
+	dp := make([][2]int, len(prices))
+
+	// 持有股票i   时所得的最多现金
+	// dp[i][0]
+	// 不持有股票i 所得的最多现金
+	// dp[i][1]
+	dp[0][0] = -prices[0]
+	dp[0][1] = 0
+	if len(prices) == 1 {
+		return 0
 	}
-	return sum
+	for i := 1; i < len(prices); i++ {
+		dp[i][0] = max(dp[i-1][0], dp[i-1][1]-prices[i])
+		dp[i][1] = max(dp[i-1][0]+prices[i], dp[i-1][1])
+	}
+	return max(dp[len(prices)-1][0], dp[len(prices)-1][1])
 }
 
 // @lc code=end
