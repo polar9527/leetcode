@@ -70,12 +70,15 @@ func longestCommonSubsequence(text1 string, text2 string) int {
 	for i := range dp {
 		dp[i] = make([]int, t2+1)
 	}
-
+	// dp[i][j] text1[0:i-1]  和 text[0:j-1] 的最长公共子序列
 	for i := 1; i <= t1; i++ {
 		for j := 1; j <= t2; j++ {
 			if text1[i-1] == text2[j-1] {
 				dp[i][j] = dp[i-1][j-1] + 1
 			} else {
+				// 不考虑 text1[i-1] 或者 text2[j-1]
+				// text1[0:i-2]  和 text[0:j-1] 的最长公共子序列
+				// text1[0:i-1]  和 text[0:j-2] 的最长公共子序列
 				dp[i][j] = max(dp[i-1][j], dp[i][j-1])
 			}
 		}
