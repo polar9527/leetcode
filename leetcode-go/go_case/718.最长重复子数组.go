@@ -44,18 +44,57 @@
  */
 
 // @lc code=start
+// dp[i][j] 表示 以nums[i-1] 和 nums[j-1] 为结尾的 最长公共子序列
+// func findLength(nums1 []int, nums2 []int) int {
+// 	l1 := len(nums1)
+// 	l2 := len(nums2)
+
+// 	dp := make([][]int, l1+1)
+// 	for i := range dp {
+// 		dp[i] = make([]int, l2+1)
+// 	}
+// 	// dp[i][j] 表示 以nums[i-1] 和 nums[j-1] 为结尾的 最长公共子序列
+// 	// 所以 当 nums1[i] == nums2[0]的时候
+// 	// 或者 当 nums1[0] == nums2[j]的时候
+// 	res := 0
+// 	for i := 1; i <= l1; i++ {
+// 		for j := 1; j <= l2; j++ {
+// 			if nums1[i-1] == nums2[j-1] {
+// 				dp[i][j] = dp[i-1][j-1] + 1
+// 			}
+// 			if dp[i][j] > res {
+// 				res = dp[i][j]
+// 			}
+// 		}
+// 	}
+// 	return res
+// }
+
+// dp[i][j] 表示 以nums[i] 和 nums[j] 为结尾的 最长公共子序列
 func findLength(nums1 []int, nums2 []int) int {
 	l1 := len(nums1)
 	l2 := len(nums2)
 
-	dp := make([][]int, l1+1)
+	dp := make([][]int, l1)
 	for i := range dp {
-		dp[i] = make([]int, l2+1)
+		dp[i] = make([]int, l2)
 	}
+	// init
+	for i := 0; i < l1; i++ {
+		if nums1[i] == nums2[0] {
+			dp[i][0] = 1
+		}
+	}
+	for j := 0; j < l2; j++ {
+		if nums1[0] == nums2[j] {
+			dp[0][j] = 1
+		}
+	}
+
 	res := 0
-	for i := 1; i <= l1; i++ {
-		for j := 1; j <= l2; j++ {
-			if nums1[i-1] == nums2[j-1] {
+	for i := 0; i < l1; i++ {
+		for j := 0; j < l2; j++ {
+			if nums1[i] == nums2[j] && i > 0 && j > 0 {
 				dp[i][j] = dp[i-1][j-1] + 1
 			}
 			if dp[i][j] > res {
