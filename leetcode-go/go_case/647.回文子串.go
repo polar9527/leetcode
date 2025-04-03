@@ -52,18 +52,59 @@ package go_case
  */
 
 // @lc code=start
+// brutal
+// func countSubstrings(s string) int {
+// 	n := len(s)
+// 	ans := 0
+// 	for i := 0; i < 2*n-1; i++ {
+// 		l, r := i/2, i/2+i%2
+// 		for l >= 0 && r < n && s[l] == s[r] {
+// 			l--
+// 			r++
+// 			ans++
+// 		}
+// 	}
+// 	return ans
+// }
+
+// dp
 func countSubstrings(s string) int {
 	n := len(s)
-	ans := 0
-	for i := 0; i < 2*n-1; i++ {
-		l, r := i/2, i/2+i%2
-		for l >= 0 && r < n && s[l] == s[r] {
-			l--
-			r++
-			ans++
+
+	dp := make([][]bool, n)
+	for i := range dp {
+		dp[i] = make([]bool, n)
+	}
+	// dp含义
+	// dp[i][j]  [i, j] 左闭右闭的区间内 是否是回文字符串
+
+	// 递推公式
+	// 当 s[i] == s[j] 时
+	// i == j, 或者 i-j == 1, 说明是回文字符串
+	// 当 i - j > 1 时， 要根据 dp[i+1][j-1] 来判断
+
+	// 初始化
+	// dp[i][0] = 0
+	// 遍历顺序
+	// 打印遍历数组
+
+	res := 0
+	for i := n - 1; i >= 0; i-- {
+		for j := i; j < n; j++ {
+			if s[i] == s[j] {
+				if j-i <= 1 {
+					res++
+					dp[i][j] = true
+				} else {
+					if dp[i+1][j-1] {
+						res++
+						dp[i][j] = true
+					}
+				}
+			}
 		}
 	}
-	return ans
+	return res
 }
 
 // @lc code=end
