@@ -52,30 +52,30 @@ package go_case
  */
 
 // @lc code=start
-func dailyTemperatures(temperatures []int) []int {
-	res := make([]int, len(temperatures))
-	// 初始化栈顶元素为第一个下标索引0
-	stack := []int{0}
+// func dailyTemperatures(temperatures []int) []int {
+// 	res := make([]int, len(temperatures))
+// 	// 初始化栈顶元素为第一个下标索引0
+// 	stack := []int{0}
 
-	for i := 1; i < len(temperatures); i++ {
-		top := stack[len(stack)-1]
-		if temperatures[i] < temperatures[top] {
-			stack = append(stack, i)
-		} else if temperatures[i] == temperatures[top] {
-			stack = append(stack, i)
-		} else {
-			for len(stack) != 0 && temperatures[i] > temperatures[top] {
-				res[top] = i - top
-				stack = stack[:len(stack)-1]
-				if len(stack) != 0 {
-					top = stack[len(stack)-1]
-				}
-			}
-			stack = append(stack, i)
-		}
-	}
-	return res
-}
+// 	for i := 1; i < len(temperatures); i++ {
+// 		top := stack[len(stack)-1]
+// 		if temperatures[i] < temperatures[top] {
+// 			stack = append(stack, i)
+// 		} else if temperatures[i] == temperatures[top] {
+// 			stack = append(stack, i)
+// 		} else {
+// 			for len(stack) != 0 && temperatures[i] > temperatures[top] {
+// 				res[top] = i - top
+// 				stack = stack[:len(stack)-1]
+// 				if len(stack) != 0 {
+// 					top = stack[len(stack)-1]
+// 				}
+// 			}
+// 			stack = append(stack, i)
+// 		}
+// 	}
+// 	return res
+// }
 
 // 代码简化版本
 // func dailyTemperatures(num []int) []int {
@@ -94,5 +94,28 @@ func dailyTemperatures(temperatures []int) []int {
 //     }
 //     return ans
 // }
+
+func dailyTemperatures(temperatures []int) []int {
+	n := len(temperatures)
+
+	res := make([]int, n)
+
+	stack := make([]int, n)
+	stack = append(stack, 0)
+
+	for i := 1; i < n; i++ {
+		if temperatures[stack[len(stack)-1]] >= temperatures[i] {
+			stack = append(stack, i)
+		} else {
+			for len(stack) > 0 && temperatures[stack[len(stack)-1]] < temperatures[i] {
+				left := stack[len(stack)-1]
+				stack = stack[:len(stack)-1]
+				res[left] = i - left
+			}
+			stack = append(stack, i)
+		}
+	}
+	return res
+}
 
 // @lc code=end
