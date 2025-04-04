@@ -174,6 +174,9 @@ func trap(height []int) int {
 	for i := 1; i < n; i++ {
 		if height[stack[len(stack)-1]] >= height[i] {
 			stack = append(stack, i)
+		} else if height[stack[len(stack)-1]] == height[i] {
+			stack = stack[:len(stack)-1]
+			stack = append(stack, i)
 		} else {
 			for len(stack) != 0 && height[stack[len(stack)-1]] < height[i] {
 				bottom := height[stack[len(stack)-1]]
