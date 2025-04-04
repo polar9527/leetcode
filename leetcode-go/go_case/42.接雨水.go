@@ -49,90 +49,145 @@ package go_case
  */
 
 // @lc code=start
+// func trap(height []int) int {
+// 	return trap2P(height)
+// }
+
+// func trap2P(height []int) (ans int) {
+// 	left, right := 0, len(height)-1
+// 	leftMax, rightMax := 0, 0
+// 	for left < right {
+// 		leftMax = max(leftMax, height[left])
+// 		rightMax = max(rightMax, height[right])
+// 		if height[left] < height[right] {
+// 			ans += leftMax - height[left]
+// 			left++
+// 		} else {
+// 			ans += rightMax - height[right]
+// 			right--
+// 		}
+// 	}
+// 	return
+// }
+
+// func trapStack(height []int) (ans int) {
+// 	stack := []int{}
+// 	stackTail := func() int {
+// 		return stack[len(stack)-1]
+// 	}
+// 	stackPop := func() {
+// 		stack = stack[:len(stack)-1]
+// 	}
+
+// 	for i, h := range height {
+// 		for len(stack) > 0 && h > height[stackTail()] {
+// 			topIndex := stackTail()
+// 			stackPop()
+// 			if len(stack) == 0 {
+// 				break
+// 			}
+// 			leftIndex := stackTail()
+// 			w := i - leftIndex - 1
+// 			h := min(height[leftIndex], height[i]) - height[topIndex]
+// 			ans += h * w
+// 		}
+// 		stack = append(stack, i)
+// 	}
+// 	return ans
+
+// }
+
+// func trapDP(height []int) (ans int) {
+// 	n := len(height)
+// 	if n == 0 {
+// 		return
+// 	}
+
+// 	leftMax := make([]int, n)
+// 	leftMax[0] = height[0]
+// 	for i := 1; i < n; i++ {
+// 		leftMax[i] = max(leftMax[i-1], height[i])
+// 	}
+
+// 	rightMax := make([]int, n)
+// 	rightMax[n-1] = height[n-1]
+// 	for i := n - 2; i >= 0; i-- {
+// 		rightMax[i] = max(rightMax[i+1], height[i])
+// 	}
+
+// 	for i, h := range height {
+// 		ans += min(leftMax[i], rightMax[i]) - h
+// 	}
+// 	return
+// }
+
+// func min(a, b int) int {
+// 	if a < b {
+// 		return a
+// 	}
+// 	return b
+// }
+
+// func max(a, b int) int {
+// 	if a > b {
+// 		return a
+// 	}
+// 	return b
+// }
+
+// 2 points
+// func trap(height []int) int {
+// 	n := len(height)
+// 	if n == 1 {
+// 		return 0
+// 	}
+// 	lmax := make([]int, n)
+// 	rmax := make([]int, n)
+
+// 	lmax[0] = height[0]
+// 	for i := 1; i < n; i++ {
+// 		lmax[i] = max(height[i], lmax[i-1])
+// 	}
+
+// 	rmax[n-1] = height[n-1]
+// 	for i := n - 2; i >= 0; i-- {
+// 		rmax[i] = max(height[i], rmax[i+1])
+// 	}
+// 	sum := 0
+// 	for i := 0; i < n; i++ {
+// 		count := min(lmax[i], rmax[i]) - height[i]
+// 		sum += count
+// 	}
+// 	return sum
+// }
+
+// monotony stack
 func trap(height []int) int {
-	return trap2P(height)
-}
-
-func trap2P(height []int) (ans int) {
-	left, right := 0, len(height)-1
-	leftMax, rightMax := 0, 0
-	for left < right {
-		leftMax = max(leftMax, height[left])
-		rightMax = max(rightMax, height[right])
-		if height[left] < height[right] {
-			ans += leftMax - height[left]
-			left++
-		} else {
-			ans += rightMax - height[right]
-			right--
-		}
-	}
-	return
-}
-
-func trapStack(height []int) (ans int) {
-	stack := []int{}
-	stackTail := func() int {
-		return stack[len(stack)-1]
-	}
-	stackPop := func() {
-		stack = stack[:len(stack)-1]
-	}
-
-	for i, h := range height {
-		for len(stack) > 0 && h > height[stackTail()] {
-			topIndex := stackTail()
-			stackPop()
-			if len(stack) == 0 {
-				break
-			}
-			leftIndex := stackTail()
-			w := i - leftIndex - 1
-			h := min(height[leftIndex], height[i]) - height[topIndex]
-			ans += h * w
-		}
-		stack = append(stack, i)
-	}
-	return ans
-
-}
-
-func trapDP(height []int) (ans int) {
 	n := len(height)
-	if n == 0 {
-		return
+	if n == 1 {
+		return 0
 	}
 
-	leftMax := make([]int, n)
-	leftMax[0] = height[0]
+	stack := []int{}
+	stack = append(stack, 0)
+	sum := 0
 	for i := 1; i < n; i++ {
-		leftMax[i] = max(leftMax[i-1], height[i])
+		if height[stack[len(stack)-1]] >= height[i] {
+			stack = append(stack, i)
+		} else {
+			for len(stack) != 0 && height[stack[len(stack)-1]] < height[i] {
+				bottom := height[stack[len(stack)-1]]
+				stack = stack[:len(stack)-1]
+				if len(stack) != 0 {
+					h := min(height[stack[len(stack)-1]], height[i]) - bottom
+					w := i - stack[len(stack)-1] - 1
+					sum += h * w
+				}
+			}
+			stack = append(stack, i)
+		}
 	}
-
-	rightMax := make([]int, n)
-	rightMax[n-1] = height[n-1]
-	for i := n - 2; i >= 0; i-- {
-		rightMax[i] = max(rightMax[i+1], height[i])
-	}
-
-	for i, h := range height {
-		ans += min(leftMax[i], rightMax[i]) - h
-	}
-	return
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+	return sum
 }
 
 // @lc code=end
