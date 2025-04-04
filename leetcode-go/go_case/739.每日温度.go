@@ -100,7 +100,7 @@ func dailyTemperatures(temperatures []int) []int {
 
 	res := make([]int, n)
 
-	stack := make([]int, n)
+	stack := []int{}
 	stack = append(stack, 0)
 
 	for i := 1; i < n; i++ {
