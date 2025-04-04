@@ -52,21 +52,48 @@ package go_case
  */
 
 // @lc code=start
+// func nextGreaterElements(nums []int) []int {
+// 	n := len(nums)
+// 	ans := make([]int, n)
+// 	for i := range ans {
+// 		ans[i] = -1
+// 	}
+// 	stack := []int{}
+// 	for i := 0; i < n*2-1; i++ {
+// 		for len(stack) > 0 && nums[stack[len(stack)-1]] < nums[i%n] {
+// 			ans[stack[len(stack)-1]] = nums[i%n]
+// 			stack = stack[:len(stack)-1]
+// 		}
+// 		stack = append(stack, i%n)
+// 	}
+// 	return ans
+// }
+
 func nextGreaterElements(nums []int) []int {
 	n := len(nums)
-	ans := make([]int, n)
-	for i := range ans {
-		ans[i] = -1
+	res := make([]int, n)
+	for i := range res {
+		res[i] = -1
 	}
+	// 栈中存放的是 nums 的 index
 	stack := []int{}
-	for i := 0; i < n*2-1; i++ {
-		for len(stack) > 0 && nums[stack[len(stack)-1]] < nums[i%n] {
-			ans[stack[len(stack)-1]] = nums[i%n]
-			stack = stack[:len(stack)-1]
+	stack = append(stack, 0)
+	//  左闭右闭
+	//  i -> [1, n]
+	//  i -> [0,n-1]
+	// 再增加 n 个， i -> [0, 2n-1]
+	for i := 1; i < 2*n; i++ {
+		if nums[i%n] <= nums[stack[len(stack)-1]] {
+			stack = append(stack, i%n)
+		} else {
+			for len(stack) != 0 && nums[i%n] > nums[stack[len(stack)-1]] {
+				res[stack[len(stack)-1]] = nums[i%n]
+				stack = stack[:len(stack)-1]
+			}
+			stack = append(stack, i%n)
 		}
-		stack = append(stack, i%n)
 	}
-	return ans
+	return res
 }
 
 // @lc code=end
