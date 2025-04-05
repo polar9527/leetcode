@@ -62,14 +62,12 @@ func allPathsSourceTarget(graph [][]int) [][]int {
 
 	var res [][]int
 	var dfs func(int, []int)
-	dfs = func(i int, path []int) {
-		if i == len(graph)-1 {
-			tmp := make([]int, len(path))
-			copy(tmp, path)
-			res = append(res, tmp)
+	dfs = func(start int, path []int) {
+		if start == len(graph)-1 {
+			res = append(res, append([]int{}, path...))
 			return
 		}
-		for _, next := range graph[i] {
+		for _, next := range graph[start] {
 			dfs(next, append(path, next))
 		}
 	}
