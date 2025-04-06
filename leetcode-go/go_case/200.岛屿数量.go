@@ -61,77 +61,164 @@ package go_case
  */
 
 // @lc code=start
+// func numIslands(grid [][]byte) int {
+// 	rows := len(grid)
+// 	if rows == 0 {
+// 		return 0
+// 	}
+// 	cols := len(grid[0])
+
+// 	res := 0
+// 	var visited = make([][]bool, rows)
+// 	for i, _ := range visited {
+// 		visited[i] = make([]bool, cols)
+// 	}
+
+// 	di := [][]int{
+// 		{0, 1},
+// 		{1, 0},
+// 		{0, -1},
+// 		{-1, 0},
+// 	}
+
+// 	var dfs func(i, j int)
+// 	dfs = func(i, j int) {
+// 		if visited[i][j] || grid[i][j] == '0' {
+// 			return
+// 		}
+
+// 		visited[i][j] = true
+// 		for k := 0; k < 4; k++ {
+// 			xNext := i + di[k][0]
+// 			yNext := j + di[k][1]
+
+// 			if xNext >= 0 && xNext < rows && yNext >= 0 && yNext < cols {
+// 				dfs(xNext, yNext)
+// 			}
+// 		}
+// 		return
+// 	}
+
+// 	var bfs func(i, j int)
+// 	bfs = func(i, j int) {
+// 		var queue [][2]int
+// 		queue = append(queue, [2]int{i, j})
+// 		visited[i][j] = true
+// 		for len(queue) > 0 {
+// 			cur := queue[0]
+// 			queue = queue[1:]
+// 			for k := 0; k < 4; k++ {
+// 				xNext := cur[0] + di[k][0]
+// 				yNext := cur[1] + di[k][1]
+
+// 				if xNext >= 0 && xNext < rows && yNext >= 0 && yNext < cols {
+// 					if !visited[xNext][yNext] && grid[xNext][yNext] == '1' {
+// 						queue = append(queue, [2]int{xNext, yNext})
+// 						visited[xNext][yNext] = true
+// 					}
+// 				}
+// 			}
+
+// 		}
+// 	}
+
+// 	for i := 0; i < rows; i++ {
+// 		for j := 0; j < cols; j++ {
+// 			if !visited[i][j] && grid[i][j] == '1' {
+// 				res++
+// 				// dfs(i, j)
+// 				bfs(i, j)
+// 			}
+// 		}
+// 	}
+
+// 	return res
+// }
+
+// func numIslands(grid [][]byte) int {
+// 	n, m := len(grid), len(grid[0])
+
+// 	visited := make([][]bool, n)
+// 	for i := range visited {
+// 		visited[i] = make([]bool, m)
+// 	}
+
+// 	var bfs func(int, int)
+// 	bfs = func(x, y int) {
+// 		dir := [][2]int{
+// 			[2]int{0, 1},
+// 			[2]int{0, -1},
+// 			[2]int{1, 0},
+// 			[2]int{-1, 0},
+// 		}
+// 		q := [][2]int{[2]int{x, y}}
+
+// 		for len(q) > 0 {
+// 			node := q[0]
+// 			q = q[1:]
+// 			x, y := node[0], node[1]
+// 			visited[x][y] = true
+// 			for i := 0; i < 4; i++ {
+// 				xn, yn := x+dir[i][0], y+dir[i][1]
+// 				if xn < 0 || xn >= n || yn < 0 || yn >= m {
+// 					continue
+// 				}
+// 				if !visited[xn][yn] && grid[xn][yn] == '1' {
+// 					q = append(q, [2]int{xn, yn})
+// 				}
+// 			}
+
+// 		}
+// 	}
+// 	res := 0
+// 	for i := 0; i < n; i++ {
+// 		for j := 0; j < m; j++ {
+// 			if !visited[i][j] && grid[i][j] == '1' {
+// 				res++
+// 				bfs(i, j)
+// 			}
+// 		}
+// 	}
+// 	return res
+// }
+
 func numIslands(grid [][]byte) int {
-	rows := len(grid)
-	if rows == 0 {
-		return 0
-	}
-	cols := len(grid[0])
+	n, m := len(grid), len(grid[0])
 
+	visited := make([][]bool, n)
+	for i := range visited {
+		visited[i] = make([]bool, m)
+	}
+
+	var dir = [][2]int{
+		[2]int{0, 1},
+		[2]int{0, -1},
+		[2]int{1, 0},
+		[2]int{-1, 0},
+	}
+	var dfs func(int, int)
+	dfs = func(x, y int) {
+		visited[x][y] = true
+		for i := 0; i < 4; i++ {
+			xn, yn := x+dir[i][0], y+dir[i][1]
+			if xn < 0 || xn >= n || yn < 0 || yn >= m {
+				continue
+			}
+			if !visited[xn][yn] && grid[xn][yn] == '1' {
+				dfs(xn, yn)
+			}
+		}
+
+	}
 	res := 0
-	var visited = make([][]bool, rows)
-	for i, _ := range visited {
-		visited[i] = make([]bool, cols)
-	}
-
-	di := [][]int{
-		{0, 1},
-		{1, 0},
-		{0, -1},
-		{-1, 0},
-	}
-
-	var dfs func(i, j int)
-	dfs = func(i, j int) {
-		if visited[i][j] || grid[i][j] == '0' {
-			return
-		}
-
-		visited[i][j] = true
-		for k := 0; k < 4; k++ {
-			xNext := i + di[k][0]
-			yNext := j + di[k][1]
-
-			if xNext >= 0 && xNext < rows && yNext >= 0 && yNext < cols {
-				dfs(xNext, yNext)
-			}
-		}
-		return
-	}
-
-	var bfs func(i, j int)
-	bfs = func(i, j int) {
-		var queue [][2]int
-		queue = append(queue, [2]int{i, j})
-		visited[i][j] = true
-		for len(queue) > 0 {
-			cur := queue[0]
-			queue = queue[1:]
-			for k := 0; k < 4; k++ {
-				xNext := cur[0] + di[k][0]
-				yNext := cur[1] + di[k][1]
-
-				if xNext >= 0 && xNext < rows && yNext >= 0 && yNext < cols {
-					if !visited[xNext][yNext] && grid[xNext][yNext] == '1' {
-						queue = append(queue, [2]int{xNext, yNext})
-						visited[xNext][yNext] = true
-					}
-				}
-			}
-
-		}
-	}
-
-	for i := 0; i < rows; i++ {
-		for j := 0; j < cols; j++ {
+	for i := 0; i < n; i++ {
+		for j := 0; j < m; j++ {
 			if !visited[i][j] && grid[i][j] == '1' {
 				res++
-				// dfs(i, j)
-				bfs(i, j)
+				dfs(i, j)
 			}
 		}
 	}
-
 	return res
 }
 
