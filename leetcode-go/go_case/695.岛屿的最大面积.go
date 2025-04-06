@@ -1,4 +1,4 @@
-package test
+package go_case
 
 /*
  * @lc app=leetcode.cn id=695 lang=golang
@@ -57,86 +57,75 @@ package test
 
 // @lc code=start
 func maxAreaOfIsland(grid [][]int) int {
-	rows := len(grid)
-	if rows == 0 {
-		return 0
-	}
-	cols := len(grid[0])
+	m, n := len(grid), len(grid[0])
 
-	res := 0
-	count := 0
-	var visited = make([][]bool, rows)
-	for i, _ := range visited {
-		visited[i] = make([]bool, cols)
+	visited := make([][]bool, m)
+	for i := range visited {
+		visited[i] = make([]bool, n)
 	}
 
-	di := [4][2]int{
-		{0, 1},
-		{1, 0},
-		{0, -1},
-		{-1, 0},
+	di := [][2]int{
+		[2]int{0, 1},
+		[2]int{0, -1},
+		[2]int{1, 0},
+		[2]int{-1, 0},
 	}
+	var count int
 
-	var dfs func(i, j int)
-	dfs = func(i, j int) {
-		if visited[i][j] || grid[i][j] == 0 {
-			return
-		}
-
-		visited[i][j] = true
+	var dfs func(int, int)
+	dfs = func(x, y int) {
+		visited[x][y] = true
 		count++
-		for k := 0; k < 4; k++ {
-			xNext := i + di[k][0]
-			yNext := j + di[k][1]
-
-			if xNext >= 0 && xNext < rows && yNext >= 0 && yNext < cols {
-				dfs(xNext, yNext)
+		for i := 0; i < 4; i++ {
+			xn := x + di[i][0]
+			yn := y + di[i][1]
+			if xn < 0 || xn >= m || yn < 0 || yn >= n {
+				continue
+			}
+			if !visited[xn][yn] && grid[xn][yn] == 1 {
+				dfs(xn, yn)
 			}
 		}
-		return
 	}
 
-	// var bfs func(i, j int)
-	// bfs = func(i, j int) {
-	// 	// var queue [][2]int
-	// 	queue := [][2]int{{i, j}}
-	// 	visited[i][j] = true
-	// 	count++
-	// 	for len(queue) > 0 {
-	// 		cur := queue[0]
-	// 		queue = queue[1:]
-	// 		for k := 0; k < 4; k++ {
-	// 			xNext := cur[0] + di[k][0]
-	// 			yNext := cur[1] + di[k][1]
+	var bfs func(int, int)
+	bfs = func(x, y int) {
+		q := [][]int{[]int{x, y}}
+		visited[x][y] = true
+		count++
+		for len(q) > 0 {
+			cur := q[0]
+			q = q[1:]
+			curx := cur[0]
+			cury := cur[1]
 
-	// 			if xNext >= 0 && xNext < rows && yNext >= 0 && yNext < cols {
-	// 				if !visited[xNext][yNext] && grid[xNext][yNext] == 1 {
-	// 					queue = append(queue, [2]int{xNext, yNext})
-	// 					visited[xNext][yNext] = true
-	// 					count++
-	// 				}
-	// 			}
-	// 		}
+			for i := 0; i < 4; i++ {
+				xn := curx + di[i][0]
+				yn := cury + di[i][1]
+				if xn < 0 || xn >= m || yn < 0 || yn >= n {
+					continue
+				}
+				if !visited[xn][yn] && grid[xn][yn] == 1 {
+					visited[xn][yn] = true
+					count++
+					q = append(q, []int{xn, yn})
+				}
+			}
 
-	// 	}
-	// }
-	max := func(a, b int) int {
-		if a > b {
-			return a
 		}
-		return b
+
 	}
-	for i := 0; i < rows; i++ {
-		for j := 0; j < cols; j++ {
+
+	res := 0
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
 			if !visited[i][j] && grid[i][j] == 1 {
 				count = 0
-				dfs(i, j)
-				// bfs(i, j)
+				bfs(i, j)
 				res = max(res, count)
 			}
 		}
 	}
-
 	return res
 }
 
