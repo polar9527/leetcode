@@ -94,23 +94,46 @@ func closedIsland(grid [][]int) int {
 			}
 		}
 	}
+
+	var bfs func(int, int)
+	bfs = func(x, y int) {
+		q := [][]int{[]int{x, y}}
+		grid[x][y] = 1
+		for len(q) > 0 {
+			cur := q[0]
+			q = q[1:]
+			for i := 0; i < 4; i++ {
+				xn := cur[0] + bi[i][0]
+				yn := cur[1] + bi[i][1]
+				if xn < 0 || xn >= m || yn < 0 || yn >= n {
+					continue
+				}
+				if grid[xn][yn] == 0 {
+					grid[xn][yn] = 1
+					q = append(q, []int{xn, yn})
+				}
+			}
+		}
+	}
+
+	f := bfs
 	// 矩阵左右两边
 	for i := 0; i < m; i++ {
 		if grid[i][0] == 0 {
-			dfs(i, 0)
+			f(i, 0)
 		}
 		if grid[i][n-1] == 0 {
-			dfs(i, n-1)
+			f(i, n-1)
 		}
 	}
 
 	// 矩阵上下两边
 	for j := 0; j < n; j++ {
 		if grid[0][j] == 0 {
-			dfs(0, j)
+			f(0, j)
 		}
 		if grid[m-1][j] == 0 {
-			dfs(m-1, j)
+			f(m-1, j)
 		}
 	}
 	count := 0
@@ -118,7 +141,7 @@ func closedIsland(grid [][]int) int {
 		for j := 0; j < n; j++ {
 			if grid[i][j] == 0 {
 				count++
-				dfs(i, j)
+				f(i, j)
 			}
 		}
 	}
