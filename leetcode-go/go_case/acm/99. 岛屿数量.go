@@ -25,12 +25,12 @@ func dfs(matrix [][]int, visited [][]bool, n, m, x, y int) {
 
 func bfs(matrix [][]int, visited [][]bool, n, m, x, y int) {
 	q := [][2]int{[2]int{x, y}}
-
+	visited[x][y] = true
 	for len(q) > 0 {
 		node := q[0]
 		q = q[1:]
 		x, y := node[0], node[1]
-		visited[x][y] = true
+
 		for i := 0; i < 4; i++ {
 			xn, yn := x+dir[i][0], y+dir[i][1]
 			if xn < 0 || xn >= n || yn < 0 || yn >= m {
@@ -38,6 +38,7 @@ func bfs(matrix [][]int, visited [][]bool, n, m, x, y int) {
 			}
 			if !visited[xn][yn] && matrix[xn][yn] == 1 {
 				q = append(q, [2]int{xn, yn})
+				visited[x][y] = true
 			}
 		}
 
