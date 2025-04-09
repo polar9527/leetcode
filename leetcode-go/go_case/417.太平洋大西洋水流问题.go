@@ -58,68 +58,130 @@ package go_case
 
 // @lc code=start
 
-func pacificAtlantic(heights [][]int) [][]int {
-	var DIRECTIONS = [4][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+// func pacificAtlantic(heights [][]int) [][]int {
+// 	var DIRECTIONS = [4][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
 
-	var dfs func([][]int, [][]bool, int, int)
-	dfs = func(heights [][]int, visited [][]bool, i, j int) {
-		visited[i][j] = true
-		for _, d := range DIRECTIONS {
-			x, y := i+d[0], j+d[1]
-			if x < 0 || x >= len(heights) || y < 0 || y >= len(heights[0]) || heights[i][j] > heights[x][y] || visited[x][y] {
+// 	var dfs func([][]int, [][]bool, int, int)
+// 	dfs = func(heights [][]int, visited [][]bool, i, j int) {
+// 		visited[i][j] = true
+// 		for _, d := range DIRECTIONS {
+// 			x, y := i+d[0], j+d[1]
+// 			if x < 0 || x >= len(heights) || y < 0 || y >= len(heights[0]) || heights[i][j] > heights[x][y] || visited[x][y] {
+// 				continue
+// 			}
+
+// 			dfs(heights, visited, x, y)
+// 		}
+// 	}
+
+// 	// var bfs func([][]int, [][]bool, int, int)
+// 	// bfs = func(heights [][]int, visited [][]bool, i, j int) {
+// 	// 	queue := make([][]int, 0)
+// 	// 	queue = append(queue, []int{i, j})
+// 	// 	visited[i][j] = true
+// 	// 	for len(queue) > 0 {
+// 	// 		cur := queue[0]
+// 	// 		queue = queue[1:]
+// 	// 		for _, d := range DIRECTIONS {
+// 	// 			x, y := cur[0]+d[0], cur[1]+d[1]
+// 	// 			if x < 0 || x >= len(heights) || y < 0 || y >= len(heights[0]) || heights[cur[0]][cur[1]] > heights[x][y] || visited[x][y] {
+// 	// 				continue
+// 	// 			}
+// 	// 			queue = append(queue, []int{x, y})
+// 	// 			visited[x][y] = true
+// 	// 		}
+// 	// 	}
+// 	// }
+
+// 	res := make([][]int, 0)
+// 	pacific := make([][]bool, len(heights))
+// 	atlantic := make([][]bool, len(heights))
+// 	for i := 0; i < len(heights); i++ {
+// 		pacific[i] = make([]bool, len(heights[0]))
+// 		atlantic[i] = make([]bool, len(heights[0]))
+// 	}
+
+// 	// 列
+// 	for i := 0; i < len(heights); i++ {
+// 		dfs(heights, pacific, i, 0)
+// 		dfs(heights, atlantic, i, len(heights[0])-1)
+// 	}
+// 	// 行
+// 	for j := 0; j < len(heights[0]); j++ {
+// 		dfs(heights, pacific, 0, j)
+// 		dfs(heights, atlantic, len(heights)-1, j)
+// 	}
+
+// 	for i := 0; i < len(heights); i++ {
+// 		for j := 0; j < len(heights[0]); j++ {
+// 			if pacific[i][j] && atlantic[i][j] {
+// 				res = append(res, []int{i, j})
+// 			}
+// 		}
+// 	}
+
+// 	return res
+// }
+
+func pacificAtlantic(heights [][]int) [][]int {
+	rows := len(heights)
+	cols := len(heights[0])
+	// pacific
+	// atlantic
+
+	dir := [][]int{
+		{0, 1},
+		{0, -1},
+		{1, 0},
+		{-1, 0},
+	}
+	var dfs func(int, int, [][]bool)
+	dfs = func(x, y int, v [][]bool) {
+		if v[x][y] {
+			return
+		}
+		v[x][y] = true
+		for d := 0; d < 4; d++ {
+			xn := x + dir[d][0]
+			yn := y + dir[d][1]
+			if xn < 0 || xn >= rows || yn < 0 || yn >= cols {
 				continue
 			}
-
-			dfs(heights, visited, x, y)
+			if !v[xn][yn] && heights[x][y] <= heights[xn][yn] {
+				dfs(xn, yn, v)
+			}
 		}
 	}
 
-	// var bfs func([][]int, [][]bool, int, int)
-	// bfs = func(heights [][]int, visited [][]bool, i, j int) {
-	// 	queue := make([][]int, 0)
-	// 	queue = append(queue, []int{i, j})
-	// 	visited[i][j] = true
-	// 	for len(queue) > 0 {
-	// 		cur := queue[0]
-	// 		queue = queue[1:]
-	// 		for _, d := range DIRECTIONS {
-	// 			x, y := cur[0]+d[0], cur[1]+d[1]
-	// 			if x < 0 || x >= len(heights) || y < 0 || y >= len(heights[0]) || heights[cur[0]][cur[1]] > heights[x][y] || visited[x][y] {
-	// 				continue
-	// 			}
-	// 			queue = append(queue, []int{x, y})
-	// 			visited[x][y] = true
-	// 		}
-	// 	}
-	// }
-
-	res := make([][]int, 0)
-	pacific := make([][]bool, len(heights))
-	atlantic := make([][]bool, len(heights))
-	for i := 0; i < len(heights); i++ {
-		pacific[i] = make([]bool, len(heights[0]))
-		atlantic[i] = make([]bool, len(heights[0]))
+	pacific := make([][]bool, rows)
+	atlantic := make([][]bool, rows)
+	for i := 0; i < rows; i++ {
+		pacific[i] = make([]bool, cols)
+		atlantic[i] = make([]bool, cols)
 	}
 
-	// 列
-	for i := 0; i < len(heights); i++ {
-		dfs(heights, pacific, i, 0)
-		dfs(heights, atlantic, i, len(heights[0])-1)
-	}
-	// 行
-	for j := 0; j < len(heights[0]); j++ {
-		dfs(heights, pacific, 0, j)
-		dfs(heights, atlantic, len(heights)-1, j)
+	for i := 0; i < cols; i++ {
+		// 上边，pacific, x = 0, y = i
+		dfs(0, i, pacific)
+		// 下边, atlantic, x = rows - 1, y = i
+		dfs(rows-1, i, atlantic)
+
 	}
 
-	for i := 0; i < len(heights); i++ {
-		for j := 0; j < len(heights[0]); j++ {
+	for j := 0; j < rows; j++ {
+		// 左边，pacific, x = j, y = 0
+		dfs(j, 0, pacific)
+		// 右边, atlantic, x = j, y = cols - 1
+		dfs(j, cols-1, atlantic)
+	}
+	res := [][]int{}
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
 			if pacific[i][j] && atlantic[i][j] {
 				res = append(res, []int{i, j})
 			}
 		}
 	}
-
 	return res
 }
 
