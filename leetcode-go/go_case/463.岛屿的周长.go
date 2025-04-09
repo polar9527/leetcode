@@ -61,42 +61,68 @@ package go_case
  */
 
 // @lc code=start
+// func islandPerimeter(grid [][]int) int {
+// 	DIRECTIONS := [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
+// 	rows := len(grid)
+// 	if rows == 0 {
+// 		return 0
+// 	}
+// 	cols := len(grid[0])
+
+// 	visited := make([][]bool, rows)
+// 	for i := 0; i < rows; i++ {
+// 		visited[i] = make([]bool, cols)
+// 	}
+
+// 	res := 0
+// 	var dfs func(int, int)
+// 	dfs = func(i, j int) {
+// 		if i < 0 || i >= rows || j < 0 || j >= cols || grid[i][j] == 0 || visited[i][j] {
+// 			return
+// 		}
+// 		visited[i][j] = true
+// 		for _, d := range DIRECTIONS {
+// 			xn := i + d[0]
+// 			yn := j + d[1]
+// 			if xn < 0 || xn >= rows || yn < 0 || yn >= cols || grid[xn][yn] == 0 {
+// 				res++
+// 				continue
+// 			} else if !visited[xn][yn] {
+// 				dfs(xn, yn)
+// 			}
+// 		}
+// 	}
+
+//		for i := 0; i < rows; i++ {
+//			for j := 0; j < cols; j++ {
+//				if grid[i][j] == 1 || !visited[i][j] {
+//					dfs(i, j)
+//				}
+//			}
+//		}
+//		return res
+//	}
 func islandPerimeter(grid [][]int) int {
-	DIRECTIONS := [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
 	rows := len(grid)
-	if rows == 0 {
-		return 0
-	}
 	cols := len(grid[0])
 
-	visited := make([][]bool, rows)
-	for i := 0; i < rows; i++ {
-		visited[i] = make([]bool, cols)
+	dir := [][]int{
+		{0, 1},
+		{0, -1},
+		{1, 0},
+		{-1, 0},
 	}
-
 	res := 0
-	var dfs func(int, int)
-	dfs = func(i, j int) {
-		if i < 0 || i >= rows || j < 0 || j >= cols || grid[i][j] == 0 || visited[i][j] {
-			return
-		}
-		visited[i][j] = true
-		for _, d := range DIRECTIONS {
-			xn := i + d[0]
-			yn := j + d[1]
-			if xn < 0 || xn >= rows || yn < 0 || yn >= cols || grid[xn][yn] == 0 {
-				res++
-				continue
-			} else if !visited[xn][yn] {
-				dfs(xn, yn)
-			}
-		}
-	}
-
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			if grid[i][j] == 1 || !visited[i][j] {
-				dfs(i, j)
+			if grid[i][j] == 1 {
+				for k := 0; k < 4; k++ {
+					x := i + dir[k][0]
+					y := j + dir[k][1]
+					if x < 0 || x >= rows || y < 0 || y >= cols || grid[x][y] == 0 {
+						res++
+					}
+				}
 			}
 		}
 	}
