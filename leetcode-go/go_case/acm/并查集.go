@@ -34,5 +34,5 @@ func join(son, father int) {
 	if sonRoot == fatherRoot {
 		return
 	}
-	fatherMap[son] = father
+	fatherMap[sonRoot] = fatherRoot
 }
