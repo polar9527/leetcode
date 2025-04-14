@@ -98,7 +98,7 @@ func networkDelayTime(times [][]int, n int, k int) int {
 	for x := 1; x <= n; x++ {
 		// 1.找到 离起始节点 k 距离 最近的 未访问 节点
 		minDis := math.MaxInt
-		curNode := 0
+		curNode := 1
 		for i := 1; i <= n; i++ {
 			if !visited[i] && minDistance[i] < minDis {
 				minDis = minDistance[i]
@@ -108,9 +108,6 @@ func networkDelayTime(times [][]int, n int, k int) int {
 		// 此时选出的 curNode 是 离起始节点 k 距离 最近的 未访问 节点
 		// 2.访问curNode
 		// 当 上一层循环完毕，意味着所有 的 节点都访问完毕
-		if curNode == 0 {
-			break
-		}
 		visited[curNode] = true
 
 		// 3.更新 未访问节点 离起始节点 k 的最近距离
