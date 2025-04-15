@@ -71,64 +71,90 @@ import (
 
 // @lc code=start
 // dijkstra
+// func networkDelayTime(times [][]int, n int, k int) int {
+
+// 	matrix := make([][]int, n+1)
+// 	for i := 1; i <= n; i++ {
+// 		matrix[i] = make([]int, n+1)
+// 		for j := 1; j <= n; j++ {
+// 			matrix[i][j] = math.MaxInt
+// 		}
+// 	}
+
+// 	for i := 0; i < len(times); i++ {
+// 		x, y, w := times[i][0], times[i][1], times[i][2]
+// 		// 有向边
+// 		matrix[x][y] = w
+// 	}
+// 	// init
+// 	visited := make([]bool, n+1)
+// 	// 每个节点到 k 节点的 最近距离
+// 	minDistance := make([]int, n+1)
+// 	for i := 0; i <= n; i++ {
+// 		minDistance[i] = math.MaxInt
+// 	}
+// 	minDistance[k] = 0
+
+// 	for x := 1; x <= n; x++ {
+// 		// 1.找到 离起始节点 k 距离 最近的 未访问 节点
+// 		minDis := math.MaxInt
+// 		curNode := 1
+// 		for i := 1; i <= n; i++ {
+// 			if !visited[i] && minDistance[i] < minDis {
+// 				minDis = minDistance[i]
+// 				curNode = i
+// 			}
+// 		}
+// 		// 此时选出的 curNode 是 离起始节点 k 距离 最近的 未访问 节点
+// 		// 2.访问curNode
+// 		// 当 上一层循环完毕，意味着所有 的 节点都访问完毕
+// 		visited[curNode] = true
+
+// 		// 3.更新 未访问节点 离起始节点 k 的最近距离
+// 		for i := 1; i <= n; i++ {
+// 			if !visited[i] && matrix[curNode][i] != math.MaxInt {
+// 				// 对于 所有未访问节点 i
+// 				// minDistance[i],  k -> i 的最短距离
+// 				// minDistance[curNode] + matrix[curNode][i], k -> curNode -> i 的 最短距离
+// 				// minDistance[curNode], k -> curNode的最短距离
+// 				// 所有 i 的 k -> curNode -> i 和 k -> curNode 这些数据中取最小值
+// 				if minDistance[i] > minDistance[curNode]+matrix[curNode][i] {
+// 					minDistance[i] = minDistance[curNode] + matrix[curNode][i]
+// 				}
+// 			}
+// 		}
+// 	}
+// 	res := slices.Max(minDistance[1:])
+// 	if res == math.MaxInt {
+// 		return -1
+// 	}
+// 	return res
+// }
+
+// bellman-ford
 func networkDelayTime(times [][]int, n int, k int) int {
 
-	matrix := make([][]int, n+1)
-	for i := 1; i <= n; i++ {
-		matrix[i] = make([]int, n+1)
-		for j := 1; j <= n; j++ {
-			matrix[i][j] = math.MaxInt
-		}
+	minDist := make([]int, n+1)
+	for i := range minDist {
+		minDist[i] = math.MaxInt64
 	}
-
-	for i := 0; i < len(times); i++ {
-		x, y, w := times[i][0], times[i][1], times[i][2]
-		// 有向边
-		matrix[x][y] = w
-	}
-	// init
-	visited := make([]bool, n+1)
-	// 每个节点到 k 节点的 最近距离
-	minDistance := make([]int, n+1)
-	for i := 0; i <= n; i++ {
-		minDistance[i] = math.MaxInt
-	}
-	minDistance[k] = 0
-
-	for x := 1; x <= n; x++ {
-		// 1.找到 离起始节点 k 距离 最近的 未访问 节点
-		minDis := math.MaxInt
-		curNode := 1
-		for i := 1; i <= n; i++ {
-			if !visited[i] && minDistance[i] < minDis {
-				minDis = minDistance[i]
-				curNode = i
-			}
-		}
-		// 此时选出的 curNode 是 离起始节点 k 距离 最近的 未访问 节点
-		// 2.访问curNode
-		// 当 上一层循环完毕，意味着所有 的 节点都访问完毕
-		visited[curNode] = true
-
-		// 3.更新 未访问节点 离起始节点 k 的最近距离
-		for i := 1; i <= n; i++ {
-			if !visited[i] && matrix[curNode][i] != math.MaxInt {
-				// 对于 所有未访问节点 i
-				// minDistance[i],  k -> i 的最短距离
-				// minDistance[curNode] + matrix[curNode][i], k -> curNode -> i 的 最短距离
-				// minDistance[curNode], k -> curNode的最短距离
-				// 所有 i 的 k -> curNode -> i 和 k -> curNode 这些数据中取最小值
-				if minDistance[i] > minDistance[curNode]+matrix[curNode][i] {
-					minDistance[i] = minDistance[curNode] + matrix[curNode][i]
+	minDist[k] = 0
+	for i := 1; i < n; i++ {
+		for _, t := range times {
+			from, to, val := t[0], t[1], t[2]
+			if minDist[from] != math.MaxInt64 {
+				if minDist[to] > minDist[from]+val {
+					minDist[to] = minDist[from] + val
 				}
 			}
 		}
 	}
-	res := slices.Max(minDistance[1:])
-	if res == math.MaxInt {
-		return -1
+
+	res := slices.Max(minDist[1:])
+	if res != math.MaxInt64 {
+		return res
 	}
-	return res
+	return -1
 }
 
 // @lc code=end
