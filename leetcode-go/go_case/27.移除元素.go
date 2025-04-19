@@ -99,12 +99,21 @@ func removeElement(nums []int, val int) int {
 	// fast 继续前进
 	// 接下来 fast 继续 遇到 val 的时候，
 	//  nums[slow] = nums[fast] 就是把 非val 值，往前放置
-	slow := 0
-	for fast := 0; fast < len(nums); fast++ {
+
+	//
+	l := len(nums)
+	if l == 0 {
+		return 0
+	}
+	// fast 指向遍历的位置
+	// slow 指向下一个不同于val 的数字将要被填入的位置
+	slow, fast := 0, 0
+	for fast < l {
 		if nums[fast] != val {
 			nums[slow] = nums[fast]
 			slow++
 		}
+		fast++
 	}
 	return slow
 }

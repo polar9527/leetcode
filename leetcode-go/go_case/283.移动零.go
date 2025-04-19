@@ -69,11 +69,18 @@ func moveZeroes(nums []int) {
 	// slow 指向处理好的队列之后第一个元素
 	// 刚开始时， 队列为空， 所有 slow 指向 index 0
 	// fast 寻找下一个 非零 元素
-	for slow, fast := 0, 0; fast < len(nums); fast++ {
-		if nums[fast] != 0 {
+	l := len(nums)
+	if l == 0 {
+		return
+	}
+	val := 0
+	slow, fast := 0, 0
+	for fast < len(nums) {
+		if nums[fast] != val {
 			nums[slow], nums[fast] = nums[fast], nums[slow]
 			slow++
 		}
+		fast++
 	}
 }
 
