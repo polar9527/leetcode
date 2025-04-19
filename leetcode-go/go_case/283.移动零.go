@@ -51,17 +51,29 @@ package go_case
  */
 
 // @lc code=start
+// func moveZeroes(nums []int) {
+// 	l := len(nums)
+// 	slow := 0
+// 	for fast := 0; fast < len(nums); fast++ {
+// 		if nums[fast] != 0 {
+// 			nums[slow] = nums[fast]
+// 			slow++
+// 		}
+// 	}
+// 	for i := slow; i < l; i++ {
+// 		nums[i] = 0
+// 	}
+// }
+
 func moveZeroes(nums []int) {
-	l := len(nums)
-	slow := 0
-	for fast := 0; fast < len(nums); fast++ {
+	// slow 指向处理好的队列之后第一个元素
+	// 刚开始时， 队列为空， 所有 slow 指向 index 0
+	// fast 寻找下一个 非零 元素
+	for slow, fast := 0, 0; fast < len(nums); fast++ {
 		if nums[fast] != 0 {
-			nums[slow] = nums[fast]
+			nums[slow], nums[fast] = nums[fast], nums[slow]
 			slow++
 		}
-	}
-	for i := slow; i < l; i++ {
-		nums[i] = 0
 	}
 }
 
