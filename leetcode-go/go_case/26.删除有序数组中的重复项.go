@@ -75,21 +75,43 @@ package go_case
  */
 
 // @lc code=start
+// func removeDuplicates(nums []int) int {
+// 	n := len(nums)
+// 	if n == 0 {
+// 		return 0
+// 	}
+// 	slow := 0
+// 	val := nums[0]
+// 	for fast := 1; fast < len(nums); fast++ {
+// 		if nums[fast] > val {
+// 			slow++
+// 			nums[slow] = nums[fast]
+// 			val = nums[fast]
+// 		}
+// 	}
+// 	return slow + 1
+// }
+
 func removeDuplicates(nums []int) int {
-	n := len(nums)
-	if n == 0 {
+
+	l := len(nums)
+	if l == 0 {
 		return 0
 	}
-	slow := 0
-	val := nums[0]
-	for fast := 1; fast < len(nums); fast++ {
-		if nums[fast] > val {
-			slow++
+
+	// 当 l > 0 的时候，最后的数组里至少剩下1个数字
+	// fast 指向 当前遍历到的数字，
+	// slow 指向 下一个不同数字将要填入的位置
+	slow, fast := 1, 1
+	for fast < l {
+		// 因为 数组中可能有相同的数字，所以fast 至少不会 比 slow 跑得慢
+		if nums[fast] != nums[fast-1] {
 			nums[slow] = nums[fast]
-			val = nums[fast]
+			slow++
 		}
+		fast++
 	}
-	return slow + 1
+	return slow
 }
 
 // @lc code=end
