@@ -105,7 +105,8 @@ func removeDuplicates(nums []int) int {
 	slow, fast := 1, 1
 	for fast < l {
 		// 因为 数组中可能有相同的数字，所以fast 至少不会 比 slow 跑得慢
-		if nums[fast] != nums[fast-1] {
+		// 当且仅当 当前数字与上次保留的数字不相同时，才保留
+		if nums[fast] != nums[slow-1] {
 			nums[slow] = nums[fast]
 			slow++
 		}
