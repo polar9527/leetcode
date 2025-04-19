@@ -90,6 +90,15 @@ package go_case
 // }
 
 func removeElement(nums []int, val int) int {
+	// 当第一个 val 位于 index i 的时候
+	// 在[0,i-1] 区间遍历的时候
+	// slow 和 fast 同步前进
+	// nums[slow] = nums[fast] 本质上是自己与自己赋值
+	// 当 fast 和 slow 都 到达 i 的时候
+	// slow 停在 i 不前进，
+	// fast 继续前进
+	// 接下来 fast 继续 遇到 val 的时候，
+	//  nums[slow] = nums[fast] 就是把 非val 值，往前放置
 	slow := 0
 	for fast := 0; fast < len(nums); fast++ {
 		if nums[fast] != val {
