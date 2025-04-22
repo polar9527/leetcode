@@ -69,41 +69,74 @@ import "sort"
  */
 
 // @lc code=start
+// func threeSum(nums []int) [][]int {
+// 	var res [][]int
+// 	sort.Ints(nums)
+
+// 	for i := 0; i < len(nums)-2; i++ {
+// 		n1 := nums[i]
+
+// 		if nums[i] > 0 {
+// 			return res
+// 		}
+// 		// n1 去重
+// 		if i > 0 && nums[i] == nums[i-1] {
+// 			continue
+// 		}
+
+// 		l, r := i+1, len(nums)-1
+// 		for l < r {
+// 			n2, n3 := nums[l], nums[r]
+// 			if n1+n2+n3 == 0 {
+// 				//
+// 				res = append(res, []int{n1, n2, n3})
+// 				l++
+// 				r--
+// 				// b, c 去重
+// 				for l < r && nums[l] == n2 {
+// 					l++
+// 				}
+// 				for l < r && nums[r] == n3 {
+// 					r--
+// 				}
+// 			} else if n1+n2+n3 > 0 {
+// 				r--
+// 			} else {
+// 				l++
+// 			}
+// 		}
+// 	}
+// 	return res
+// }
+
 func threeSum(nums []int) [][]int {
-	var res [][]int
 	sort.Ints(nums)
-
-	for i := 0; i < len(nums)-2; i++ {
-		n1 := nums[i]
-
-		if nums[i] > 0 {
-			return res
-		}
-		// n1 去重
+	n := len(nums)
+	res := [][]int{}
+	for i := 0; i < n; i++ {
 		if i > 0 && nums[i] == nums[i-1] {
 			continue
 		}
-
-		l, r := i+1, len(nums)-1
-		for l < r {
-			n2, n3 := nums[l], nums[r]
-			if n1+n2+n3 == 0 {
-				//
-				res = append(res, []int{n1, n2, n3})
-				l++
-				r--
-				// b, c 去重
-				for l < r && nums[l] == n2 {
-					l++
+		j, k := i+1, n-1
+		for j < k {
+			if nums[i]+nums[j]+nums[k] == 0 {
+				jcur := nums[j]
+				kcur := nums[k]
+				res = append(res, []int{nums[i], nums[j], nums[k]})
+				k--
+				j++
+				for j < k && nums[j] == jcur {
+					j++
 				}
-				for l < r && nums[r] == n3 {
-					r--
+				for j < k && nums[k] == kcur {
+					k--
 				}
-			} else if n1+n2+n3 > 0 {
-				r--
+			} else if nums[i]+nums[j]+nums[k] > 0 {
+				k--
 			} else {
-				l++
+				j++
 			}
+
 		}
 	}
 	return res
