@@ -83,15 +83,17 @@ package go_case
 // 				// }
 // 				sum += int64(abs(i, j))
 
-// 			}
-// 			arr[i] = sum
-// 		} else {
-// 			arr[i] = 0
-// 		}
-// 	}
-// 	return arr
-// }
+//				}
+//				arr[i] = sum
+//			} else {
+//				arr[i] = 0
+//			}
+//		}
+//		return arr
+//	}
+//
 
+// 相同元素分组+前缀和
 func distance(nums []int) []int64 {
 	// 预处理：记录每个值的所有索引
 	valueIndices := make(map[int][]int)
@@ -128,6 +130,59 @@ func distance(nums []int) []int64 {
 	}
 
 	return res
+}
+
+// 动态统计​​：
+// ​​从左到右遍历​​：计算当前元素与​​左边所有相同元素​​的绝对差之和。
+// ​​从右到左遍历​​：计算当前元素与​​右边所有相同元素​​的绝对差之和。
+func distance(nums []int) []int64 {
+	n := len(nums)
+	res := make([]int64, n)
+
+	// 第一次遍历：计算左边贡献
+	count := make(map[int]int)
+	prefix := make(map[int]int)
+	for i := 0; i < n; i++ {
+		num := nums[i]
+		res[i] += int64(count[num]*i - prefix[num])
+		count[num]++
+		prefix[num] += i
+	}
+
+	// 第二次遍历：计算右边贡献
+	count = make(map[int]int) // 清空 map
+	prefix = make(map[int]int)
+	for i := n - 1; i >= 0; i-- {
+		num := nums[i]
+		res[i] += int64(prefix[num] - count[num]*i)
+		count[num]++
+		prefix[num] += i
+	}
+
+	return res
+}
+
+// 相同元素分组+考虑增量
+func distance(nums []int) []int64 {
+	groups := map[int][]int{}
+	for i, x := range nums {
+		groups[x] = append(groups[x], i) // 相同元素分到同一组，记录下标
+	}
+	ans := make([]int64, len(nums))
+	for _, a := range groups {
+		n := len(a)
+		s := int64(0)
+		for _, x := range a {
+			s += int64(x - a[0]) // a[0] 到其它下标的距离之和
+		}
+		ans[a[0]] = s
+		for i := 1; i < n; i++ {
+			// 从计算 a[i-1] 到计算 a[i]，考虑 s 增加了多少
+			s += int64(i*2-n) * int64(a[i]-a[i-1])
+			ans[a[i]] = s
+		}
+	}
+	return ans
 }
 
 // @lc code=end
