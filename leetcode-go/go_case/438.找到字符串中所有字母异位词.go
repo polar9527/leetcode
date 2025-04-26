@@ -55,15 +55,17 @@ package go_case
 
 // @lc code=start
 func findAnagrams(s, p string) (ans []int) {
-	if len(s) < len(p) {
+	sl := len(s)
+	pl := len(p)
+	if sl < pl {
 		return ans
 	}
-
 	sm := [26]int{}
 	pm := [26]int{}
 
-	for i, r := range p {
-		pm[r-'a']++
+	for i := range p {
+		pm[p[i]-'a']++
+		// sl >= pl, 所以不担心越界
 		sm[s[i]-'a']++
 	}
 
@@ -71,11 +73,11 @@ func findAnagrams(s, p string) (ans []int) {
 		ans = append(ans, 0)
 	}
 
-	for j := 0; j < len(s)-len(p); j++ {
-		sm[s[j]-'a']--
-		sm[s[j+len(p)]-'a']++
-		if pm == sm {
-			ans = append(ans, j+1)
+	for i := 1; i < sl-pl+1; i++ {
+		sm[s[i-1]-'a']--
+		sm[s[i+pl-1]-'a']++
+		if sm == pm {
+			ans = append(ans, i)
 		}
 	}
 	return ans
