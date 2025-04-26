@@ -79,23 +79,22 @@ package go_case
 // }
 
 func lengthOfLongestSubstring(s string) int {
-	l, r := 0, 0
 	n := len(s)
-	var res int
+	fast := 0
 	charMap := make(map[byte]int, 0)
-	for i := l; i < n; i++ {
-		if i > 0 {
-			delete(charMap, s[i-1])
+	res := 0
+	for slow := 0; slow < n; slow++ {
+		// 保证 [slow, fast) 半开半闭 区间内所有的字符唯一
+		if slow > 0 {
+			delete(charMap, s[slow-1])
 		}
-
-		for r < n && charMap[s[r]] == 0 {
-			charMap[s[r]]++
-			r++
-
+		for fast < n && charMap[s[fast]] == 0 {
+			charMap[s[fast]]++
+			fast++
 		}
-		// 此时，s[i:r] 内的 字符都是唯一的，但是 s[r] 与 s[i:r]中的某个字符相同
-		if res < r-i {
-			res = r - i
+		// 此时 如果 fast != n, 那意味着 s[fast]和 s[slow:fast]中的某个字符相同
+		if res < fast-slow {
+			res = fast - slow
 		}
 	}
 	return res
