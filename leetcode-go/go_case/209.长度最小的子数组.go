@@ -97,25 +97,19 @@ import (
 // }
 
 func minSubArrayLen(target int, nums []int) int {
-	min := func(x, y int) int {
-		if x > y {
-			return y
-		}
-		return x
-	}
 	res := math.MaxInt32
 	sum := 0
-	i := 0
-	for j := 0; j < len(nums); j++ {
-		sum += nums[j]
-		for sum >= target {
-			subl := j - i + 1
-			res = min(res, subl)
-			sum -= nums[i]
-			i++
+	for slow, fast := 0, 0; fast < len(nums); fast++ {
+		sum += nums[fast]
+		for sum >= target && slow <= fast {
+			if res > fast-slow+1 {
+				res = fast - slow + 1
+			}
+			sum -= nums[slow]
+			slow++
 		}
 	}
-	if res > len(nums) {
+	if res == math.MaxInt32 {
 		return 0
 	}
 	return res
