@@ -57,55 +57,27 @@
 
 // @lc code=start
 
-func NewMoQueue() *MoQueue {
-	return &MoQueue{
-		q: make([]int, 0),
-	}
-}
-
-type MoQueue struct {
-	q []int
-}
-
-func (m *MoQueue) Front() int {
-	return m.q[0]
-}
-
-func (m *MoQueue) Back() int {
-	return m.q[len(m.q)-1]
-}
-
-func (m *MoQueue) Push(v int) {
-	for !m.Empty() && v > m.Back() {
-		m.q = m.q[0 : len(m.q)-1]
-	}
-	m.q = append(m.q, v)
-}
-
-func (m *MoQueue) Pop(v int) {
-	if !m.Empty() && v == m.Front() {
-		m.q = m.q[1:]
-	}
-}
-
-func (m *MoQueue) Empty() bool {
-	return len(m.q) == 0
-}
-
 func maxSlidingWindow(nums []int, k int) []int {
-	queue := NewMoQueue()
-	res := make([]int, 0)
 
-	for i := 0; i < k; i++ {
-		queue.Push(nums[i])
-	}
-	res = append(res, queue.Front())
+	q := []int{}
+	res := []int{}
+	for i, num := range nums {
+		// push item
+		// 元素加入队列 q 前，要保证 队列单调减
+		for len(q) != 0 && nums[q[len(q)-1]] <= num {
+			q = q[:len(q)-1]
+		}
+		q = append(q, i)
 
-	l := len(nums)
-	for i := k; i < l; i++ {
-		queue.Pop(nums[i-k])
-		queue.Push(nums[i])
-		res = append(res, queue.Front())
+		// pop item
+		// 窗口的长度刚好大于 k 的时候
+		if i-q[0]+1 > k {
+			q = q[1:]
+		}
+
+		if i >= k-1 {
+			res = append(res, nums[q[0]])
+		}
 	}
 	return res
 }
