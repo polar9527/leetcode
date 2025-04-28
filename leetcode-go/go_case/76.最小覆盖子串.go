@@ -72,39 +72,51 @@ import "math"
 
 // @lc code=start
 func minWindow(s string, t string) string {
-	target, window := map[byte]int{}, map[byte]int{}
-
-	for i := 0; i < len(t); i++ {
-		target[t[i]]++
+	window := make(map[byte]int)
+	targetMap := make(map[byte]int)
+	for _, tChar := range t {
+		targetMap[byte(tChar)]++
 	}
 
 	check := func() bool {
-		for k, v := range target {
-			if window[k] < v {
+		for char, count := range targetMap {
+			if window[char] < count {
 				return false
 			}
 		}
 		return true
 	}
 
-	length := math.MaxInt32
-	ansL, ansR := 0, 0
-	for l, r := 0, 0; r < len(s); r++ {
-		if target[s[r]] > 0 {
-			window[s[r]]++
-		}
-		for check() && l <= r {
-			if length > r-l+1 {
-				ansL, ansR = l, r+1
-				length = r - l + 1
-			}
-			// shrink left
-			window[s[l]] -= 1
-			l++
-		}
-	}
+	minLen := math.MaxInt32
+	start := 0
+	end := 0
+	for left, right := 0, 0; right < len(s); right++ {
+		// window 没有 展开只包含 targeMap 之前，
+		// 不停地扩张 窗口的 right
 
-	return s[ansL:ansR]
+		// 只有当字符存在于 targetMap 中时，window才扩张，否则没有意义
+		if targetMap[s[right]] > 0 {
+			window[s[right]]++
+		}
+
+		// 当 window 扩张到刚好包含 targeMap 时候
+		// 缩减窗口的 left，直到不能再缩减，即保证 window包含 targeMap
+
+		for left <= right && check() {
+			if minLen > right-left+1 {
+				minLen = right - left + 1
+				start = left
+				end = right + 1
+			}
+			// 缩减窗口
+			window[s[left]]--
+			left++
+		}
+
+	}
+	// minLen 可嫩等于 math.MaxInt32， 有越界风险
+	// return s[start : start+minLen]
+	return s[start:end]
 }
 
 // @lc code=end
