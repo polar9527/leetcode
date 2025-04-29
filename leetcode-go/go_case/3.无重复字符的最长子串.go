@@ -80,22 +80,15 @@ package go_case
 
 func lengthOfLongestSubstring(s string) int {
 	n := len(s)
-	fast := 0
 	charMap := make(map[byte]int, 0)
 	res := 0
-	for slow := 0; slow < n; slow++ {
-		// 保证 [slow, fast) 半开半闭 区间内所有的字符唯一
-		if slow > 0 {
-			delete(charMap, s[slow-1])
+	for left, right := 0, 0; right < n; right++ {
+		charMap[s[right]]++
+		for charMap[s[right]] > 1 {
+			charMap[s[left]]--
+			left++
 		}
-		for fast < n && charMap[s[fast]] == 0 {
-			charMap[s[fast]]++
-			fast++
-		}
-		// 此时 如果 fast != n, 那意味着 s[fast]和 s[slow:fast]中的某个字符相同
-		if res < fast-slow {
-			res = fast - slow
-		}
+		res = max(res, right-left+1)
 	}
 	return res
 }
