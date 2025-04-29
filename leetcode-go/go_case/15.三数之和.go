@@ -114,12 +114,15 @@ func threeSum(nums []int) [][]int {
 	n := len(nums)
 	res := [][]int{}
 	for i := 0; i <= n-3; i++ {
+		// 去重
 		if i > 0 && nums[i] == nums[i-1] {
 			continue
 		}
+		// 剪枝
 		if nums[i]+nums[i+1]+nums[i+2] > 0 {
 			break
 		}
+		// 剪枝
 		if nums[i]+nums[n-2]+nums[n-1] < 0 {
 			continue
 		}
