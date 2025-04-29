@@ -120,6 +120,9 @@ func threeSum(nums []int) [][]int {
 		if nums[i]+nums[i+1]+nums[i+2] > 0 {
 			break
 		}
+		if nums[i]+nums[n-2]+nums[n-1] < 0 {
+			continue
+		}
 		j, k := i+1, n-1
 		for j < k {
 			if nums[i]+nums[j]+nums[k] == 0 {
