@@ -101,6 +101,10 @@ func minSubArrayLen(target int, nums []int) int {
 	sum := 0
 	for slow, fast := 0, 0; fast < len(nums); fast++ {
 		sum += nums[fast]
+		// 由于 sum 是 [slow:fast] 区间的数之和，
+		// 所以当 slow == fast 的时候， sum == nums[slow]
+		// 继续循环 sum == 0，而 targe > 0
+		// 所以可以省略 判断条件 slow <= fast
 		for sum >= target && slow <= fast {
 			if res > fast-slow+1 {
 				res = fast - slow + 1
