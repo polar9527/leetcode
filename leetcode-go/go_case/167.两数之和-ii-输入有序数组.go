@@ -68,7 +68,7 @@ func twoSum(numbers []int, target int) []int {
 	for low < high {
 		sum := numbers[low] + numbers[high]
 		if sum == target {
-			return []int{low, high}
+			return []int{low + 1, high + 1}
 		} else if sum < target {
 			low++
 		} else {
