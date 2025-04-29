@@ -113,9 +113,12 @@ func threeSum(nums []int) [][]int {
 	sort.Ints(nums)
 	n := len(nums)
 	res := [][]int{}
-	for i := 0; i < n; i++ {
+	for i := 0; i <= n-3; i++ {
 		if i > 0 && nums[i] == nums[i-1] {
 			continue
+		}
+		if nums[i]+nums[i+1]+nums[i+2] > 0 {
+			break
 		}
 		j, k := i+1, n-1
 		for j < k {
