@@ -47,13 +47,22 @@ package go_case
 
 // @lc code=start
 func numSubarrayProductLessThanK(nums []int, k int) (ans int) {
-	prod, i := 1, 0
-	for j, num := range nums {
-		prod *= num
-		for ; i <= j && prod >= k; i++ {
-			prod /= nums[i]
+	if k <= 1 {
+		return
+	}
+	prod := 1
+	for slow, fast := 0, 0; fast < len(nums); fast++ {
+		prod *= nums[fast]
+		// 由于 prod 是 [slow:fast] 区间的数之乘积，
+		// 所以当 slow == fast 的时候， prod == nums[slow]
+		// 继续循环 prod == 1，而 k >= 0，
+		// 如果省略 判断条件 slow <= fast
+		// 循环会一直进行下去，导致越界
+		for prod >= k && slow <= fast {
+			prod /= nums[slow]
+			slow++
 		}
-		ans += j - i + 1
+		ans += fast - slow + 1
 	}
 	return
 }
