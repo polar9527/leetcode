@@ -61,91 +61,42 @@ func searchRange(nums []int, target int) []int {
 	if len(nums) == 0 {
 		return res
 	}
-	// extreme condition
-	if nums[0] > target || nums[len(nums)-1] < target {
-		return res
-	}
-
-	// A
-	// target = 2
-	// nums = [3,3]
-
-	// B
-	// target = 4
-	// nums = [3,3]
-
-	// C
-	// target = 3
-	// nums = [3,3]
-
-	// D
-	// target = 4
-	// nums = [3,5]
-
-	// E
-	// target = 4
-	// nums = [3,4,5]
-	getRightBoard := func(nums []int, target int) int {
-		rightBoard := -1
+	getStartBoard := func(nums []int, target int) int {
+		//左闭右闭
 		left, right := 0, len(nums)-1
 		for left <= right {
 			// 不能 用 left + right, 有溢出风险
 			// mid := (left + right) >> 1
 			mid := left + (right-left)>>1
-
-			if nums[mid] == target {
-				rightBoard = mid
+			if nums[mid] < target {
+				// 范围缩小到 [mid-1, right]
 				left = mid + 1
-			}
-			if nums[mid] > target {
-				// rightOrder 可能在 [left,mid-1] 范围内
+			} else {
+				//  target <= nums[mid]
+				// 范围缩小到 [left,mid-1] 范围内,
 				right = mid - 1
-			} else if nums[mid] < target {
-				// nums[mid] < target
-				// rightOrder 可能在 [mid+1,right] 范围内,
-				left = mid + 1
 			}
+			// 循环不变量
+			// nums[left-1] < target
+			// target <= nums[right+1]
+			// 不确定区域 [左侧全部 < target]  [left, right] [target <= 右侧全部 ]
 
 		}
-		// A
-		// left = 0, right = -1, rightBoard = -1
-
-		// B
-		// left = len(nums), right = 1, rightBoard = -1
-
-		// C
-		// left = len(nums), right = 1, rightBoard = 1
-		return rightBoard
-	}
-	getLeftBoard := func(nums []int, target int) int {
-		leftBoard := -1
-		left, right := 0, len(nums)-1
-		for left <= right {
-			// 不能 用 left + right, 有溢出风险
-			// mid := (left + right) >> 1
-			mid := left + (right-left)>>1
-
-			if nums[mid] == target {
-				leftBoard = mid
-				right = mid - 1
-			}
-			if nums[mid] > target {
-				// leftBoard 可能在 [left,mid-1] 范围内
-				right = mid - 1
-			} else if nums[mid] < target {
-				// nums[mid] < target
-				// leftBoard 可能在 [mid+1,right] 范围内,
-				left = mid + 1
-			}
-
-		}
-		return leftBoard
+		return left
 	}
 
-	res[0] = getLeftBoard(nums, target)
-	res[1] = getRightBoard(nums, target)
+	// 如果 nums 中所有数都小于 target
+	// start == len(nums)
+	// 如果 nums 中所有数都大于 target
+	// start == 0+
+	start := getStartBoard(nums, target)
+	if start == len(nums) || nums[start] != target {
+		return []int{-1, -1}
+	}
 
-	return res
+	end := getStartBoard(nums, target+1) - 1
+
+	return []int{start, end}
 
 }
 
