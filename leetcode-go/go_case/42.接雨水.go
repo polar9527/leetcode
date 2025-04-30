@@ -161,38 +161,58 @@ package go_case
 // 	return sum
 // }
 
-// monotony stack
+// 2 points
 func trap(height []int) int {
-	n := len(height)
-	if n <= 2 {
-		return 0
-	}
-
-	sum := 0
-	stack := []int{0}
-	for i := 1; i < n; i++ {
-		// 寻找 右边第一个比当前栈顶元素大的元素
-		if height[stack[len(stack)-1]] > height[i] {
-			stack = append(stack, i)
-		} else if height[stack[len(stack)-1]] == height[i] {
-			// 水坑中某个平面的水是由当前左边最右侧的高度决定的
-			// 去掉相同高度元素，避免重复计算
-			stack = stack[:len(stack)-1]
-			stack = append(stack, i)
+	l, r := 0, len(height)-1
+	lm := 0
+	rm := 0
+	res := 0
+	for l <= r {
+		lm = max(lm, height[l])
+		rm = max(rm, height[r])
+		if lm < rm {
+			res += lm - height[l]
+			l++
 		} else {
-			for len(stack) > 0 && height[stack[len(stack)-1]] < height[i] {
-				bottom := height[stack[len(stack)-1]]
-				stack = stack[:len(stack)-1]
-				if len(stack) > 0 {
-					h := min(height[stack[len(stack)-1]], height[i]) - bottom
-					w := i - stack[len(stack)-1] - 1
-					sum += h * w
-				}
-			}
-			stack = append(stack, i)
+			res += rm - height[r]
+			r--
 		}
 	}
-	return sum
+	return res
 }
+
+// monotony stack
+// func trap(height []int) int {
+// 	n := len(height)
+// 	if n <= 2 {
+// 		return 0
+// 	}
+
+// 	sum := 0
+// 	stack := []int{0}
+// 	for i := 1; i < n; i++ {
+// 		// 寻找 右边第一个比当前栈顶元素大的元素
+// 		if height[stack[len(stack)-1]] > height[i] {
+// 			stack = append(stack, i)
+// 		} else if height[stack[len(stack)-1]] == height[i] {
+// 			// 水坑中某个平面的水是由当前左边最右侧的高度决定的
+// 			// 去掉相同高度元素，避免重复计算
+// 			stack = stack[:len(stack)-1]
+// 			stack = append(stack, i)
+// 		} else {
+// 			for len(stack) > 0 && height[stack[len(stack)-1]] < height[i] {
+// 				bottom := height[stack[len(stack)-1]]
+// 				stack = stack[:len(stack)-1]
+// 				if len(stack) > 0 {
+// 					h := min(height[stack[len(stack)-1]], height[i]) - bottom
+// 					w := i - stack[len(stack)-1] - 1
+// 					sum += h * w
+// 				}
+// 			}
+// 			stack = append(stack, i)
+// 		}
+// 	}
+// 	return sum
+// }
 
 // @lc code=end
