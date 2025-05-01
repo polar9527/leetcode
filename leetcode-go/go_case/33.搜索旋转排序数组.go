@@ -60,35 +60,77 @@
  */
 
 // @lc code=start
+// func search(nums []int, target int) int {
+
+// 	n := len(nums)
+// 	// nums[x] 是否 为 target， 或者 在target 右侧
+// 	check := func(x int) bool {
+// 		// 如果 nums[x] > nums[n-1]，说明 x 在旋转点的左侧（较大的部分）
+// 		if nums[x] > nums[n-1] {
+// 			// 目标值target必须大于 nums[n-1] 且小于等于 nums[x]
+// 			return target > nums[n-1] && nums[x] >= target
+// 		}
+// 		// 否则，x 在旋转点的右侧（较小的部分）
+// 		// 目标值target必须大于 nums[n-1] 或小于等于 nums[x]
+// 		return target > nums[n-1] || nums[x] >= target
+// 	}
+// 	l, r := 0, n-1
+// 	for l <= r {
+// 		mid := l + (r-l)>>1
+
+// 		if check(mid) {
+// 			r = mid - 1
+// 		} else {
+// 			l = mid + 1
+// 		}
+// 	}
+// 	// [l:] 这部分 >= target, l 最大 为 n-1
+// 	if l < n && nums[l] == target {
+// 		return l
+// 	}
+// 	return -1
+// }
+
 func search(nums []int, target int) int {
-
 	n := len(nums)
-	// nums[x] 是否 为 target， 或者 在target 右侧
-	check := func(x int) bool {
-		// 如果 nums[x] > nums[n-1]，说明 x 在旋转点的左侧（较大的部分）
-		if nums[x] > nums[n-1] {
-			// 目标值target必须大于 nums[n-1] 且小于等于 nums[x]
-			return target > nums[n-1] && nums[x] >= target
+	// 找到旋转数组最小值位置
+	find := func(nums []int) int {
+		n := len(nums)
+		l, r := 0, n-2
+		for l <= r {
+			mid := l + (r-l)>>1
+			if nums[mid] < nums[n-1] {
+				r = mid - 1
+			} else {
+				l = mid + 1
+			}
 		}
-		// 否则，x 在旋转点的右侧（较小的部分）
-		// 目标值target必须大于 nums[n-1] 或小于等于 nums[x]
-		return target > nums[n-1] || nums[x] >= target
-	}
-	l, r := 0, n-1
-	for l <= r {
-		mid := l + (r-l)>>1
-
-		if check(mid) {
-			r = mid - 1
-		} else {
-			l = mid + 1
-		}
-	}
-	// [l:] 这部分 >= target, l 最大 为 n-1
-	if l < n && nums[l] == target {
 		return l
 	}
-	return -1
+
+	lowbound := func(nums []int, l, r int, target int) int {
+		limit := r
+		for l <= r {
+			mid := l + (r-l)>>1
+			if nums[mid] < target {
+				l = mid + 1
+			} else {
+				r = mid - 1
+			}
+		}
+		if l <= limit && nums[l] == target {
+			return l
+		}
+		return -1
+	}
+
+	im := find(nums)
+	// 在第一段上
+	if nums[n-1] < target {
+		return lowbound(nums, 0, im-1, target)
+	}
+	return lowbound(nums, im, n-1, target)
+
 }
 
 // @lc code=end
