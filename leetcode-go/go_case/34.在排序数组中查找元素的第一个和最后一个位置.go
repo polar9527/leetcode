@@ -56,14 +56,13 @@ package go_case
 
 // @lc code=start
 func searchRange(nums []int, target int) []int {
-	res := []int{-1, -1}
-
-	if len(nums) == 0 {
-		return res
+	n := len(nums)
+	if n == 0 {
+		return []int{-1, -1}
 	}
 	getStartBoard := func(nums []int, target int) int {
 		//左闭右闭
-		left, right := 0, len(nums)-1
+		left, right := 0, n-1
 		for left <= right {
 			// 不能 用 left + right, 有溢出风险
 			// mid := (left + right) >> 1
@@ -86,11 +85,13 @@ func searchRange(nums []int, target int) []int {
 	}
 
 	// 如果 nums 中所有数都小于 target
-	// start == len(nums)
+	// start == n
 	// 如果 nums 中所有数都大于 target
 	// start == 0+
 	start := getStartBoard(nums, target)
-	if start == len(nums) || nums[start] != target {
+	// 1. 当 target 大于所有的范围内 nums[i]时，l最后会增加到 n，此时 n-1
+	// 2. 当 target 小于所有范围内的 nums[i]时，l最后会一直不动指向 0，此时 r指向-1
+	if start == n || nums[start] != target {
 		return []int{-1, -1}
 	}
 

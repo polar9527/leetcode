@@ -118,10 +118,13 @@ func search(nums []int, target int) int {
 				r = mid - 1
 			}
 		}
-		if l <= limit && nums[l] == target {
-			return l
+
+		// 1. 当 target 大于所有的范围内 nums[i]时，l最后会增加到 limit+1，此时 r指向limit
+		// 2. 当 target 小于所有范围内的 nums[i]时，l最后会一直不动指向 0，此时 r指向-1
+		if l > limit || nums[l] != target {
+			return -1
 		}
-		return -1
+		return l
 	}
 
 	im := find(nums)
