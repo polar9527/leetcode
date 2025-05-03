@@ -59,27 +59,74 @@ package go_case
  *     Next *ListNode
  * }
  */
-func swapPairs(head *ListNode) *ListNode {
+// func swapPairs(head *ListNode) *ListNode {
 
+// 	dummy := &ListNode{Next: head}
+// 	cur := dummy
+// 	for cur.Next != nil && cur.Next.Next != nil {
+// 		// 指向第 1 个节点
+// 		tmp1 := cur.Next
+// 		// 指向第 3 个节点
+// 		tmp2 := cur.Next.Next.Next
+
+// 		// 交换
+// 		cur.Next = cur.Next.Next
+// 		cur.Next.Next = tmp1
+// 		cur.Next.Next.Next = tmp2
+
+// 		// 移动指针
+// 		cur = cur.Next.Next
+// 	}
+
+// 	return dummy.Next
+
+// }
+
+func swapPairs(head *ListNode) *ListNode {
 	dummy := &ListNode{Next: head}
 	cur := dummy
 	for cur.Next != nil && cur.Next.Next != nil {
 		// 指向第 1 个节点
-		tmp1 := cur.Next
+		node1 := cur.Next
+		// 指向第 2 个节点
+		node2 := cur.Next.Next
 		// 指向第 3 个节点
-		tmp2 := cur.Next.Next.Next
+		node3 := cur.Next.Next.Next
 
 		// 交换
-		cur.Next = cur.Next.Next
-		cur.Next.Next = tmp1
-		cur.Next.Next.Next = tmp2
+		cur.Next = node2
+		cur.Next.Next = node1
+		cur.Next.Next.Next = node3
 
 		// 移动指针
 		cur = cur.Next.Next
 	}
-
 	return dummy.Next
-
 }
+
+// func swapPairs(head *ListNode) *ListNode {
+// 	n := 0
+// 	for cur := head; cur != nil; cur = cur.Next {
+// 		n++
+// 	}
+
+// 	dummy := &ListNode{Next: head}
+
+// 	start := dummy
+// 	var cur, pre *ListNode = head, nil
+// 	for ; n >= 2; n -= 2 {
+// 		for i := 0; i < 2; i++ {
+// 			next := cur.Next
+// 			cur.Next = pre
+// 			pre = cur
+// 			cur = next
+// 		}
+// 		nextStart := start.Next
+// 		start.Next.Next = cur
+// 		start.Next = pre
+// 		start = nextStart
+// 	}
+// 	return dummy.Next
+// }
 
 // @lc code=end
