@@ -69,43 +69,45 @@ package go_case
  * }
  */
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	stack1 := stackACC(l1)
-	stack2 := stackACC(l2)
 
-	len1 := len(stack1)
-	len2 := len(stack2)
+	stack := func(l *ListNode) []int {
+		s := []int{}
+		for cur := l; cur != nil; cur = cur.Next {
+			s = append(s, cur.Val)
+		}
+		return s
+	}
+	s1 := stack(l1)
+	s2 := stack(l2)
+
+	len1 := len(s1)
+	len2 := len(s2)
+
+	var res *ListNode
 	carry := 0
-	var ans *ListNode
 	for len1 != 0 || len2 != 0 || carry != 0 {
 		var a, b int
 		if len1 != 0 {
-			a = stack1[len1-1]
+			a = s1[len1-1]
 			len1--
 		} else {
 			a = 0
 		}
 		if len2 != 0 {
-			b = stack2[len2-1]
+			b = s2[len2-1]
 			len2--
 		} else {
 			b = 0
 		}
-		cur := a + b + carry
-		carry = cur / 10
-		cur %= 10
+		sum := a + b + carry
+		carry = sum / 10
+		sum = sum % 10
 
-		curNode := ListNode{cur, nil}
-		curNode.Next = ans
-		ans = &curNode
+		cur := &ListNode{Val: sum}
+		cur.Next = res
+		res = cur
 	}
-	return ans
-}
-
-func stackACC(l *ListNode) (s []int) {
-	for ; l != nil; l = l.Next {
-		s = append(s, l.Val)
-	}
-	return
+	return res
 }
 
 // @lc code=end
