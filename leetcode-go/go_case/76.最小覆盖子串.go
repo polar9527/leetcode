@@ -72,51 +72,90 @@ import "math"
 
 // @lc code=start
 func minWindow(s string, t string) string {
-	window := make(map[byte]int)
-	targetMap := make(map[byte]int)
-	for _, tChar := range t {
-		targetMap[byte(tChar)]++
+	need := make(map[byte]int)
+	for i := range t {
+		need[t[i]]++
 	}
 
-	check := func() bool {
-		for char, count := range targetMap {
-			if window[char] < count {
-				return false
-			}
-		}
-		return true
-	}
-
+	left, right := 0, 0
+	count := len(t)
 	minLen := math.MaxInt32
 	start := 0
-	end := 0
-	for left, right := 0, 0; right < len(s); right++ {
-		// window 没有 展开只包含 targeMap 之前，
-		// 不停地扩张 窗口的 right
 
-		// 只有当字符存在于 targetMap 中时，window才扩张，否则没有意义
-		if targetMap[s[right]] > 0 {
-			window[s[right]]++
+	for right < len(s) {
+		if need[s[right]] > 0 {
+			count--
 		}
+		need[s[right]]--
+		right++
 
-		// 当 window 扩张到刚好包含 targeMap 时候
-		// 缩减窗口的 left，直到不能再缩减，即保证 window包含 targeMap
-
-		for left <= right && check() {
-			if minLen > right-left+1 {
-				minLen = right - left + 1
+		for count == 0 {
+			// 说明此时 的窗口 包含 t
+			if right-left < minLen {
+				minLen = right - left
 				start = left
-				end = right + 1
 			}
-			// 缩减窗口
-			window[s[left]]--
+			if need[s[left]] == 0 {
+				// 说明 left 指向的字符串 在 t 中
+				count++
+			}
+			need[s[left]]++
 			left++
 		}
-
 	}
-	// minLen 可嫩等于 math.MaxInt32， 有越界风险
-	// return s[start : start+minLen]
-	return s[start:end]
+
+	if minLen == math.MaxInt32 {
+		return ""
+	}
+	return s[start : start+minLen]
 }
+
+// func minWindow(s string, t string) string {
+// 	window := make(map[byte]int)
+// 	targetMap := make(map[byte]int)
+// 	for _, tChar := range t {
+// 		targetMap[byte(tChar)]++
+// 	}
+
+// 	check := func() bool {
+// 		for char, count := range targetMap {
+// 			if window[char] < count {
+// 				return false
+// 			}
+// 		}
+// 		return true
+// 	}
+
+// 	minLen := math.MaxInt32
+// 	start := 0
+// 	end := 0
+// 	for left, right := 0, 0; right < len(s); right++ {
+// 		// window 没有 展开只包含 targeMap 之前，
+// 		// 不停地扩张 窗口的 right
+
+// 		// 只有当字符存在于 targetMap 中时，window才扩张，否则没有意义
+// 		if targetMap[s[right]] > 0 {
+// 			window[s[right]]++
+// 		}
+
+// 		// 当 window 扩张到刚好包含 targeMap 时候
+// 		// 缩减窗口的 left，直到不能再缩减，即保证 window包含 targeMap
+
+// 		for left <= right && check() {
+// 			if minLen > right-left+1 {
+// 				minLen = right - left + 1
+// 				start = left
+// 				end = right + 1
+// 			}
+// 			// 缩减窗口
+// 			window[s[left]]--
+// 			left++
+// 		}
+
+// 	}
+// 	// minLen 可嫩等于 math.MaxInt32， 有越界风险
+// 	// return s[start : start+minLen]
+// 	return s[start:end]
+// }
 
 // @lc code=end
