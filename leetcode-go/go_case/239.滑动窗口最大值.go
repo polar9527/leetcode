@@ -57,27 +57,54 @@
 
 // @lc code=start
 
+// func maxSlidingWindow(nums []int, k int) []int {
+
+// 	q := []int{}
+// 	res := []int{}
+// 	for i, num := range nums {
+// 		// push item
+// 		// 元素加入队列 q 前，要保证 队列单调减
+// 		for len(q) != 0 && nums[q[len(q)-1]] <= num {
+// 			q = q[:len(q)-1]
+// 		}
+// 		q = append(q, i)
+
+// 		// pop item
+// 		// 窗口的长度刚好大于 k 的时候
+// 		if i-q[0]+1 > k {
+// 			q = q[1:]
+// 		}
+
+// 		if i >= k-1 {
+// 			res = append(res, nums[q[0]])
+// 		}
+// 	}
+// 	return res
+// }
+
 func maxSlidingWindow(nums []int, k int) []int {
 
 	q := []int{}
-	res := []int{}
+	var res []int
 	for i, num := range nums {
-		// push item
-		// 元素加入队列 q 前，要保证 队列单调减
-		for len(q) != 0 && nums[q[len(q)-1]] <= num {
+		// < 或者 <= 都可以
+		for len(q) > 0 && nums[q[len(q)-1]] < num {
 			q = q[:len(q)-1]
 		}
 		q = append(q, i)
 
-		// pop item
-		// 窗口的长度刚好大于 k 的时候
-		if i-q[0]+1 > k {
+		// 如果 i - q[0]+1 <= k
+		// 又能能在上面的步骤当中被提前 pop 出 队列 q 了
+
+		// if i - q[0]+1 > k {
+		if q[len(q)-1]-q[0]+1 > k {
 			q = q[1:]
 		}
 
-		if i >= k-1 {
+		if q[len(q)-1] >= k-1 {
 			res = append(res, nums[q[0]])
 		}
+
 	}
 	return res
 }
