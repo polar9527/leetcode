@@ -78,18 +78,17 @@
 // dp
 func maxSubArray(nums []int) int {
 
-	dp := make([]int, len(nums))
+	dp := make([]int, len(nums)+1)
 	dp[0] = nums[0]
 	res := dp[0]
+	// dp[i]， 以i 指向数字为结尾的最大子数组和
 	for i := 1; i < len(nums); i++ {
 		if dp[i-1]+nums[i] < nums[i] {
 			dp[i] = nums[i]
 		} else {
 			dp[i] = dp[i-1] + nums[i]
 		}
-		if res < dp[i] {
-			res = dp[i]
-		}
+		res = max(dp[i], res)
 	}
 	return res
 }
