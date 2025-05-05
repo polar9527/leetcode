@@ -51,19 +51,38 @@ import "sort"
 
 // @lc code=start
 
+// func merge(intervals [][]int) [][]int {
+// 	sort.Slice(intervals, func(i, j int) bool {
+// 		return intervals[i][0] < intervals[j][0]
+// 	})
+
+// 	res := [][]int{intervals[0]}
+// 	for i := 1; i < len(intervals); i++ {
+// 		if res[len(res)-1][1] >= intervals[i][0] {
+// 			if res[len(res)-1][1] < intervals[i][1] {
+// 				res[len(res)-1][1] = intervals[i][1]
+// 			}
+// 		} else {
+// 			res = append(res, intervals[i])
+// 		}
+// 	}
+// 	return res
+// }
+
 func merge(intervals [][]int) [][]int {
+
 	sort.Slice(intervals, func(i, j int) bool {
 		return intervals[i][0] < intervals[j][0]
 	})
-
 	res := [][]int{intervals[0]}
 	for i := 1; i < len(intervals); i++ {
-		if res[len(res)-1][1] >= intervals[i][0] {
-			if res[len(res)-1][1] < intervals[i][1] {
-				res[len(res)-1][1] = intervals[i][1]
-			}
-		} else {
+		last := res[len(res)-1]
+		if last[1] < intervals[i][0] {
 			res = append(res, intervals[i])
+		} else {
+			if last[1] < intervals[i][1] {
+				last[1] = intervals[i][1]
+			}
 		}
 	}
 	return res
