@@ -47,40 +47,72 @@ package go_case
  */
 
 // @lc code=start
-func spiralOrder(matrix [][]int) []int {
-	if len(matrix) == 0 {
-		return []int{}
-	}
-	t, b := 0, len(matrix)-1
-	l, r := 0, len(matrix[0])-1
-	amount := (b + 1) * (r + 1)
-	nums := make([]int, amount)
-	num := 1
-	// matrix[i][j]
-	for num <= amount {
-		for j := l; j <= r && num <= amount; j++ {
-			nums[num-1] = matrix[t][j]
-			num++
-		}
-		t++
-		for i := t; i <= b && num <= amount; i++ {
-			nums[num-1] = matrix[i][r]
-			num++
-		}
-		r--
-		for j := r; j >= l && num <= amount; j-- {
-			nums[num-1] = matrix[b][j]
-			num++
-		}
-		b--
-		for i := b; i >= t && num <= amount; i-- {
-			nums[num-1] = matrix[i][l]
-			num++
-		}
-		l++
+// func spiralOrder(matrix [][]int) []int {
+// 	if len(matrix) == 0 {
+// 		return []int{}
+// 	}
+// 	t, b := 0, len(matrix)-1
+// 	l, r := 0, len(matrix[0])-1
+// 	amount := (b + 1) * (r + 1)
+// 	nums := make([]int, amount)
+// 	num := 1
+// 	// matrix[i][j]
+// 	for num <= amount {
+// 		for j := l; j <= r && num <= amount; j++ {
+// 			nums[num-1] = matrix[t][j]
+// 			num++
+// 		}
+// 		t++
+// 		for i := t; i <= b && num <= amount; i++ {
+// 			nums[num-1] = matrix[i][r]
+// 			num++
+// 		}
+// 		r--
+// 		for j := r; j >= l && num <= amount; j-- {
+// 			nums[num-1] = matrix[b][j]
+// 			num++
+// 		}
+// 		b--
+// 		for i := b; i >= t && num <= amount; i-- {
+// 			nums[num-1] = matrix[i][l]
+// 			num++
+// 		}
+// 		l++
 
+// 	}
+// 	return nums
+// }
+
+func spiralOrder(matrix [][]int) []int {
+	rows := len(matrix)
+	cols := len(matrix[0])
+	top, bottom := 0, rows-1
+	left, right := 0, cols-1
+	nums := rows * cols
+	res := make([]int, nums)
+	for num := 0; num < nums; {
+		for j := left; j <= right && num < nums; j++ {
+			res[num] = matrix[top][j]
+			num++
+		}
+		top++
+		for i := top; i <= bottom && num < nums; i++ {
+			res[num] = matrix[i][right]
+			num++
+		}
+		right--
+		for j := right; j >= left && num < nums; j-- {
+			res[num] = matrix[bottom][j]
+			num++
+		}
+		bottom--
+		for i := bottom; i >= top && num < nums; i-- {
+			res[num] = matrix[i][left]
+			num++
+		}
+		left++
 	}
-	return nums
+	return res
 }
 
 // @lc code=end
