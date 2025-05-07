@@ -70,46 +70,45 @@ func reorderList(head *ListNode) {
 		return
 	}
 	mid := middleNode(head)
+	l2 := reverseList(mid)
+	// mergeList(head, l2)
 	l1 := head
-	l2 := mid.Next
-	mid.Next = nil
-	l2 = reverseList(l2)
-	mergeList(l1, l2)
+	for l2.Next != nil {
+		nextL1 := l1.Next
+		nextL2 := l2.Next
+
+		l1.Next = l2
+		l2.Next = nextL1
+
+		l1 = nextL1
+		l2 = nextL2
+	}
 
 }
 
 // 876
-// func middleNode(head *ListNode) *ListNode {
-// 	slow, fast := head, head
-// 	for fast.Next != nil && fast.Next.Next != nil {
-// 		slow = slow.Next
-// 		fast = fast.Next.Next
-// 	}
-// 	return slow
-// }
+func middleNode(head *ListNode) *ListNode {
+	slow, fast := head, head
+	for fast != nil && fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
+	}
+	return slow
+}
 
 // 206
-// func reverseList(head *ListNode) *ListNode {
-// 	var pre, post *ListNode
-// 	for head != nil {
-// 		post, head.Next = head.Next, pre
-// 		pre, head = head, post
-// 	}
-// 	return pre
-// }
-
-func mergeList(l1, l2 *ListNode) {
-	var l1Tmp, l2Tmp *ListNode
-	for l1 != nil && l2 != nil {
-		l1Tmp = l1.Next
-		l2Tmp = l2.Next
-
-		l1.Next = l2
-		l1 = l1Tmp
-
-		l2.Next = l1
-		l2 = l2Tmp
+func reverseList(head *ListNode) *ListNode {
+	var pre, next *ListNode
+	cur := head
+	for cur != nil {
+		// 预存下一个节点指针 next
+		// 反转 节点 head.Next，指向上一个节点 pre
+		next, cur.Next = cur.Next, pre
+		// 上一个节点 pre 前进
+		// 当前节点 head 前进
+		pre, cur = cur, next
 	}
+	return pre
 }
 
 // @lc code=end
