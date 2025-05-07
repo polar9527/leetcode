@@ -68,19 +68,24 @@ package go_case
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
 	dummy := &ListNode{0, head}
 	slow, fast := dummy, dummy
-	// 注意倒数第n个节点是head 的情况
 	for i := n; i > 0 && fast.Next != nil; i-- {
+		// 往前走 n 个节点
 		fast = fast.Next
 	}
-	fast = fast.Next
-	// 此时 slow 和 fast 之间,不包括他们本身指向的node，有 n 个 node
-	for fast != nil {
+	// 此时 slow 和 fast 之间,包括 slow 和 fast 指向的节点，一共有 n+1 个
+	for fast.Next != nil {
+		// fast 走到最后一个节点停止
+		// 此时slow指向倒数第 n+1 个节点，
+		// 或者 如果 list 的长度 == n, 即 fast 和 slow 之间没有 n+1个节点, 只有 n 个节点
+		// 此循环直接跳出，slow 仍然指向 dummy，
 		fast = fast.Next
 		slow = slow.Next
 	}
 	// 此时 slow 指向倒数第 n-1 个 node
 	// remove the Nth node
 
+	// 题目中的条件是 至少有一个节点，所以不用担心 slow.Next 为 nil
+	// 当 slow 仍然指向 dummy 的时候，意味着 list 的长度刚好为 n, 因此删除的是 slow.Next == head 节点
 	slow.Next = slow.Next.Next
 	return dummy.Next
 
