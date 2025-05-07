@@ -71,14 +71,14 @@ func reverseList(head *ListNode) *ListNode {
 	cur = head
 	for cur != nil {
 		// 保存下一个节点
-		tmp := cur.Next
+		next := cur.Next
 
 		// 反转当前节点指针
 		cur.Next = pre
 
 		// 移动指针
 		pre = cur
-		cur = tmp
+		cur = next
 	}
 	return pre
 }
