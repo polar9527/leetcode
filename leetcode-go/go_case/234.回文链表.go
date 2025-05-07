@@ -77,29 +77,89 @@ package go_case
 // 	return slow
 // }
 
-func isPalindromeList(head *ListNode) bool {
-	if head == nil {
-		return true
+// func isPalindromeList(head *ListNode) bool {
+// 	if head == nil {
+// 		return true
+// 	}
+
+// 	// 找到前半部分链表的尾节点并反转后半部分链表
+// 	firstHalfEnd := middleNode(head)
+// 	secondHalfStart := reverseList(firstHalfEnd)
+
+// 	// 判断是否回文
+// 	p1 := head
+// 	p2 := secondHalfStart
+// 	result := true
+// 	for result && p2 != nil {
+// 		if p1.Val != p2.Val {
+// 			result = false
+// 		}
+// 		p1 = p1.Next
+// 		p2 = p2.Next
+// 	}
+
+// 	// 还原链表并返回结果
+// 	firstHalfEnd.Next = reverseList(secondHalfStart)
+// 	return result
+// }
+
+func isPalindrome(head *ListNode) bool {
+
+	middleNode := func(head *ListNode) *ListNode {
+		// 偶数
+		// 1-2-3-4-nil
+		// slow -> 3; fast -> nil
+
+		// 奇数
+		// 1-2-3-4-5
+		// slow -> 3; fast -> 5
+
+		slow := head
+		fast := head
+		for fast != nil && fast.Next != nil {
+			slow = slow.Next
+			fast = fast.Next.Next
+		}
+
+		return slow
 	}
 
-	// 找到前半部分链表的尾节点并反转后半部分链表
-	firstHalfEnd := middleNode(head)
-	secondHalfStart := reverseList(firstHalfEnd)
+	reverseList := func(head *ListNode) *ListNode {
+		var pre *ListNode
+		cur := head
+		for cur != nil {
+			next := cur.Next
+			cur.Next = pre
+			pre = cur
+			cur = next
+		}
+		return pre
+	}
 
-	// 判断是否回文
-	p1 := head
-	p2 := secondHalfStart
+	mid := middleNode(head)
+	secondHalfStart := reverseList(mid)
+
+	l1 := head
+	l2 := secondHalfStart
 	result := true
-	for result && p2 != nil {
-		if p1.Val != p2.Val {
+	for result && l2 != nil {
+		// 此时  nil
+		//       ^
+		//       |
+		// 1->2->3<-4<-5
+		// 或者  nil
+		//       ^
+		//       |
+		// 1->2->3<-4
+		// 所以只需要判断 l2 != nil
+		if l1.Val != l2.Val {
 			result = false
 		}
-		p1 = p1.Next
-		p2 = p2.Next
+		l1 = l1.Next
+		l2 = l2.Next
 	}
 
-	// 还原链表并返回结果
-	firstHalfEnd.Next = reverseList(secondHalfStart)
+	reverseList(secondHalfStart)
 	return result
 }
 
