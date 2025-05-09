@@ -1,5 +1,7 @@
 package go_case
 
+import "container/list"
+
 /*
  * @lc app=leetcode.cn id=146 lang=golang
  *
@@ -71,85 +73,139 @@ package go_case
 */
 
 // @lc code=start
+// type LRUCache struct {
+// 	head, tail *DLinkNode
+// 	cache      map[int]*DLinkNode
+// 	capacity   int
+// 	size       int
+// }
+
+// type DLinkNode struct {
+// 	pre        *DLinkNode
+// 	next       *DLinkNode
+// 	key, value int
+// }
+
+// func Constructor(capacity int) LRUCache {
+// 	cache := make(map[int]*DLinkNode)
+// 	head := initDLinkedNode(0, 0)
+// 	tail := initDLinkedNode(0, 0)
+// 	head.next = tail
+// 	tail.pre = head
+// 	return LRUCache{head, tail, cache, capacity, 0}
+// }
+
+// func initDLinkedNode(key, value int) *DLinkNode {
+// 	return &DLinkNode{
+// 		key:   key,
+// 		value: value,
+// 	}
+// }
+
+// func (this *LRUCache) Get(key int) int {
+// 	if ptr, ok := this.cache[key]; ok {
+// 		this.moveToHead(ptr)
+// 		return ptr.value
+// 	}
+// 	return -1
+// }
+
+// func (this *LRUCache) Put(key int, value int) {
+// 	if ptr, ok := this.cache[key]; ok {
+// 		this.moveToHead(ptr)
+// 		ptr.value = value
+// 	} else {
+// 		this.size++
+// 		newNode := initDLinkedNode(key, value)
+// 		this.cache[key] = newNode
+// 		this.addToHead(newNode)
+// 		if this.size > this.capacity {
+// 			removed := this.removeTail()
+// 			delete(this.cache, removed.key)
+// 			this.size--
+// 		}
+// 	}
+
+// }
+
+// func (this *LRUCache) moveToHead(node *DLinkNode) {
+// 	this.removeNode(node)
+// 	this.addToHead(node)
+// }
+
+// func (this *LRUCache) removeNode(node *DLinkNode) {
+// 	node.pre.next = node.next
+// 	node.next.pre = node.pre
+// }
+
+// func (this *LRUCache) addToHead(node *DLinkNode) {
+// 	l := this.head
+// 	r := this.head.next
+// 	l.next = node
+// 	node.pre = l
+// 	node.next = r
+// 	r.pre = node
+// }
+
+// func (this *LRUCache) removeTail() *DLinkNode {
+// 	removed := this.tail.pre
+// 	this.removeNode(removed)
+// 	return removed
+// }
+
 type LRUCache struct {
-	head, tail *DLinkNode
-	cache      map[int]*DLinkNode
-	capacity   int
-	size       int
+	capacity  int
+	list      *list.List
+	keyToNode map[int]*list.Element
 }
 
-type DLinkNode struct {
-	pre        *DLinkNode
-	next       *DLinkNode
+type item struct {
 	key, value int
 }
 
 func Constructor(capacity int) LRUCache {
-	cache := make(map[int]*DLinkNode)
-	head := initDLinkedNode(0, 0)
-	tail := initDLinkedNode(0, 0)
-	head.next = tail
-	tail.pre = head
-	return LRUCache{head, tail, cache, capacity, 0}
-}
-
-func initDLinkedNode(key, value int) *DLinkNode {
-	return &DLinkNode{
-		key:   key,
-		value: value,
+	return LRUCache{
+		capacity,
+		list.New(),
+		map[int]*list.Element{},
 	}
 }
 
 func (this *LRUCache) Get(key int) int {
-	if ptr, ok := this.cache[key]; ok {
-		this.moveToHead(ptr)
-		return ptr.value
+	node := this.keyToNode[key]
+	if node == nil {
+		return -1
 	}
-	return -1
+	this.list.MoveToFront(node)
+	return node.Value.(item).value
 }
 
 func (this *LRUCache) Put(key int, value int) {
-	if ptr, ok := this.cache[key]; ok {
-		this.moveToHead(ptr)
-		ptr.value = value
-	} else {
-		this.size++
-		newNode := initDLinkedNode(key, value)
-		this.cache[key] = newNode
-		this.addToHead(newNode)
-		if this.size > this.capacity {
-			removed := this.removeTail()
-			delete(this.cache, removed.key)
-			this.size--
-		}
+	node := this.keyToNode[key]
+	if node != nil {
+		// node.prev = dummy
+		// node.next = dummy.Next
+		// node.prev.next = node
+		// node.next.prev = node
+		this.list.MoveToFront(node)
+		node.Value = item{key, value}
+		return
 	}
-
+	node = this.list.PushFront(item{key, value})
+	this.keyToNode[key] = node
+	if len(this.keyToNode) > this.capacity {
+		deletedNode := this.list.Back()
+		di := this.list.Remove(deletedNode).(item)
+		delete(this.keyToNode, di.key)
+	}
 }
 
-func (this *LRUCache) moveToHead(node *DLinkNode) {
-	this.removeNode(node)
-	this.addToHead(node)
-}
-
-func (this *LRUCache) removeNode(node *DLinkNode) {
-	node.pre.next = node.next
-	node.next.pre = node.pre
-}
-
-func (this *LRUCache) addToHead(node *DLinkNode) {
-	l := this.head
-	r := this.head.next
-	l.next = node
-	node.pre = l
-	node.next = r
-	r.pre = node
-}
-
-func (this *LRUCache) removeTail() *DLinkNode {
-	removed := this.tail.pre
-	this.removeNode(removed)
-	return removed
-}
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * obj := Constructor(capacity);
+ * param_1 := obj.Get(key);
+ * obj.Put(key,value);
+ */
 
 /**
  * Your LRUCache object will be instantiated and called as such:
