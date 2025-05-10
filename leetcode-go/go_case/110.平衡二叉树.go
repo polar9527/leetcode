@@ -66,37 +66,21 @@ func isBalanced(root *TreeNode) bool {
 
 	var getHigh func(*TreeNode) int
 	getHigh = func(n *TreeNode) int {
-		if n.Left == nil && n.Right == nil {
-			return 1
+		if n == nil {
+			return 0
 		}
-		var l, r int
-		if n.Left != nil {
-			l = getHigh(n.Left)
-		}
-		if n.Right != nil {
-			r = getHigh(n.Right)
-		}
-		if l == -1 || r == -1 {
+		leftHeight := getHigh(n.Left)
+		rightHeight := getHigh(n.Right)
+		if leftHeight == -1 || rightHeight == -1 {
 			return -1
 		}
-
-		if l > r {
-			if l-r > 1 {
-				return -1
-			}
-			return l + 1
-		} else {
-			if r-l > 1 {
-				return -1
-			}
-			return r + 1
+		if leftHeight-rightHeight > 1 || rightHeight-leftHeight > 1 {
+			return -1
 		}
+		return max(leftHeight, rightHeight) + 1
 	}
 
-	if getHigh(root) == -1 {
-		return false
-	}
-	return true
+	return getHigh(root) != -1
 
 }
 
