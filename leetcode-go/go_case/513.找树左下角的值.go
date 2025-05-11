@@ -112,31 +112,46 @@ package go_case
 // 	return gradation
 // }
 
+// func findBottomLeftValue(root *TreeNode) int {
+// 	res := 0
+
+// 	q := []*TreeNode{root}
+
+// 	for len(q) > 0 {
+// 		amoutl := len(q)
+
+// 		for i := 0; i < amoutl; i++ {
+// 			node := q[0]
+// 			q = q[1:]
+// 			if i == 0 {
+// 				res = node.Val
+// 			}
+
+// 			if node.Left != nil {
+// 				q = append(q, node.Left)
+// 			}
+// 			if node.Right != nil {
+// 				q = append(q, node.Right)
+// 			}
+// 		}
+// 	}
+
+// 	return res
+// }
+
 func findBottomLeftValue(root *TreeNode) int {
-	res := 0
-
+	node := root
 	q := []*TreeNode{root}
-
 	for len(q) > 0 {
-		amoutl := len(q)
-
-		for i := 0; i < amoutl; i++ {
-			node := q[0]
-			q = q[1:]
-			if i == 0 {
-				res = node.Val
-			}
-
-			if node.Left != nil {
-				q = append(q, node.Left)
-			}
-			if node.Right != nil {
-				q = append(q, node.Right)
-			}
+		node, q = q[0], q[1:]
+		if node.Right != nil {
+			q = append(q, node.Right)
+		}
+		if node.Left != nil {
+			q = append(q, node.Left)
 		}
 	}
-
-	return res
+	return node.Val
 }
 
 // @lc code=end
