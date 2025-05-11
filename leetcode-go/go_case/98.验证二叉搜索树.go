@@ -1,8 +1,6 @@
 package go_case
 
-import (
-	"container/list"
-)
+import "math"
 
 /*
  * @lc app=leetcode.cn id=98 lang=golang
@@ -132,39 +130,80 @@ import (
 // }
 
 // iterative
+// func isValidBST(root *TreeNode) bool {
+
+// 	if root == nil {
+// 		return false
+// 	}
+// 	stack := list.New()
+// 	stack.PushBack(root)
+// 	var node, preNode *TreeNode
+// 	for stack.Len() > 0 {
+// 		cur := stack.Back()
+// 		stack.Remove(cur)
+// 		if cur.Value == nil {
+// 			cur = stack.Back()
+// 			stack.Remove(cur)
+// 			node = cur.Value.(*TreeNode)
+// 			if preNode != nil && preNode.Val >= node.Val {
+// 				return false
+// 			}
+// 			preNode = node
+// 		} else {
+// 			node = cur.Value.(*TreeNode)
+// 			if node.Right != nil {
+// 				stack.PushBack(node.Right)
+// 			}
+// 			stack.PushBack(node)
+// 			stack.PushBack(nil)
+// 			if node.Left != nil {
+// 				stack.PushBack(node.Left)
+// 			}
+// 		}
+// 	}
+
+//		return true
+//	}
+
+// preorder solution
+// func isValidBST(root *TreeNode) bool {
+
+// 	var preorderTraversal func(*TreeNode, int, int) bool
+// 	preorderTraversal = func(node *TreeNode, left, right int) bool {
+// 		if node == nil {
+// 			return true
+// 		}
+// 		if node.Val <= left || node.Val >= right {
+// 			return false
+// 		}
+
+// 		return preorderTraversal(node.Left, left, node.Val) && preorderTraversal(node.Right, node.Val, right)
+// 	}
+
+// 	return preorderTraversal(root, math.MinInt64, math.MaxInt64)
+// }
+
+// inorder solution
 func isValidBST(root *TreeNode) bool {
-
-	if root == nil {
-		return false
-	}
-	stack := list.New()
-	stack.PushBack(root)
-	var node, preNode *TreeNode
-	for stack.Len() > 0 {
-		cur := stack.Back()
-		stack.Remove(cur)
-		if cur.Value == nil {
-			cur = stack.Back()
-			stack.Remove(cur)
-			node = cur.Value.(*TreeNode)
-			if preNode != nil && preNode.Val >= node.Val {
-				return false
-			}
-			preNode = node
-		} else {
-			node = cur.Value.(*TreeNode)
-			if node.Right != nil {
-				stack.PushBack(node.Right)
-			}
-			stack.PushBack(node)
-			stack.PushBack(nil)
-			if node.Left != nil {
-				stack.PushBack(node.Left)
-			}
+	pre := math.MinInt
+	var dfs func(*TreeNode) bool
+	dfs = func(node *TreeNode) bool {
+		if node == nil {
+			return true
 		}
-	}
+		if !dfs(node.Left) {
+			return false
+		}
 
-	return true
+		if pre < node.Val {
+			pre = node.Val
+		} else {
+			return false
+		}
+
+		return dfs(node.Right)
+	}
+	return dfs(root)
 }
 
 // @lc code=end
