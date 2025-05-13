@@ -59,36 +59,29 @@ package go_case
  *     Right *TreeNode
  * }
  */
-var (
-	hash map[int]int
-)
-
 func buildTree(preorder []int, inorder []int) *TreeNode {
-	hash = make(map[int]int, len(inorder))
-	for i, v := range inorder {
-		hash[v] = i
-	}
-	root := build(preorder, inorder, 0, 0, len(inorder)-1) // l, r 表示构造的树在中序遍历数组中的范围
-	return root
-}
-func build(pre []int, in []int, root int, l, r int) *TreeNode {
-	if l > r {
+	if len(preorder) == 0 {
 		return nil
 	}
-	rootVal := pre[root]   // 找到本次构造的树的根节点
-	index := hash[rootVal] // 根节点在中序数组中的位置
-	node := &TreeNode{Val: rootVal}
+	rootVal := preorder[0]
+	var delimiter int
+	for i, v := range inorder {
+		if v == rootVal {
+			delimiter = i
+		}
+	}
+	inorderLeft := inorder[:delimiter]
+	inorderRight := inorder[delimiter+1:]
+	preorderLeft := preorder[1 : len(inorderLeft)+1]
+	preorderRight := preorder[len(inorderLeft)+1:]
 
-	leftRoot := root + 1
-	// leftInorder range [l, index)
-	node.Left = build(pre, in, leftRoot, l, index-1)
+	root := &TreeNode{
+		Val: rootVal,
+	}
+	root.Left = buildTree(preorderLeft, inorderLeft)
+	root.Right = buildTree(preorderRight, inorderRight)
 
-	// root + len(leftInorder)
-	// len(leftInorder) = index - l + 1
-	rightRoot := root + (index - l) + 1
-	// rightInorder range [l, index-1)
-	node.Right = build(pre, in, rightRoot, index+1, r)
-	return node
+	return root
 }
 
 // @lc code=end
