@@ -77,25 +77,24 @@
 
 // iterative
 func isSymmetric(root *TreeNode) bool {
-
 	if root == nil {
 		return false
 	}
-
-	queue := []*TreeNode{root.Left, root.Right}
-
-	for len(queue) > 0 {
-		ln := queue[0]
-		rn := queue[1]
-		queue = queue[2:]
-		if ln == nil && rn == nil {
+	q := []*TreeNode{root.Left, root.Right}
+	for len(q) > 0 {
+		left := q[0]
+		right := q[1]
+		q = q[2:]
+		if left == nil && right == nil {
 			continue
 		}
-		if ln == nil || rn == nil || ln.Val != rn.Val {
+		if left == nil || right == nil {
 			return false
 		}
-
-		queue = append(queue, ln.Left, rn.Right, ln.Right, rn.Left)
+		if left.Val != right.Val {
+			return false
+		}
+		q = append(q, left.Left, right.Right, right.Left, left.Right)
 	}
 	return true
 }
