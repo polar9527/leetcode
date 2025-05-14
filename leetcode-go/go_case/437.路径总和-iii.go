@@ -59,51 +59,53 @@ package go_case
  *     Right *TreeNode
  * }
  */
-//  DFS
-func rootSum(root *TreeNode, targetSum int) (res int) {
-	if root == nil {
-		return
-	}
-	val := root.Val
-	if val == targetSum {
-		res++
-	}
-	res += rootSum(root.Left, targetSum-val)
-	res += rootSum(root.Right, targetSum-val)
-	return
-}
+// //  DFS
+// // rootSum 是以当前节点为起始的链路和为 targetSum 的路径个数
+// func rootSum(root *TreeNode, targetSum int) (res int) {
+// 	if root == nil {
+// 		return
+// 	}
+// 	val := root.Val
+// 	if val == targetSum {
+// 		res++
+// 	}
+// 	res += rootSum(root.Left, targetSum-val)
+// 	res += rootSum(root.Right, targetSum-val)
+// 	return
+// }
 
+// // tree 中的 某个节点向下路径和为 targetSum
+// func pathSum(root *TreeNode, targetSum int) int {
+// 	if root == nil {
+// 		return 0
+// 	}
+// 	res := rootSum(root, targetSum)
+// 	res += pathSum(root.Left, targetSum)
+// 	res += pathSum(root.Right, targetSum)
+// 	return res
+// }
+
+// prefix sum + dfs
 func pathSum(root *TreeNode, targetSum int) int {
-	if root == nil {
-		return 0
+	var res int
+	// map[sum]count
+	prefixSumMap := make(map[int]int)
+	var dfs func(*TreeNode, int)
+	dfs = func(node *TreeNode, prefixSum int) {
+		if node == nil {
+			return
+		}
+		prefixSum += node.Val
+		res += prefixSumMap[prefixSum-targetSum]
+		prefixSumMap[prefixSum]++
+		dfs(node.Left, prefixSum)
+		dfs(node.Right, prefixSum)
+		prefixSumMap[prefixSum]--
 	}
-	res := rootSum(root, targetSum)
-	res += pathSum(root.Left, targetSum)
-	res += pathSum(root.Right, targetSum)
+	// ​​存在1个和为 0 的空路径​​（即不选任何节点时的默认状态）
+	prefixSumMap[0] = 1
+	dfs(root, 0)
 	return res
 }
-
-// func rootSum(root *TreeNode, targetSum int) (res int) {
-//     if root == nil {
-//         return
-//     }
-//     val := root.Val
-//     if val == targetSum {
-//         res++
-//     }
-//     res += rootSum(root.Left, targetSum-val)
-//     res += rootSum(root.Right, targetSum-val)
-//     return
-// }
-
-// func pathSum(root *TreeNode, targetSum int) int {
-//     if root == nil {
-//         return 0
-//     }
-//     res := rootSum(root, targetSum)
-//     res += pathSum(root.Left, targetSum)
-//     res += pathSum(root.Right, targetSum)
-//     return res
-// }
 
 // @lc code=end
