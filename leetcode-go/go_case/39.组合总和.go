@@ -1,5 +1,7 @@
 package go_case
 
+import "slices"
+
 /*
  * @lc app=leetcode.cn id=39 lang=golang
  *
@@ -90,25 +92,54 @@ package go_case
 //		backtracing(0, 0)
 //		return res
 //	}
-func combinationSum(candidates []int, target int) [][]int {
 
+// 枚举所有可能的结果
+// func combinationSum(candidates []int, target int) [][]int {
+
+// 	var res [][]int
+// 	var path []int
+// 	var bt func(int, int)
+// 	bt = func(start, sum int) {
+// 		if sum > target {
+// 			return
+// 		}
+// 		if sum == target {
+// 			res = append(res, append([]int{}, path...))
+// 			return
+// 		}
+
+// 		for i := start; i < len(candidates); i++ {
+// 			path = append(path, candidates[i])
+// 			bt(i, sum+candidates[i])
+// 			path = path[:len(path)-1]
+// 		}
+
+// 	}
+// 	bt(0, 0)
+// 	return res
+// }
+
+// 枚举的基础上做剪枝优化
+func combinationSum(candidates []int, target int) [][]int {
+	slices.Sort(candidates)
 	var res [][]int
-	path := []int{}
+	var path []int
 	var bt func(int, int)
-	bt = func(sum int, start int) {
+	bt = func(start, sum int) {
 		if sum > target {
 			return
 		}
-
 		if sum == target {
 			res = append(res, append([]int{}, path...))
 			return
 		}
-		for i := start; i < len(candidates); i++ {
+
+		for i := start; i < len(candidates) && sum+candidates[i] <= target; i++ {
 			path = append(path, candidates[i])
-			bt(sum+candidates[i], i)
+			bt(i, sum+candidates[i])
 			path = path[:len(path)-1]
 		}
+
 	}
 	bt(0, 0)
 	return res
