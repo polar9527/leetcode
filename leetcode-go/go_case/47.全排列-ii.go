@@ -63,6 +63,7 @@ func permuteUnique(nums []int) [][]int {
 			return
 		}
 		for i := 0; i < l; i++ {
+			// nums[i-1] 已经在排列中了，不能再次使用
 			if i > 0 && nums[i] == nums[i-1] && used[i-1] {
 				continue
 			}
