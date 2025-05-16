@@ -53,21 +53,48 @@ package go_case
  */
 
 // @lc code=start
+// func combine(n int, k int) [][]int {
+// 	var res [][]int
+// 	var bt func(int, []int)
+// 	bt = func(start int, path []int) {
+// 		if len(path) == k {
+// 			res = append(res, append([]int{}, path...))
+// 			return
+// 		}
+// 		// i <= x, [x+1, n-1], i 在 区间左边
+// 		// 还需要 k - len(path) 个数
+// 		// 当区间 [x+1, n-1] 的 个数 n-1-(x+1) == k - len(path) - 1
+// 		// 说明剩下的个数 不满足需要的条件，x == n - (k-len(path)) + 1
+// 		// i <= x == n - (k-len(path)) + 1
+// 		for i := start; i <= n-(k-len(path))+1; i++ {
+// 			path = append(path, i)
+// 			bt(i+1, path)
+// 			path = path[:len(path)-1]
+// 		}
+// 	}
+// 	bt(1, []int{})
+// 	return res
+// }
+
+// 倒序 简化 逻辑
 func combine(n int, k int) [][]int {
 	var res [][]int
-	var bt func(int, []int)
-	bt = func(start int, path []int) {
+	var path []int
+
+	var bt func(int)
+	bt = func(start int) {
 		if len(path) == k {
 			res = append(res, append([]int{}, path...))
 			return
 		}
-		for i := start; i <= n-(k-len(path))+1; i++ {
+		d := k - len(path)
+		for i := start; i >= d; i-- {
 			path = append(path, i)
-			bt(i+1, path)
+			bt(i - 1)
 			path = path[:len(path)-1]
 		}
 	}
-	bt(1, []int{})
+	bt(n)
 	return res
 }
 
