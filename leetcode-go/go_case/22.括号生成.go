@@ -46,30 +46,27 @@ package go_case
 // @lc code=start
 func generateParenthesis(n int) []string {
 
+	// 在 2n 的 位置上 选择 n 个位置放置左括号（
 	var res []string
-	var path []byte
-	var backtracing func(int, int)
-	backtracing = func(leftOpen, rightClose int) {
+	var bt func(int, int, string)
+	bt = func(left, right int, path string) {
 		if len(path) == 2*n {
-			leafResult := append([]byte{}, path...)
-			res = append(res, string(leafResult))
-			return
-		}
 
-		if leftOpen < n {
-			path = append(path, '(')
-			backtracing(leftOpen+1, rightClose)
-			path = path[:len(path)-1]
+			res = append(res, path)
 		}
-
-		if rightClose < leftOpen {
-			path = append(path, ')')
-			backtracing(leftOpen, rightClose+1)
-			path = path[:len(path)-1]
+		// 选择左括号
+		// 左括号的数量小于 n, 还可以继续添加左括号
+		if left < n {
+			bt(left+1, right, path+"(")
+		}
+		// 不选左括号，选右括号
+		// 同时要满足条件，即前缀的右括号数量要小于左括号
+		// 否则就是错误结果
+		if right < left {
+			bt(left, right+1, path+")")
 		}
 	}
-
-	backtracing(0, 0)
+	bt(0, 0, "")
 	return res
 }
 
