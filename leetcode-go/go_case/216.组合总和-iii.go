@@ -65,27 +65,63 @@
  */
 
 // @lc code=start
+// func combinationSum3(k int, n int) [][]int {
+
+// 	var res [][]int
+// 	var path []int
+
+// 	var bt func(int, int)
+// 	bt = func(sum int, start int) {
+// 		if sum == n && len(path) == k {
+// 			res = append(res, append([]int{}, path...))
+// 			return
+// 		}
+// 		if sum >= n || len(path) >= k {
+// 			return
+// 		}
+
+// 		for i := start; i < 10; i++ {
+// 			// 剩余的可选数字个数 10-i+1
+// 			// 还需要的数字个数 k - len(path)
+// 			if sum+i > n || 10-i+1 < k-len(path) {
+// 				break
+// 			}
+// 			path = append(path, i)
+// 			bt(sum+i, i+1)
+// 			path = path[:len(path)-1]
+// 		}
+// 	}
+// 	bt(0, 1)
+// 	return res
+// }
+
+// 倒序
 func combinationSum3(k int, n int) [][]int {
 
 	var res [][]int
+	var path []int
 
-	var bt func(int, int, []int)
-	bt = func(sum int, start int, path []int) {
-		if sum == n && len(path) == k {
+	var bt func(int, int)
+	bt = func(start int, target int) {
+		d := k - len(path)
+		// [start-d+1, start] 累加和 (2*start-d+1)*d/2
+		if target < 0 || target > (2*start-d+1)*d/2 {
+			return
+		}
+
+		if d == 0 && target == 0 {
 			res = append(res, append([]int{}, path...))
 			return
 		}
 
-		for i := start; i < 10; i++ {
-			if sum+i > n || 10-i+1 < k-len(path) {
-				break
-			}
+		for i := start; i >= d; i-- {
 			path = append(path, i)
-			bt(sum+i, i+1, path)
+			bt(i-1, target-i)
 			path = path[:len(path)-1]
 		}
 	}
-	bt(0, 1, []int{})
+
+	bt(9, n)
 	return res
 }
 

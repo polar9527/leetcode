@@ -75,9 +75,10 @@ func subsets(nums []int) [][]int {
 	var bt func(int)
 	bt = func(start int) {
 		res = append(res, append([]int{}, path...))
-		if start >= l {
-			return
-		}
+
+		// if start >= l {
+		// 	return
+		// }
 
 		for i := start; i < l; i++ {
 			path = append(path, nums[i])
