@@ -49,23 +49,62 @@
  */
 
 // @lc code=start
+// time O(n)
+// space O(n)
+// func rob(nums []int) int {
+// 	n := len(nums)
+// 	if n == 0 {
+// 		return 0
+// 	}
+
+// 	if n == 1 {
+// 		return nums[0]
+// 	}
+
+// 	dp := make([]int, len(nums))
+// 	dp[0] = nums[0]
+// 	dp[1] = max(nums[0], nums[1])
+// 	for i := 2; i < n; i++ {
+// 		dp[i] = max(dp[i-2]+nums[i], dp[i-1])
+// 	}
+// 	return dp[n-1]
+// }
+
+// time O(n)
+// space O(1)
+// func rob(nums []int) int {
+// 	n := len(nums)
+// 	dp0 := 0
+// 	dp1 := 0
+// 	for i := 0; i < n; i++ {
+
+// 		dp0, dp1 = dp1, max(dp1, dp0+nums[i])
+// 	}
+// 	return dp1
+// }
+
+// dfs
 func rob(nums []int) int {
 	n := len(nums)
-	if n == 0 {
-		return 0
+	cache := make([]int, n)
+	for i := range cache {
+		cache[i] = -1
 	}
 
-	if n == 1 {
-		return nums[0]
-	}
+	var dfs func(int) int
+	dfs = func(i int) int {
+		if i < 0 {
+			return 0
+		}
+		if cache[i] != -1 {
+			return cache[i]
+		}
+		res := max(dfs(i-1), dfs(i-2)+nums[i])
+		cache[i] = res
 
-	dp := make([]int, len(nums))
-	dp[0] = nums[0]
-	dp[1] = max(nums[0], nums[1])
-	for i := 2; i < n; i++ {
-		dp[i] = max(dp[i-2]+nums[i], dp[i-1])
+		return res
 	}
-	return dp[n-1]
+	return dfs(n - 1)
 }
 
 // @lc code=end
