@@ -50,31 +50,68 @@
  */
 
 // @lc code=start
+// func maxProfit(k int, prices []int) int {
+
+// 	l := len(prices)
+// 	if l == 1 || k == 0 {
+// 		return 0
+// 	}
+
+// 	dp := make([][]int, l)
+// 	status := make([]int, (2*k+1)*len(prices))
+// 	for i := range dp {
+// 		dp[i] = status[:2*k+1]
+// 		status = status[2*k+1:]
+// 	}
+
+// 	for j := 1; j < 2*k; j += 2 {
+// 		dp[0][j] = -prices[0]
+// 	}
+
+// 	for i := 1; i < l; i++ {
+// 		for j := 1; j < 2*k+1; j += 2 {
+// 			dp[i][j] = max(dp[i-1][j], dp[i-1][j-1]-prices[i])
+// 			dp[i][j+1] = max(dp[i-1][j+1], dp[i-1][j]+prices[i])
+// 		}
+// 	}
+// 	return dp[l-1][2*k]
+// }
+
+// dfs
 func maxProfit(k int, prices []int) int {
 
-	l := len(prices)
-	if l == 1 || k == 0 {
-		return 0
-	}
-
-	dp := make([][]int, l)
-	status := make([]int, (2*k+1)*len(prices))
-	for i := range dp {
-		dp[i] = status[:2*k+1]
-		status = status[2*k+1:]
-	}
-
-	for j := 1; j < 2*k; j += 2 {
-		dp[0][j] = -prices[0]
-	}
-
-	for i := 1; i < l; i++ {
-		for j := 1; j < 2*k+1; j += 2 {
-			dp[i][j] = max(dp[i-1][j], dp[i-1][j-1]-prices[i])
-			dp[i][j+1] = max(dp[i-1][j+1], dp[i-1][j]+prices[i])
+	n := len(prices)
+	cache := make([][][2]int, n)
+	for i := range cache {
+		cache[i] = make([][2]int, k+1)
+		for j := range cache[i] {
+			cache[i][j] = [2]int{-1, -1} // -1 表示还没有计算过
 		}
 	}
-	return dp[l-1][2*k]
+
+	var dfs func(int, int, int) int
+	dfs = func(i, j, hold int) (res int) {
+		if j < 0 {
+			return math.MinInt
+		}
+		if i < 0 {
+			if hold == 1 {
+				return math.MinInt
+			}
+			return
+		}
+
+		if cache[i][j][hold] != -1 { // 之前计算过
+			return cache[i][j][hold]
+		}
+		defer func() { cache[i][j][hold] = res }() // 记忆化
+
+		if hold == 1 {
+			return max(dfs(i-1, j, 1), dfs(i-1, j, 0)-prices[i])
+		}
+		return max(dfs(i-1, j, 0), dfs(i-1, j-1, 1)+prices[i])
+	}
+	return dfs(n-1, k, 0)
 }
 
 // @lc code=end
