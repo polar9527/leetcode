@@ -1,5 +1,7 @@
 package go_case
 
+import "slices"
+
 /*
  * @lc app=leetcode.cn id=300 lang=golang
  *
@@ -63,37 +65,102 @@ package go_case
  */
 
 // @lc code=start
+// func lengthOfLIS(nums []int) int {
+
+// 	// dp[i] 以nums[i] 为结尾的 最长严格递增子序列长度
+// 	// 如果 nums[i] > nums[j]，那么
+// 	// dp[i] = dp[j] + 1
+
+// 	l := len(nums)
+
+// 	if l <= 1 {
+// 		return l
+// 	}
+// 	// if l == 1 {
+// 	// 	return 1
+// 	// }
+// 	dp := make([]int, l)
+// 	for i := range dp {
+// 		dp[i] = 1
+// 	}
+// 	res := 0
+// 	for i := 1; i < l; i++ {
+// 		for j := 0; j < i; j++ {
+// 			if nums[j] < nums[i] {
+// 				dp[i] = max(dp[i], dp[j]+1)
+// 			}
+// 		}
+// 		if dp[i] > res {
+// 			res = dp[i]
+// 		}
+// 	}
+
+// 	return res
+// }
+
+// DFS
+// func lengthOfLIS(nums []int) int {
+// 	n := len(nums)
+
+// 	cache := make([]int, n)
+// 	for i := range cache {
+// 		cache[i] = -1
+// 	}
+
+// 	// 以 nums[i] 为结尾的最长递增子序列长度
+// 	var dfs func(int) int
+// 	dfs = func(i int) (res int) {
+// 		if cache[i] != -1 {
+// 			return cache[i]
+// 		}
+// 		defer func() {
+// 			cache[i] = res
+// 		}()
+// 		for j := range nums[:i] {
+// 			if nums[j] < nums[i] {
+// 				res = max(res, dfs(j))
+// 			}
+// 		}
+// 		return res + 1
+
+// 	}
+// 	maxRes := 0
+// 	for i := 0; i < n; i++ {
+// 		maxRes = max(maxRes, dfs(i))
+// 	}
+// 	return maxRes
+// }
+
+// DP
 func lengthOfLIS(nums []int) int {
+	n := len(nums)
 
-	// dp[i] 以nums[i] 为结尾的 最长严格递增子序列长度
-	// 如果 nums[i] > nums[j]，那么
-	// dp[i] = dp[j] + 1
+	dp := make([]int, n)
 
-	l := len(nums)
-
-	if l <= 1 {
-		return l
-	}
-	// if l == 1 {
-	// 	return 1
-	// }
-	dp := make([]int, l)
-	for i := range dp {
-		dp[i] = 1
-	}
-	res := 0
-	for i := 1; i < l; i++ {
-		for j := 0; j < i; j++ {
-			if nums[j] < nums[i] {
-				dp[i] = max(dp[i], dp[j]+1)
+	for i, x := range nums {
+		for j, y := range nums[:i] {
+			if y < x {
+				dp[i] = max(dp[i], dp[j])
 			}
 		}
-		if dp[i] > res {
-			res = dp[i]
-		}
+		dp[i]++
 	}
-
-	return res
+	return slices.Max(dp)
 }
+
+// 二分 + 贪心
+// g[i] 长度为i+1的严格递增子序列末尾的最小值
+// func lengthOfLIS(nums []int) int {
+// 	g := []int{}
+// 	for _, x := range nums {
+// 		j := sort.SearchInts(g, x)
+// 		if j == len(g) { // >=x 的 g[j] 不存在
+// 			g = append(g, x)
+// 		} else {
+// 			g[j] = x
+// 		}
+// 	}
+// 	return len(g)
+// }
 
 // @lc code=end
