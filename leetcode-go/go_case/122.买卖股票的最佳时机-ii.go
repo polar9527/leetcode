@@ -70,23 +70,82 @@
 // }
 
 // dp
-func maxProfit(prices []int) int {
-	dp := make([][2]int, len(prices))
+// func maxProfit(prices []int) int {
+// 	dp := make([][2]int, len(prices))
 
-	// 持有股票i   时所得的最多现金
-	// dp[i][0]
-	// 不持有股票i 所得的最多现金
-	// dp[i][1]
-	dp[0][0] = -prices[0]
-	dp[0][1] = 0
-	if len(prices) == 1 {
-		return 0
+// 	// 持有股票i   时所得的最多现金
+// 	// dp[i][0]
+// 	// 不持有股票i 所得的最多现金
+// 	// dp[i][1]
+// 	dp[0][0] = -prices[0]
+// 	dp[0][1] = 0
+// 	if len(prices) == 1 {
+// 		return 0
+// 	}
+// 	for i := 1; i < len(prices); i++ {
+// 		dp[i][0] = max(dp[i-1][0], dp[i-1][1]-prices[i])
+// 		dp[i][1] = max(dp[i-1][0]+prices[i], dp[i-1][1])
+// 	}
+// 	return max(dp[len(prices)-1][0], dp[len(prices)-1][1])
+// }
+
+// dfs
+// func maxProfit(prices []int) int {
+// 	n := len(prices)
+
+// 	cache := make([][2]int, n)
+// 	for i := range cache {
+// 		cache[i] = [2]int{-1, -1}
+// 	}
+
+// 	var dfs func(int, int) int
+// 	dfs = func(i, hold int) (res int) {
+// 		if i < 0 {
+// 			if hold == 1 {
+// 				return math.MinInt
+// 			}
+// 			return
+// 		}
+// 		if cache[i][hold] != -1 {
+// 			return cache[i][hold]
+// 		}
+
+// 		defer func() {
+// 			cache[i][hold] = res
+// 		}()
+
+// 		if hold == 1 {
+// 			return max(dfs(i-1, 1), dfs(i-1, 0)-prices[i])
+// 		}
+// 		return max(dfs(i-1, 0), dfs(i-1, 1)+prices[i])
+// 	}
+
+// 	return dfs(n-1, 0)
+// }
+
+// DP 二维
+// func maxProfit(prices []int) int {
+// 	n := len(prices)
+
+// 	dp := make([][2]int, n+1)
+// 	dp[0][1] = math.MinInt
+
+// 	for i, p := range prices {
+// 		dp[i+1][1] = max(dp[i][1], dp[i][0]-p)
+// 		dp[i+1][0] = max(dp[i][0], dp[i][1]+p)
+// 	}
+// 	return dp[n][0]
+// }
+
+// DP 一维
+func maxProfit(prices []int) int {
+
+	dp0, dp1 := 0, math.MinInt
+
+	for _, p := range prices {
+		dp0, dp1 = max(dp0, dp1+p), max(dp1, dp0-p)
 	}
-	for i := 1; i < len(prices); i++ {
-		dp[i][0] = max(dp[i-1][0], dp[i-1][1]-prices[i])
-		dp[i][1] = max(dp[i-1][0]+prices[i], dp[i-1][1])
-	}
-	return max(dp[len(prices)-1][0], dp[len(prices)-1][1])
+	return dp0
 }
 
 // @lc code=end
