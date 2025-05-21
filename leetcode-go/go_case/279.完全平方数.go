@@ -44,6 +44,7 @@
  */
 
 // @lc code=start
+// DP 一维
 func numSquares(n int) int {
 	min := func(x, y int) int {
 		if x < y {
@@ -67,6 +68,67 @@ func numSquares(n int) int {
 		}
 	}
 	return dp[n]
+}
+
+// dfs
+func numSquares(n int) int {
+	memo := make([][]int, int(math.Sqrt(float64(n)))+1)
+	for i := range memo {
+		memo[i] = make([]int, n+1)
+		for j := range memo[i] {
+			memo[i][j] = -1
+		}
+	}
+
+	var dfs func(int, int) int
+	dfs = func(i, c int) (res int) {
+		if i == 0 {
+			if c == 0 {
+				return 0
+			}
+			// 没有数字可选了，要保证 后面的min函数不取这个状态
+			return math.MaxInt32
+		}
+		p := &memo[i][c]
+		if *p != -1 { // 之前计算过
+			return *p
+		}
+		defer func() {
+			*p = res
+		}()
+		if c < i*i {
+			return dfs(i-1, c)
+		}
+		return min(dfs(i-1, c), dfs(i, c-i*i)+1)
+	}
+
+	return dfs(int(math.Sqrt(float64(n))), n)
+}
+
+// DP 二维
+func numSquares(n int) int {
+	if n == 0 {
+		return 0
+	}
+	dp := make([][]int, int(math.Sqrt(float64(n)))+1)
+	for i := 0; i <= int(math.Sqrt(float64(n))); i++ {
+		dp[i] = make([]int, n+1)
+	}
+	for j := range dp[0] {
+		dp[0][j] = math.MaxInt32
+	}
+	dp[0][0] = 0
+	// dp[i][0] = 0
+	for i := 1; i*i <= n; i++ {
+		for j := 0; j <= n; j++ {
+			if j < i*i {
+				dp[i][j] = dp[i-1][j]
+			} else {
+				dp[i][j] = min(dp[i-1][j], dp[i][j-i*i]+1)
+			}
+		}
+	}
+	return dp[int(math.Sqrt(float64(n)))][n]
 }
 
 // @lc code=end
