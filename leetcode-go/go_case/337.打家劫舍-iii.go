@@ -122,5 +122,20 @@ func rob(root *TreeNode) int {
 	return max(res[0], res[1])
 }
 
+func dfs(node *TreeNode) (rob, notRob int) {
+	if node == nil { // 递归边界
+		return 0, 0 // 没有节点，怎么选都是 0
+	}
+	lRob, lNotRob := dfs(node.Left)                  // 递归左子树
+	rRob, rNotRob := dfs(node.Right)                 // 递归右子树
+	rob = lNotRob + rNotRob + node.Val               // 选
+	notRob = max(lRob, lNotRob) + max(rRob, rNotRob) // 不选
+	return
+}
+
+func rob(root *TreeNode) int {
+	return max(dfs(root)) // 根节点选或不选的最大值
+}
+
 // @lc code=end
 
