@@ -69,5 +69,39 @@ func longestPalindromeSubseq(s string) int {
 	return dp[0][n-1]
 }
 
+func longestPalindromeSubseq(s string) int {
+	n := len(s)
+
+	memo := make([][]int, n)
+	for i := range memo {
+		memo[i] = make([]int, n)
+		for j := range memo[i] {
+			memo[i][j] = -1 // -1 表示还没有计算过
+		}
+	}
+
+	var dfs func(int, int) int
+	dfs = func(i, j int) (res int) {
+		if i > j {
+			return
+		}
+		if i == j {
+			return 1
+		}
+
+		p := &memo[i][j]
+		if *p != -1 { // 之前计算过
+			return *p
+		}
+		defer func() { *p = res }() // 记忆化
+
+		if s[i] == s[j] {
+			return dfs(i+1, j-1) + 2 // 都选
+		}
+		return max(dfs(i+1, j), dfs(i, j-1)) // 枚举哪个不选
+	}
+	return dfs(0, n-1)
+}
+
 // @lc code=end
 
