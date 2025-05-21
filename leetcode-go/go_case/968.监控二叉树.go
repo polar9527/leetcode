@@ -98,5 +98,22 @@ func minCameraCover(root *TreeNode) int {
 	return count
 }
 
+func dfs(node *TreeNode) (int, int, int) {
+	if node == nil {
+		return math.MaxInt / 2, 0, 0 // 除 2 防止加法溢出
+	}
+	lChoose, lByFa, lByChildren := dfs(node.Left)
+	rChoose, rByFa, rByChildren := dfs(node.Right)
+	choose := min(lChoose, lByFa) + min(rChoose, rByFa) + 1
+	byFa := min(lChoose, lByChildren) + min(rChoose, rByChildren)
+	byChildren := min(lChoose+rByChildren, lByChildren+rChoose, lChoose+rChoose)
+	return choose, byFa, byChildren
+}
+
+func minCameraCover(root *TreeNode) int {
+	choose, _, byChildren := dfs(root)
+	return min(choose, byChildren)
+}
+
 // @lc code=end
 
