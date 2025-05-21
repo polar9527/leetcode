@@ -91,34 +91,96 @@ package go_case
 // }
 
 // dp
+// func wordBreak(s string, wordDict []string) bool {
+
+// 	// 背包位 s
+// 	// s 中的 子串，且这个子串必须在 wordDict中才算物品
+// 	// dp[i] 为 长度为i 的 字符串， 是否可以由 wordDict 中的字符串组成
+// 	// 完全背包问题求排列
+// 	// i > j
+// 	// dp[i] = true , if [j, i) 在 wordDict， 且 dp[j] = true
+
+// 	// 求排列 ，先背包后物品
+
+// 	wordSet := make(map[string]bool)
+// 	for _, s := range wordDict {
+// 		wordSet[s] = true
+// 	}
+// 	dp := make([]bool, len(s)+1)
+// 	dp[0] = true
+// 	for i := 1; i <= len(s); i++ {
+// 		for j := 0; j < i; j++ {
+// 			substr := s[j:i]
+// 			if _, ok := wordSet[substr]; ok {
+// 				if dp[j] {
+// 					dp[i] = true
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return dp[len(s)]
+// }
+
+// dfs
 func wordBreak(s string, wordDict []string) bool {
-
-	// 背包位 s
-	// s 中的 子串，且这个子串必须在 wordDict中才算物品
-	// dp[i] 为 长度为i 的 字符串， 是否可以由 wordDict 中的字符串组成
-	// 完全背包问题求排列
-	// i > j
-	// dp[i] = true , if [j, i) 在 wordDict， 且 dp[j] = true
-
-	// 求排列 ，先背包后物品
-
+	n := len(s)
+	maxLen := 0
 	wordSet := make(map[string]bool)
 	for _, s := range wordDict {
 		wordSet[s] = true
+		maxLen = max(maxLen, len(s))
 	}
-	dp := make([]bool, len(s)+1)
+
+	cache := make([]int8, n+1)
+	for i := range cache {
+		cache[i] = -1
+	}
+
+	var dfs func(int) int8
+	dfs = func(i int) (res int8) {
+		if i == 0 {
+			return 1
+		}
+
+		if cache[i] != -1 {
+			return cache[i]
+		}
+		defer func() {
+			cache[i] = res
+		}()
+		// 0, i-maxLen, i-1, i
+		for j := i - 1; j >= max(i-maxLen, 0); j-- {
+			if wordSet[s[j:i]] && dfs(j) == 1 {
+				return 1
+			}
+		}
+		return 0
+	}
+	return dfs(n) == 1
+}
+
+// DP
+func wordBreak(s string, wordDict []string) bool {
+	n := len(s)
+	maxLen := 0
+	wordSet := make(map[string]bool)
+	for _, s := range wordDict {
+		wordSet[s] = true
+		maxLen = max(maxLen, len(s))
+	}
+
+	dp := make([]bool, n+1)
 	dp[0] = true
-	for i := 1; i <= len(s); i++ {
-		for j := 0; j < i; j++ {
-			substr := s[j:i]
-			if _, ok := wordSet[substr]; ok {
-				if dp[j] {
-					dp[i] = true
-				}
+
+	for i := 1; i <= n; i++ {
+		for j := i - 1; j >= max(i-maxLen, 0); j-- {
+			if dp[j] && wordSet[s[j:i]] {
+				dp[i] = true
+				break
 			}
 		}
 	}
-	return dp[len(s)]
+	return dp[n]
 }
 
 // @lc code=end
