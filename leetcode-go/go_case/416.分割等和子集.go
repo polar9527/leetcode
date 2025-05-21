@@ -126,5 +126,52 @@ func canPartition(nums []int) bool {
 	return false
 }
 
+func canPartition(nums []int) bool {
+	n := len(nums)
+	sum := 0
+	for _, num := range nums {
+		sum += num
+	}
+	if sum%2 != 0 {
+		return false
+	}
+
+	cache := make([][]int8, n)
+	for i := range cache {
+		cache[i] = make([]int8, sum/2+1)
+		for j := range cache[i] {
+			cache[i][j] = -1
+		}
+	}
+
+	var dfs func(int, int) bool
+	dfs = func(i, c int) (res bool) {
+		if i < 0 {
+			// 当 没有数字可以选择的时候， 同时背包大小为 0
+			if c == 0 {
+				return true
+			}
+			return false
+		}
+		if cache[i][c] != -1 {
+			return cache[i][c] == 1
+		}
+
+		if c < nums[i] {
+			res = dfs(i-1, c)
+		} else {
+			res = dfs(i-1, c) || dfs(i-1, c-nums[i])
+		}
+
+		if res {
+			cache[i][c] = 1
+		} else {
+			cache[i][c] = 0
+		}
+		return
+	}
+	return dfs(n-1, sum/2)
+}
+
 // @lc code=end
 
