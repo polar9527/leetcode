@@ -78,5 +78,22 @@ func jump(nums []int) int {
 	return res
 }
 
+func jump(nums []int) int {
+	var res int
+	nextRight, curRight := 0, 0
+
+	for i, step := range nums {
+		nextRight = max(nextRight, i+step)
+		if i == curRight {
+			curRight = nextRight
+			res++
+			if i == len(nums)-1 {
+				res--
+			}
+		}
+	}
+	return res
+}
+
 // @lc code=end
 
