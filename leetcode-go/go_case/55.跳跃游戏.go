@@ -60,5 +60,22 @@ func canJump(nums []int) bool {
 	return false
 }
 
+func canJump(nums []int) bool {
+	// 维护一个最远位置
+	ms := 0
+	for i, step := range nums {
+		if i > ms {
+			return false
+		}
+		ms = max(ms, i+step)
+
+		// 可以提前预判
+		if i+step >= len(nums)-1 {
+			return true
+		}
+	}
+	return true
+}
+
 // @lc code=end
 
