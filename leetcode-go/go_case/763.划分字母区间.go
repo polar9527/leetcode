@@ -50,21 +50,40 @@
  */
 
 // @lc code=start
+// func partitionLabels(s string) []int {
+// 	sb := []byte(s)
+// 	charMap := [26]int{}
+// 	for i, b := range sb {
+// 		charMap[b-'a'] = i
+// 	}
+// 	var res []int
+// 	l, r := 0, 0
+// 	for i := 0; i < len(s); i++ {
+// 		if r < charMap[[]byte(s)[i]-'a'] {
+// 			r = charMap[[]byte(s)[i]-'a']
+// 		}
+// 		if i == r {
+// 			res = append(res, r-l+1)
+// 			l = i + 1
+// 		}
+// 	}
+// 	return res
+// }
+
 func partitionLabels(s string) []int {
-	sb := []byte(s)
-	charMap := [26]int{}
-	for i, b := range sb {
-		charMap[b-'a'] = i
+	last := [26]int{}
+	for i, c := range s {
+		last[c-'a'] = i //每个字符出现的最后下标
 	}
+
 	var res []int
-	l, r := 0, 0
-	for i := 0; i < len(s); i++ {
-		if r < charMap[[]byte(s)[i]-'a'] {
-			r = charMap[[]byte(s)[i]-'a']
-		}
-		if i == r {
-			res = append(res, r-l+1)
-			l = i + 1
+	start, end := 0, 0
+	for i, c := range s {
+		end = max(end, last[c-'a']) // 更新当前区间的最右端点
+		if end == i {
+			// 到达当前区间的最右端点
+			res = append(res, end-start+1)
+			start = i + 1
 		}
 	}
 	return res
