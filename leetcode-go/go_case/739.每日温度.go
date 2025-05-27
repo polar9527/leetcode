@@ -118,4 +118,26 @@ func dailyTemperatures(temperatures []int) []int {
 	return res
 }
 
+func dailyTemperatures(temperatures []int) []int {
+
+	stack := []int{0}
+	res := make([]int, len(temperatures))
+	for i, t := range temperatures {
+		if i == 0 {
+			continue
+		}
+		if temperatures[stack[len(stack)-1]] >= t {
+			stack = append(stack, i)
+		} else {
+			// temperatures[stack[len(stack)-1]] < t
+			for len(stack) > 0 && temperatures[stack[len(stack)-1]] < t {
+				res[stack[len(stack)-1]] = i - stack[len(stack)-1]
+				stack = stack[:len(stack)-1]
+			}
+			stack = append(stack, i)
+		}
+	}
+	return res
+}
+
 // @lc code=end
