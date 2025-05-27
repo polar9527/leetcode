@@ -1,6 +1,6 @@
 module github.com/polar9527/leetcode/leetcode-go
 
-go 1.20
+go 1.23
 
 require (
 	github.com/cweill/gotests v1.6.0 // indirect
