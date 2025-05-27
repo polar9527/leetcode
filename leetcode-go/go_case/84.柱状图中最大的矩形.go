@@ -143,4 +143,40 @@ func largestRectangleArea(heights []int) int {
 	return res
 }
 
+func largestRectangleArea(heights []int) int {
+	// 严格递增的栈中
+	// 栈顶元素严格大于即将入栈的元素
+	// 意味着，栈顶元素可以出栈了
+	// 并且 栈顶元素代表的矩形高度无法向两侧扩展，已经达到最大值
+
+	heights = append([]int{0}, heights...)
+	// 遇见完全单调递增的 heights数组，不会有机会进入计算逻辑
+	// 需要在尾部添加哨兵，在遍历到尾部哨兵的时候进入计算逻辑
+	heights = append(heights, 0)
+	var res int
+	stack := []int{0}
+
+	for i, h := range heights {
+		if i == 0 {
+			continue
+		}
+		if heights[stack[len(stack)-1]] < h {
+			stack = append(stack, i)
+		} else {
+			// heights[stack[len(stack)-1]] >= h
+			for len(stack) > 0 && heights[stack[len(stack)-1]] >= h {
+				cur := stack[len(stack)-1]
+				stack = stack[:len(stack)-1]
+				// 这之后 len(stack) 可能为 0，后续的 stack[len(stack)-1] 会越界
+				// 所以要添加一个哨兵，heights = append([]int{0}, heights...)
+				left, right := stack[len(stack)-1], i
+				// (left,right) 开区内的数轴长度
+				res = max(res, (right-left-1)*heights[cur])
+			}
+			stack = append(stack, i)
+		}
+	}
+	return res
+}
+
 // @lc code=end
