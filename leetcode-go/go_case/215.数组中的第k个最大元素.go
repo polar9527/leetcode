@@ -1,5 +1,11 @@
 package go_case
 
+import (
+	"container/heap"
+	"math/rand"
+	"sort"
+)
+
 /*
  * @lc app=leetcode.cn id=215 lang=golang
  *
@@ -48,41 +54,39 @@ package go_case
  */
 
 // @lc code=start
-// func findKthLargest(nums []int, k int) int {
-// 	return quickSelect(nums, 0, len(nums)-1, len(nums)-k)
-// }
+func findKthLargest(nums []int, k int) int {
+	return quickSelect(nums, 0, len(nums)-1, len(nums)-k)
+}
 
-// func quickSelect(a []int, l, r, index int) int {
-// 	q := randomPartition(a, l, r)
-// 	if q == index {
-// 		return a[q]
-// 	} else if q < index {
-// 		return quickSelect(a, q+1, r, index)
-// 	}
-// 	return quickSelect(a, l, q-1, index)
-// }
+func quickSelect(a []int, l, r, index int) int {
+	q := randomPartition(a, l, r)
+	if q == index {
+		return a[q]
+	} else if q < index {
+		return quickSelect(a, q+1, r, index)
+	}
+	return quickSelect(a, l, q-1, index)
+}
 
-// func randomPartition(a []int, l, r int) int {
-// 	seed := time.Now().UnixNano()
-// 	randomGenerator := rand.New(rand.NewSource(seed))
-// 	i := randomGenerator.Intn(r-l+1) + l
-// 	a[i], a[r] = a[r], a[i]
-// 	return partition(a, l, r)
-// }
+func randomPartition(a []int, l, r int) int {
+	i := rand.Intn(r-l+1) + l
+	a[i], a[r] = a[r], a[i]
+	return partition(a, l, r)
+}
 
-// func partition(a []int, l, r int) int {
-// 	// pivot 在 index r 处
-// 	x := a[r]
-// 	i := l - 1
-// 	for j := l; j < r; j++ {
-// 		if a[j] <= x {
-// 			i++
-// 			a[i], a[j] = a[j], a[i]
-// 		}
-// 	}
-// 	a[i+1], a[r] = a[r], a[i+1]
-// 	return i + 1
-// }
+func partition(a []int, l, r int) int {
+	// pivot 在 index r 处
+	x := a[r]
+	i := l - 1
+	for j := l; j < r; j++ {
+		if a[j] <= x {
+			i++
+			a[i], a[j] = a[j], a[i]
+		}
+	}
+	a[i+1], a[r] = a[r], a[i+1]
+	return i + 1
+}
 
 // 堆排序
 func findKthLargest(nums []int, k int) int {
@@ -123,32 +127,148 @@ func maxHeapify(a []int, i, heapSize int) {
 }
 
 // 利用 container/heap 库
-// func findKthLargest(nums []int, k int) int {
-// 	a := &kthLargest{k: k}
-// 	for _, num := range nums {
-// 		heap.Push(a, num)
-// 		if a.Len() > a.k {
-// 			heap.Pop(a)
-// 		}
-// 	}
+func findKthLargest(nums []int, k int) int {
+	a := &kthLargest{k: k}
+	for _, num := range nums {
+		heap.Push(a, num)
+		if a.Len() > a.k {
+			heap.Pop(a)
+		}
+	}
 
-// 	return a.IntSlice[0]
-// }
+	return a.IntSlice[0]
+}
 
-// type kthLargest struct {
-// 	sort.IntSlice
-// 	k int
-// }
+type kthLargest struct {
+	sort.IntSlice
+	k int
+}
 
-// func (k *kthLargest) Pop() interface{} {
-// 	a := k.IntSlice
-// 	v := a[a.Len()-1]
-// 	k.IntSlice = a[:k.Len()-1]
-// 	return v
-// }
+func (k *kthLargest) Pop() interface{} {
+	a := k.IntSlice
+	v := a[a.Len()-1]
+	k.IntSlice = a[:k.Len()-1]
+	return v
+}
 
-// func (k *kthLargest) Push(v interface{}) {
-// 	k.IntSlice = append(k.IntSlice, v.(int))
-// }
+func (k *kthLargest) Push(v interface{}) {
+	k.IntSlice = append(k.IntSlice, v.(int))
+}
+
+// 快排
+func findKthLargest(nums []int, k int) int {
+	n := len(nums)
+	// 这个分区法比较低效，尤其是 在处理 有很多相等元素的时候
+	var partition func(int, int) int
+	partition = func(l, r int) int {
+		// 0,1,2,3,4,5
+		// l = 2, r = 5
+		// r-l+1 = 4
+		// [l,4+l)
+		// [2,6) -> [2,5]
+		pivot := rand.Intn(r-l+1) + l
+		pivotVal := nums[pivot]
+		nums[r], nums[pivot] = nums[pivot], nums[r]
+
+		less := l - 1
+		for more := l; more < r; more++ {
+			if nums[more] <= pivotVal {
+				less++
+				nums[less], nums[more] = nums[more], nums[less]
+			}
+		}
+		nums[less+1], nums[r] = nums[r], nums[less+1]
+		return less + 1
+	}
+
+	var quickSelect func(int, int, int) int
+	quickSelect = func(l, r, index int) int {
+
+		pivot := partition(l, r)
+		if pivot == index {
+			return nums[index]
+		}
+		if pivot < index {
+			return quickSelect(pivot+1, r, index)
+		}
+		// pivot > index
+		return quickSelect(l, pivot-1, index)
+	}
+
+	return quickSelect(0, n-1, n-k)
+}
+
+// 快排， Hoare 分区
+func findKthLargest(nums []int, k int) int {
+	n := len(nums)
+
+	var quickselect func(int, int, int) int
+	quickselect = func(l, r, index int) int {
+		//  l <= index <= r
+		if l == r {
+			return nums[index]
+		}
+		partition := nums[l]
+		i := l - 1
+		j := r + 1
+		for i < j {
+			for i++; nums[i] < partition; i++ {
+			}
+			for j--; nums[j] > partition; j-- {
+			}
+			if i < j {
+				nums[i], nums[j] = nums[j], nums[i]
+			}
+		}
+		if index <= j {
+			return quickselect(l, j, index)
+		} else {
+			return quickselect(j+1, r, index)
+		}
+	}
+	return quickselect(0, n-1, n-k)
+}
+
+func findKthLargest(nums []int, k int) int {
+	heapSize := len(nums)
+	var maxHeapify func(int, int)
+	maxHeapify = func(index, hs int) {
+		// if index >= hs {
+		// 	return
+		// }
+		lc, rc := 2*index+1, 2*index+2
+		largest := index
+		if lc < hs && nums[lc] > nums[largest] {
+			largest = lc
+		}
+		// 父节点必须大于两个子节点
+		if rc < hs && nums[rc] > nums[largest] {
+			largest = rc
+		}
+
+		if largest != index {
+			nums[index], nums[largest] = nums[largest], nums[index]
+			maxHeapify(largest, hs)
+		}
+	}
+
+	buildMaxHeap := func(hs int) {
+		for i := hs / 2; i >= 0; i-- {
+			maxHeapify(i, hs)
+		}
+	}
+
+	buildMaxHeap(heapSize)
+	// 0,1,2,3,4,5,6
+	// k = 2
+	// 要从大顶堆 堆顶取出 k-1 个 元素， 放在数组末尾
+	// assert heapSize >= k
+	for i := 1; i <= k-1; i++ {
+		nums[0], nums[heapSize-1] = nums[heapSize-1], nums[0]
+		heapSize--
+		maxHeapify(0, heapSize)
+	}
+	return nums[0]
+}
 
 // @lc code=end
